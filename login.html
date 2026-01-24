@@ -69,12 +69,15 @@
       border: 2px solid red;
       padding: 20px;
       text-align: center;
-      width: 280px;
+      width: 400px; /* increase width so the image fits */
       color: white;
     }
 
+
     #popup img {
-      width: 300px;
+      width: 100%; /* take full width of popup */
+      max-width: 350px; /* optional: don’t get too huge on big screens */
+      height: auto; /* maintain aspect ratio */
       margin-bottom: 10px;
     }
 
