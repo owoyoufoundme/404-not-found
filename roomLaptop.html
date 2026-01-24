@@ -1,157 +1,157 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Elaine's Laptop</title>
-<style>
-  /* Full laptop screen */
-  body, html {
-    margin: 0;
-    padding: 0;
-    width: 100vw;
-    height: 100vh;
-    background: #fdf6ff; /* cute pastel background */
-    font-family: monospace;
-    overflow: hidden;
-  }
+  <meta charset="UTF-8">
+  <title>Elaine's Laptop</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: monospace;
+      background: linear-gradient(120deg, #a0e4ff, #ffb3c1);
+      overflow: hidden;
+    }
 
-  /* Taskbar */
-  #taskbar {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    height: 50px;
-    background: #ffd6e8;
-    display: flex;
-    align-items: center;
-    padding: 0 10px;
-    box-shadow: 0 -2px 5px rgba(0,0,0,0.2);
-  }
+    /* TASKBAR */
+    #taskbar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 50px;
+      background: #222;
+      display: flex;
+      align-items: center;
+      padding: 0 10px;
+      box-shadow: 0 -2px 5px rgba(0,0,0,0.5);
+      z-index: 100;
+    }
 
-  #taskbar button {
-    margin-right: 10px;
-    background: #ff9fe5;
-    border: none;
-    border-radius: 10px;
-    padding: 5px 10px;
-    cursor: pointer;
-    transition: 0.2s;
-  }
+    .task-icon {
+      width: 40px;
+      height: 40px;
+      margin-right: 10px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
 
-  #taskbar button:hover {
-    transform: scale(1.1);
-  }
+    .task-icon:hover {
+      transform: scale(1.2);
+    }
 
-  /* Desktop apps */
-  .app {
-    position: absolute;
-    width: 60px;
-    height: 60px;
-    text-align: center;
-    cursor: pointer;
-  }
+    /* Desktop icons */
+    .desktop-icon {
+      width: 80px;
+      text-align: center;
+      display: inline-block;
+      margin: 20px;
+      cursor: pointer;
+    }
 
-  .app img {
-    width: 50px;
-    height: 50px;
-    border-radius: 10px;
-  }
+    .desktop-icon img {
+      width: 60px;
+      height: 60px;
+    }
 
-  .app p {
-    margin: 2px 0 0 0;
-    font-size: 12px;
-  }
+    .desktop-icon p {
+      margin: 5px 0 0;
+      font-size: 12px;
+      color: #222;
+    }
 
-  /* File app on left */
-  #fileApp {
-    top: 50px;
-    left: 20px;
-  }
+    /* Popups for apps */
+    .popupApp {
+      display: none;
+      position: fixed;
+      top: 20%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #fff;
+      border: 2px solid #00bfff;
+      border-radius: 10px;
+      padding: 20px;
+      width: 400px;
+      color: #222;
+      z-index: 200;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
 
-  /* Game app below file */
-  #gameApp {
-    top: 120px;
-    left: 20px;
-  }
+    .popupApp h2 {
+      margin-top: 0;
+    }
 
-  /* Popup for apps */
-  .popup {
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 70%;
-    max-width: 600px;
-    height: 70%;
-    background: #fff0f6;
-    border: 2px solid #ff9fe5;
-    border-radius: 15px;
-    box-shadow: 0 0 15px rgba(0,0,0,0.3);
-    padding: 20px;
-    z-index: 100;
-  }
+    .popupApp button {
+      margin-top: 10px;
+      cursor: pointer;
+      padding: 5px 10px;
+      border: none;
+      background: #00bfff;
+      color: white;
+      border-radius: 5px;
+    }
 
-  .popup iframe {
-    width: 100%;
-    height: 100%;
-  }
-
-  .popup button.close {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: #ff9fe5;
-    border: none;
-    border-radius: 8px;
-    padding: 5px 10px;
-    cursor: pointer;
-  }
-
-</style>
+    iframe {
+      width: 100%;
+      height: 300px;
+      border: none;
+    }
+  </style>
 </head>
 <body>
 
-<!-- Desktop Apps -->
-<div id="fileApp" class="app" onclick="openPopup('filePopup')">
-  <img src="https://cdn-icons-png.flaticon.com/512/2991/2991148.png" alt="File">
-  <p>Files</p>
-</div>
+  <!-- Desktop icons -->
+  <div class="desktop-icon" onclick="openApp('fileApp')">
+    <img src="https://img.icons8.com/fluency/48/folder-invoices.png" alt="File App">
+    <p>Files</p>
+  </div>
 
-<div id="gameApp" class="app" onclick="openPopup('gamePopup')">
-  <img src="https://cdn-icons-png.flaticon.com/512/1006/1006552.png" alt="Game">
-  <p>Dino Game</p>
-</div>
+  <div class="desktop-icon" onclick="openApp('dinoGame')">
+    <img src="https://img.icons8.com/fluency/48/dino.png" alt="Dino Game">
+    <p>Dino Game</p>
+  </div>
 
-<!-- Taskbar -->
-<div id="taskbar">
-  <button onclick="alert('Laptop will close 😿')">Close</button>
-  <button onclick="alert('Calculator opens (not functional yet)')">Calculator</button>
-  <button onclick="alert('Chrome opens (not functional yet)')">Chrome</button>
-</div>
+  <!-- Taskbar -->
+  <div id="taskbar">
+    <img src="https://img.icons8.com/fluency/48/shutdown.png" class="task-icon" title="Shutdown" onclick="alert('Shutting down...')">
+    <img src="https://img.icons8.com/fluency/48/calculator.png" class="task-icon" title="Calculator" onclick="openApp('calculatorApp')">
+    <img src="https://img.icons8.com/fluency/48/google-chrome.png" class="task-icon" title="Chrome" onclick="openApp('chromeApp')">
+  </div>
 
-<!-- File App Popup -->
-<div id="filePopup" class="popup">
-  <button class="close" onclick="closePopup('filePopup')">X</button>
-  <h2>My Files</h2>
-  <p>Nothing much here… just cute files 🐱</p>
-</div>
+  <!-- FILE APP POPUP -->
+  <div id="fileApp" class="popupApp">
+    <h2>File Explorer</h2>
+    <p>Your cute files go here! 📂</p>
+    <button onclick="closeApp('fileApp')">Close</button>
+  </div>
 
-<!-- Game App Popup -->
-<div id="gamePopup" class="popup">
-  <button class="close" onclick="closePopup('gamePopup')">X</button>
-  <h2>Chrome Dino Game</h2>
-  <iframe src="https://chromedino.com/" frameborder="0"></iframe>
-</div>
+  <!-- CALCULATOR POPUP -->
+  <div id="calculatorApp" class="popupApp">
+    <h2>Calculator</h2>
+    <p>Just imagine calculations happen here 🧮</p>
+    <button onclick="closeApp('calculatorApp')">Close</button>
+  </div>
+
+  <!-- CHROME POPUP -->
+  <div id="chromeApp" class="popupApp">
+    <h2>Google Chrome</h2>
+    <iframe src="https://www.google.com" title="Browser"></iframe>
+    <button onclick="closeApp('chromeApp')">Close</button>
+  </div>
+
+  <!-- DINO GAME POPUP -->
+  <div id="dinoGame" class="popupApp">
+    <h2>Dinosaur Game</h2>
+    <iframe src="https://chromedino.com/" title="Dino Game"></iframe>
+    <button onclick="closeApp('dinoGame')">Close</button>
+  </div>
 
 <script>
-function openPopup(id) {
-  document.getElementById(id).style.display = "block";
-}
+  function openApp(appId) {
+    document.getElementById(appId).style.display = 'block';
+  }
 
-function closePopup(id) {
-  document.getElementById(id).style.display = "none";
-}
+  function closeApp(appId) {
+    document.getElementById(appId).style.display = 'none';
+  }
 </script>
 
 </body>
