@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Season 1 Recap</title>
+<style>
+  body {
+    background: #f9f9f9;
+    font-family: monospace;
+    color: #222;
+    margin: 0;
+    padding: 0;
+  }
+
+  header {
+    background: #222;
+    color: #00ffcc;
+    padding: 15px;
+    text-align: center;
+    font-size: 24px;
+  }
+
+  main {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 0 15px;
+  }
+
+  .post {
+    background: white;
+    border: 1px solid #ccc;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+
+  .ads {
+    background: #fffae6;
+    border: 1px dashed #f39c12;
+    padding: 15px;
+    margin: 20px 0;
+    text-align: center;
+    font-weight: bold;
+    color: #e67e22;
+  }
+
+  .comments {
+    margin-top: 30px;
+  }
+
+  .comment {
+    border-top: 1px solid #ccc;
+    padding: 10px 0;
+  }
+
+  .comment-author {
+    font-weight: bold;
+    color: #444;
+  }
+
+  .comment-text {
+    margin-left: 10px;
+  }
+
+  input, textarea {
+    width: 100%;
+    padding: 8px;
+    margin: 5px 0;
+    font-family: monospace;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+  }
+
+  button {
+    padding: 6px 15px;
+    background: #222;
+    color: #00ffcc;
+    border: 1px solid #00ffcc;
+    cursor: pointer;
+  }
+
+</style>
+</head>
+<body>
+
+<header>
+  Season 1 Recap Blog
+</header>
+
+<main>
+
+  <!-- Blog post -->
+  <div class="post">
+    <h2>The Mysterious Beginning</h2>
+    <p>
+      Remember the chaos of Season 1? Our heroes woke up in a strange place with no memory,
+      and the evil DM had them running through strange rooms… What really happened back then
+      was only the beginning of the gods’ game.
+    </p>
+
+    <!-- Fake ad -->
+    <div class="ads">🔥 AD: Buy the “Hero’s Starter Kit”! Get your own adventuring gear now! 🔥</div>
+
+    <p>
+      Fans have been discussing the weird rooms, secret codes, and the “funny cat popups”
+      that haunted their attempts to escape. Was it skill? Or just chaos magic?
+    </p>
+
+    <!-- Another fake ad -->
+    <div class="ads">💡 AD: Learn to DM like a pro in 5 days! Free trial inside! 💡</div>
+  </div>
+
+  <!-- Comments -->
+  <div class="comments">
+    <h3>Comments</h3>
+    
+    <div class="comment">
+      <span class="comment-author">Player123:</span>
+      <span class="comment-text">I still can't believe how the cat popup got me 😂</span>
+    </div>
+    
+    <div class="comment">
+      <span class="comment-author">DungeonFan89:</span>
+      <span class="comment-text">Season 1 felt like a puzzle show, not a normal DnD session!</span>
+    </div>
+
+    <div class="comment">
+      <span class="comment-author">LoreSeeker:</span>
+      <span class="comment-text">Those hidden codes were brutal, I loved it!</span>
+    </div>
+
+    <!-- Fake comment input -->
+    <div style="margin-top: 20px;">
+      <h4>Leave a comment</h4>
+      <input type="text" id="name" placeholder="Your name">
+      <textarea id="comment" placeholder="Your comment"></textarea>
+      <button onclick="addComment()">Post Comment</button>
+    </div>
+
+  </div>
+
+</main>
+
+<script>
+function addComment() {
+  const name = document.getElementById('name').value.trim();
+  const text = document.getElementById('comment').value.trim();
+
+  if(!name || !text) {
+    alert('Enter both name and comment!');
+    return;
+  }
+
+  const commentSection = document.querySelector('.comments');
+  const newComment = document.createElement('div');
+  newComment.className = 'comment';
+  newComment.innerHTML = `<span class="comment-author">${name}:</span> <span class="comment-text">${text}</span>`;
+  commentSection.appendChild(newComment);
+
+  document.getElementById('name').value = '';
+  document.getElementById('comment').value = '';
+}
+</script>
+
+</body>
+</html>
