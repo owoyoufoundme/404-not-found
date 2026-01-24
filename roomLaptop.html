@@ -1,160 +1,175 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Elaine's Laptop</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: monospace;
-      background: url('https://i.pinimg.com/736x/d5/ce/50/d5ce50e74126274d642a425dd9bcd1c8.jpg') no-repeat center center fixed;
-      background-size: cover; /* makes it fill the screen */
-      overflow: hidden;
-    }
+<meta charset="UTF-8">
+<title>Elaine's Laptop</title>
+<style>
+  body {
+    margin: 0;
+    font-family: monospace;
+    background: url('https://i.pinimg.com/736x/d5/ce/50/d5ce50e74126274d642a425dd9bcd1c8.jpg') center/cover no-repeat;
+    height: 100vh;
+    overflow: hidden;
+  }
 
+  /* Taskbar */
+  #taskbar {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 50px;
+    background: #222;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    box-sizing: border-box;
+  }
 
-    /* TASKBAR */
-    #taskbar {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 50px;
-      background: #222;
-      display: flex;
-      align-items: center;
-      padding: 0 10px;
-      box-shadow: 0 -2px 5px rgba(0,0,0,0.5);
-      z-index: 100;
-    }
+  #taskbar img {
+    height: 30px;
+    margin-right: 15px;
+    cursor: pointer;
+  }
 
-    .task-icon {
-      width: 40px;
-      height: 40px;
-      margin-right: 10px;
-      cursor: pointer;
-      transition: transform 0.2s;
-    }
+  /* Desktop app icons */
+  .app-icon {
+    position: absolute;
+    width: 60px;
+    text-align: center;
+    cursor: pointer;
+  }
 
-    .task-icon:hover {
-      transform: scale(1.2);
-    }
+  .app-icon img {
+    width: 60px;
+    height: 60px;
+  }
 
-    /* Desktop icons */
-    .desktop-icon {
-      width: 80px;
-      text-align: center;
-      display: inline-block;
-      margin: 20px;
-      cursor: pointer;
-    }
+  .app-icon span {
+    display: block;
+    color: white;
+    font-size: 12px;
+    margin-top: 2px;
+  }
 
-    .desktop-icon img {
-      width: 60px;
-      height: 60px;
-    }
+  /* Popup style */
+  .popup {
+    display: none;
+    position: fixed;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 400px;
+    background: #111;
+    border: 2px solid #00ffcc;
+    z-index: 1000;
+    padding: 10px;
+    box-sizing: border-box;
+  }
 
-    .desktop-icon p {
-      margin: 5px 0 0;
-      font-size: 12px;
-      color: #222;
-    }
+  .popup button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: black;
+    color: red;
+    border: 1px solid red;
+    cursor: pointer;
+    padding: 2px 6px;
+  }
 
-    /* Popups for apps */
-    .popupApp {
-      display: none;
-      position: fixed;
-      top: 20%;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #fff;
-      border: 2px solid #00bfff;
-      border-radius: 10px;
-      padding: 20px;
-      width: 400px;
-      color: #222;
-      z-index: 200;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-    }
+  /* Dino container */
+  #dinoGame {
+    width: 100%;
+    height: 100%;
+  }
 
-    .popupApp h2 {
-      margin-top: 0;
-    }
+  /* File popup content */
+  #fileContent {
+    color: white;
+    font-size: 14px;
+  }
 
-    .popupApp button {
-      margin-top: 10px;
-      cursor: pointer;
-      padding: 5px 10px;
-      border: none;
-      background: #00bfff;
-      color: white;
-      border-radius: 5px;
-    }
+  #fileContent ul {
+    list-style: none;
+    padding: 0;
+  }
 
-    iframe {
-      width: 100%;
-      height: 300px;
-      border: none;
-    }
-  </style>
+  #fileContent li {
+    margin: 5px 0;
+    cursor: pointer;
+  }
+
+  #fileContent li:hover {
+    color: #00ffcc;
+  }
+</style>
 </head>
 <body>
 
-  <!-- Desktop icons -->
-  <div class="desktop-icon" onclick="openApp('fileApp')">
-    <img src="https://i.pinimg.com/1200x/2e/2f/69/2e2f69ab83a4628397c38d4b6a203b8e.jpg" alt="File App">
-    <p>Files</p>
-  </div>
+<!-- Taskbar -->
+<div id="taskbar">
+  <img src="YOUR_CLOSE_ICON_URL" alt="Shut Down" title="Shut Down" onclick="alert('Shutting down...')">
+  <img src="YOUR_CALCULATOR_ICON_URL" alt="Calculator" title="Calculator" onclick="alert('Calculator coming soon!')">
+  <img src="YOUR_CHROME_ICON_URL" alt="Chrome" title="Chrome" onclick="alert('Chrome coming soon!')">
+</div>
 
-  <div class="desktop-icon" onclick="openApp('dinoGame')">
-    <img src="https://img.icons8.com/fluency/48/dino.png" alt="Dino Game">
-    <p>Dino Game</p>
-  </div>
+<!-- Desktop apps -->
+<div class="app-icon" style="top:50px; left:50px;" onclick="openDino()">
+  <img src="YOUR_DINO_ICON_URL" alt="Dino">
+  <span>Dino</span>
+</div>
 
-  <!-- Taskbar -->
-  <div id="taskbar">
-    <img src="https://img.icons8.com/fluency/48/shutdown.png" class="task-icon" title="Shutdown" onclick="alert('Shutting down...')">
-    <img src="https://img.icons8.com/fluency/48/calculator.png" class="task-icon" title="Calculator" onclick="openApp('calculatorApp')">
-    <img src="https://img.icons8.com/fluency/48/google-chrome.png" class="task-icon" title="Chrome" onclick="openApp('chromeApp')">
-  </div>
+<div class="app-icon" style="top:130px; left:50px;" onclick="openFile()">
+  <img src="https://i.pinimg.com/1200x/2e/2f/69/2e2f69ab83a4628397c38d4b6a203b8e.jpg" alt="File">
+  <span>Files</span>
+</div>
 
-  <!-- FILE APP POPUP -->
-  <div id="fileApp" class="popupApp">
-    <h2>File Explorer</h2>
-    <p>Your cute files go here! 📂</p>
-    <button onclick="closeApp('fileApp')">Close</button>
-  </div>
+<!-- Dino Popup -->
+<div id="dinoPopup" class="popup">
+  <button onclick="closeDino()">X</button>
+  <div id="dinoGame"></div>
+</div>
 
-  <!-- CALCULATOR POPUP -->
-  <div id="calculatorApp" class="popupApp">
-    <h2>Calculator</h2>
-    <p>Just imagine calculations happen here 🧮</p>
-    <button onclick="closeApp('calculatorApp')">Close</button>
+<!-- File Popup -->
+<div id="filePopup" class="popup">
+  <button onclick="closeFile()">X</button>
+  <div id="fileContent">
+    <p>📂 My Documents</p>
+    <ul>
+      <li>notes.txt</li>
+      <li>music.mp3</li>
+      <li>secret.docx</li>
+    </ul>
   </div>
+</div>
 
-  <!-- CHROME POPUP -->
-  <div id="chromeApp" class="popupApp">
-    <h2>Google Chrome</h2>
-    <iframe src="https://www.google.com" title="Browser"></iframe>
-    <button onclick="closeApp('chromeApp')">Close</button>
-  </div>
-
-  <!-- DINO GAME POPUP -->
-  <div id="dinoGame" class="popupApp">
-    <h2>Dinosaur Game</h2>
-    <iframe src="https://chromedino.com/" title="Dino Game"></iframe>
-    <button onclick="closeApp('dinoGame')">Close</button>
-  </div>
-
+<!-- Dino JS Clone -->
+<script src="https://cdn.jsdelivr.net/gh/wayou/t-rex-runner@master/dist/t-rex-runner.min.js"></script>
 <script>
-  function openApp(appId) {
-    document.getElementById(appId).style.display = 'block';
-  }
+function openDino() {
+  const popup = document.getElementById('dinoPopup');
+  popup.style.display = 'block';
 
-  function closeApp(appId) {
-    document.getElementById(appId).style.display = 'none';
+  if (!document.querySelector('#dinoGame canvas')) {
+    const game = new Runner('#dinoGame');
+    game.init();
   }
+}
+
+function closeDino() {
+  const popup = document.getElementById('dinoPopup');
+  popup.style.display = 'none';
+  document.getElementById('dinoGame').innerHTML = '';
+}
+
+function openFile() {
+  document.getElementById('filePopup').style.display = 'block';
+}
+
+function closeFile() {
+  document.getElementById('filePopup').style.display = 'none';
+}
 </script>
-
 </body>
 </html>
