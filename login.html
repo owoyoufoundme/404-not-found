@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Authorization Required</title>
+  <style>
+    body {
+      background: black;
+      color: #00ffcc;
+      font-family: monospace;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .box {
+      border: 1px solid #00ffcc;
+      padding: 30px;
+      text-align: center;
+    }
+
+    input {
+      background: black;
+      color: #00ffcc;
+      border: 1px solid #00ffcc;
+      padding: 8px;
+      font-family: monospace;
+      margin-top: 10px;
+      width: 200px;
+    }
+
+    button {
+      margin-top: 10px;
+      padding: 6px 15px;
+      background: black;
+      color: #00ffcc;
+      border: 1px solid #00ffcc;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="box">
+    <p>AUTHORIZATION REQUIRED</p>
+    <p>Enter access phrase:</p>
+    <input id="word" type="text">
+    <br>
+    <button onclick="checkWord()">ENTER</button>
+  </div>
+
+  <script>
+    function checkWord() {
+      const w = document.getElementById("word").value.toLowerCase();
+
+      if (w === "hello") {
+        window.location.href = "room1.html";
+      } else if (w === "admin") {
+        window.location.href = "room2.html";
+      } else if (w === "watching") {
+        window.location.href = "watching.html";
+      } else {
+        window.location.href = "error.html";
+      }
+    }
+  </script>
+
+</body>
+</html>
