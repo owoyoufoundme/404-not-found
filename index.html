@@ -2,20 +2,62 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Connected</title>
+  <title>Warning</title>
   <style>
     body {
       background: black;
-      color: white;
+      color: red;
       font-family: monospace;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
       margin: 0;
+      position: relative;
+    }
+
+    .warning {
+      text-align: center;
+    }
+
+    .decor {
+      position: absolute;
+      color: darkred;
+      opacity: 0.6;
+    }
+
+    /* Secret button */
+    #secret {
+      position: absolute;
+      bottom: 10px;
+      right: 15px;
+      font-size: 12px;
+      color: darkred;
+      opacity: 0.3;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
+
+  <div class="warning">
+    <h1>YOU ARE NOT SUPPOSED TO BE HERE</h1>
+    <p>Disconnect immediately.</p>
+  </div>
+
+  <!-- Decorative nonsense -->
+  <div class="decor" style="top:20%; left:15%;">⦿</div>
+  <div class="decor" style="top:70%; left:70%;">⟁</div>
+  <div class="decor" style="top:40%; left:80%;">⧗</div>
+
+  <!-- Secret clickable decoration -->
+  <div id="secret" onclick="goSecret()">⦿</div>
+
+  <script>
+    function goSecret() {
+      window.location.href = "login.html";
+    }
+  </script>
+
 </body>
 </html>
