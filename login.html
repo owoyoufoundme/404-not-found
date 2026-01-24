@@ -80,9 +80,9 @@
       color: red;
       cursor: pointer;
     }
-
+    
     #popup67 {
-      display: none;
+      display: none; /* start hidden */
       position: fixed;
       top: 0;
       left: 0;
@@ -94,13 +94,13 @@
       justify-content: center;
       align-items: center;
     }
-  
+    
     #popup67 img {
-      width: 50%; /* make it big, half of screen width */
+      width: 50%;
       max-width: 600px;
       animation: tilt 0.3s ease-in-out infinite alternate;
     }
-  
+    
     @keyframes tilt {
       0% { transform: rotate(-20deg); }
       50% { transform: rotate(20deg); }
@@ -203,13 +203,16 @@ function showPopup67() {
   const popup = document.getElementById("popup67");
   popup.style.display = "flex";
 
-  // auto-close after 3 seconds
+  // auto-close after 3 seconds with fade effect
   setTimeout(() => {
-    popup.style.display = "none";
+    popup.style.transition = "opacity 0.5s";
+    popup.style.opacity = 0;
+    setTimeout(() => {
+      popup.style.display = "none";
+      popup.style.opacity = 1; // reset opacity for next time
+    }, 500);
   }, 3000);
 }
-
-
 
 // click on overlay closes all popups
 function closeAllPopups() {
