@@ -81,31 +81,7 @@
       cursor: pointer;
     }
     
-    #popup67 {
-      display: none; /* start hidden */
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: rgba(0,0,0,0.9);
-      z-index: 1001;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    
-    #popup67 img {
-      width: 50%;
-      max-width: 600px;
-      animation: tilt 0.3s ease-in-out infinite alternate;
-    }
-    
-    @keyframes tilt {
-      0% { transform: rotate(-20deg); }
-      50% { transform: rotate(20deg); }
-      100% { transform: rotate(-20deg); }
-    }
+   
   </style>
 </head>
 
@@ -133,10 +109,6 @@
 
   <!-- sound -->
   <audio id="popupSound" src="cat-laugh.mp3" preload="auto"></audio>
-<!-- 67 easter egg popup -->
-  <div id="popup67">
-    <img src="https://www.shutterstock.com/image-photo/sixseven-67-meme-trend-middle-260nw-2696468523.jpg" alt="67 hands">
-  </div>
 
 <script>
 async function hash(text) {
@@ -158,12 +130,7 @@ const ACCESS = {
 async function checkWord() {
   const input = document.getElementById("word").value.trim().toLowerCase();
 
-  // 67 easter egg
-  if(input === "67") {
-    showPopup67();
-    document.getElementById("word").value = "";
-    return;
-  }
+
 
   // access granted → laptop page
   if(input === "access granted") {
@@ -199,25 +166,10 @@ function closePopup() {
   audio.currentTime = 0;
 }
 
-function showPopup67() {
-  const popup = document.getElementById("popup67");
-  popup.style.display = "flex";
-
-  // auto-close after 3 seconds with fade effect
-  setTimeout(() => {
-    popup.style.transition = "opacity 0.5s";
-    popup.style.opacity = 0;
-    setTimeout(() => {
-      popup.style.display = "none";
-      popup.style.opacity = 1; // reset opacity for next time
-    }, 500);
-  }, 3000);
-}
 
 // click on overlay closes all popups
 function closeAllPopups() {
   closePopup();
-  closePopup67();
 }
 </script>
 
