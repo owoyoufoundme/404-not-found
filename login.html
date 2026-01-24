@@ -50,6 +50,40 @@
       background: rgba(0,0,0,0.7);
       z-index: 999;
     }
+    #popup67 {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #111;
+      border: 2px solid gold;
+      padding: 20px;
+      text-align: center;
+      width: 350px;
+      color: white;
+      z-index: 1001;
+    }
+    
+    #popup67 img {
+      width: 100%;
+      max-width: 300px;
+      animation: tilt 1s infinite alternate;
+    }
+    
+    @keyframes tilt {
+      0% { transform: rotate(-15deg); }
+      50% { transform: rotate(15deg); }
+      100% { transform: rotate(-15deg); }
+    }
+    
+    #popup67 button {
+      border: 1px solid gold;
+      background: black;
+      color: gold;
+      cursor: pointer;
+      margin-top: 10px;
+    }
 
   
     #popup {
@@ -85,7 +119,12 @@
 </head>
 
 <body>
-
+  <div id="popup67">
+    <img src="htthttps://thewarriormessenger.com/wp-content/uploads/2025/12/6-1200x1200.png" alt="67 hands">
+    <p>Nice! You found the 67 code 😏</p>
+    <button onclick="closePopup67()">X</button>
+  </div>
+  
   <div class="box">
     <p>AUTHORIZATION REQUIRED</p>
     <p>Enter access phrase:</p>
