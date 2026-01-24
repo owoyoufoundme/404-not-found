@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Elaine's Laptop</title>
+<style>
+  body {
+    background: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: monospace;
+    margin: 0;
+  }
+
+  .laptop {
+    width: 800px;
+    height: 500px;
+    background: #000;
+    border: 10px solid #555;
+    border-radius: 10px;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Screen area */
+  .screen {
+    flex: 1;
+    background: #111;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 20px;
+  }
+
+  .app {
+    background: #222;
+    border: 2px solid #444;
+    border-radius: 10px;
+    height: 120px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    cursor: pointer;
+    text-align: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .app:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px cyan;
+  }
+
+  .app img {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 5px;
+  }
+
+  /* Dock / taskbar */
+  .dock {
+    height: 50px;
+    background: #222;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding-left: 10px;
+  }
+
+  .dock-icon {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    background: #444;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 18px;
+  }
+
+  .dock-icon:hover {
+    background: #666;
+  }
+</style>
+</head>
+<body>
+
+<div class="laptop">
+  <div class="screen">
+    <div class="app" onclick="alert('Elaine\'s diary: You are all amusing')">
+      <img src="https://i.imgur.com/8Km9tLL.png" alt="Diary">
+      Diary
+    </div>
+    <div class="app" onclick="alert('Secret word: hello!')">
+      <img src="https://i.imgur.com/XJj5U1s.png" alt="Secret">
+      Mystery
+    </div>
+    <div class="app" onclick="alert('Nothing interesting here')">
+      <img src="https://i.imgur.com/0y0y0y0.png" alt="Settings">
+      Settings
+    </div>
+    <div class="app" onclick="alert('Elaine laughed at your attempts')">
+      <img src="https://i.imgur.com/8Km9tLL.png" alt="Games">
+      Games
+    </div>
+    <div class="app" onclick="alert('Empty folder')">
+      <img src="https://i.imgur.com/XJj5U1s.png" alt="Folder">
+      Folder
+    </div>
+    <div class="app" onclick="alert('Nothing to see here')">
+      <img src="https://i.imgur.com/0y0y0y0.png" alt="Calculator">
+      Calculator
+    </div>
+  </div>
+
+  <div class="dock">
+    <div class="dock-icon">💻</div>
+    <div class="dock-icon">📁</div>
+    <div class="dock-icon">📷</div>
+    <div class="dock-icon">🎮</div>
+  </div>
+</div>
+
+</body>
+</html>
