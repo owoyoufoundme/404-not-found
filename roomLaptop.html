@@ -33,14 +33,18 @@
 
   /* Desktop app icons */
   .app-icon {
+    position: absolute;
     width: 100px;
     text-align: center;
     cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
   
   .app-icon img {
-    width: 100px;
-    height: 100px;
+    width: 80px;
+    height: 80px;
   }
   
   .app-icon span {
@@ -48,6 +52,8 @@
     color: white;
     font-size: 14px;
     margin-top: 4px;
+  }
+
   /* Popup style */
   .popup {
     display: none;
@@ -112,18 +118,15 @@
 </div>
 
 <!-- Desktop apps -->
-
 <div class="app-icon" style="top:150px; left:50px;" onclick="openFile()">
   <img src="file.png" alt="File">
   <span>Files</span>
 </div>
 
-  
-<div class="app-icon" style="top:150px; left:50px;" onclick="openDino()">
+<div class="app-icon" style="top:250px; left:50px;" onclick="openDino()">
   <img src="dino.png" alt="Dino">
   <span>Dino</span>
 </div>
-
 
 <!-- Dino Popup -->
 <div id="dinoPopup" class="popup">
