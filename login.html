@@ -182,6 +182,13 @@ async function checkWord() {
   const input = document.getElementById("word").value.trim().toLowerCase();
   const hashed = await hash(input);
 
+  if (input === "67") {
+      showPopup67();
+      document.getElementById("word").value = "";
+      return;
+  }
+
+
   if (ACCESS[hashed]) {
     window.location.href = ACCESS[hashed];
   } else {
@@ -209,6 +216,15 @@ function closePopup() {
   audio.pause();
   audio.currentTime = 0;
 }
+
+function showPopup67() {
+  document.getElementById("popup67").style.display = "block";
+}
+
+function closePopup67() {
+  document.getElementById("popup67").style.display = "none";
+}
+
 </script>
 
 </body>
