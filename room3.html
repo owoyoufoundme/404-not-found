@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Gods Profile</title>
+<style>
+  body {
+    font-family: monospace;
+    background: #1f1f1f;
+    color: white;
+    margin: 0;
+    padding: 0;
+  }
+
+  .banner {
+    background: linear-gradient(90deg, purple, darkblue);
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    padding-left: 20px;
+    color: white;
+    font-size: 32px;
+    font-weight: bold;
+  }
+
+  .profile {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+  }
+
+  .avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 3px solid white;
+    margin-right: 20px;
+    background-image: url('https://i.imgur.com/8Km9tLL.png'); /* replace with funny god avatar */
+    background-size: cover;
+  }
+
+  .stats {
+    display: flex;
+    gap: 40px;
+    margin-top: 10px;
+  }
+
+  .stats div {
+    text-align: center;
+  }
+
+  .clips {
+    display: flex;
+    gap: 15px;
+    padding: 20px;
+    flex-wrap: wrap;
+  }
+
+  .clip {
+    background: #2c2c2c;
+    width: 150px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    cursor: pointer;
+    border: 1px solid #555;
+  }
+
+  .clip:hover {
+    border-color: yellow;
+  }
+
+  .follow-btn {
+    background: purple;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    cursor: pointer;
+    margin-top: 10px;
+    font-weight: bold;
+  }
+</style>
+</head>
+<body>
+
+  <div class="banner">Bored Gods Live</div>
+
+  <div class="profile">
+    <div class="avatar"></div>
+    <div>
+      <div>@BoredGodsLive</div>
+      <button class="follow-btn">Follow</button>
+      <div class="stats">
+        <div><strong>999,999</strong><br>Followers</div>
+        <div><strong>42,000,000</strong><br>Views</div>
+        <div><strong>1,337</strong><br>Clips</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="clips">
+    <div class="clip" onclick="alert('Clip: Players struggle to find the secret')">Clip 1</div>
+    <div class="clip" onclick="alert('Clip: Someone typed "hello"')">Clip 2</div>
+    <div class="clip" onclick="alert('Clip: Players clicked the wrong decoration')">Clip 3</div>
+    <div class
