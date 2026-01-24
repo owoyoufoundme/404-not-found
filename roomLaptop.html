@@ -25,35 +25,33 @@
     box-sizing: border-box;
   }
 
-/* Taskbar */
   #taskbar img {
-      height: 40px;      /* bigger than before */
-      margin-right: 25px; /* more spacing between icons */
-      cursor: pointer;
+    height: 40px;      /* bigger icons */
+    margin-right: 25px; /* spacing */
+    cursor: pointer;
   }
-
-
 
   /* Desktop app icons */
   .app-icon {
-      width: 120px;        /* bigger icon container */
-      text-align: center;
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+    width: 120px;
+    text-align: center;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
   }
-  
+
   .app-icon img {
-      width: 100px;       /* bigger icon image */
-      height: 100px;
+    width: 100px;
+    height: 100px;
   }
-  
+
   .app-icon span {
-      display: block;
-      color: white;
-      font-size: 16px;    /* bigger label text */
-      margin-top: 6px;
+    display: block;
+    color: white;
+    font-size: 16px;
+    margin-top: 6px;
   }
 
   /* Popup style */
@@ -70,6 +68,7 @@
     z-index: 1000;
     padding: 10px;
     box-sizing: border-box;
+    border-radius: 10px; /* cute rounded corners */
   }
 
   .popup button {
@@ -81,18 +80,14 @@
     border: 1px solid red;
     cursor: pointer;
     padding: 2px 6px;
-  }
-
-  /* Dino container */
-  #dinoGame {
-    width: 100%;
-    height: 100%;
+    border-radius: 4px;
   }
 
   /* File popup content */
   #fileContent {
     color: white;
     font-size: 14px;
+    padding: 10px;
   }
 
   #fileContent ul {
@@ -103,10 +98,28 @@
   #fileContent li {
     margin: 5px 0;
     cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    transition: 0.2s;
   }
 
   #fileContent li:hover {
     color: #00ffcc;
+    background: #222;
+  }
+
+  /* Back arrow */
+  #backButton {
+    display: none;
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    background: black;
+    color: #00ffcc;
+    border: 1px solid #00ffcc;
+    padding: 2px 6px;
+    cursor: pointer;
+    border-radius: 4px;
   }
 </style>
 </head>
@@ -119,62 +132,56 @@
   <img src="YOUR_CHROME_ICON_URL" alt="Chrome" title="Chrome" onclick="alert('Chrome coming soon!')">
 </div>
 
-<!-- Desktop apps -->
+<!-- Desktop app icons -->
 <div class="app-icon" style="top:50px; left:5px;" onclick="openFile()">
   <img src="file.png" alt="File">
   <span>Files</span>
 </div>
 
-<div class="app-icon" style="top:150px; left:5px;" onclick="openDino()">
-  <img src="dino.png" alt="Dino">
-  <span>Dino</span>
-</div>
-
-<!-- Dino Popup -->
-<div id="dinoPopup" class="popup">
-  <button onclick="closeDino()">X</button>
-  <div id="dinoGame"></div>
-</div>
-
 <!-- File Popup -->
 <div id="filePopup" class="popup">
+  <button id="backButton" onclick="goBack()">⬅ Back</button>
   <button onclick="closeFile()">X</button>
   <div id="fileContent">
     <p>📂 My Documents</p>
     <ul>
-      <li>notes.txt</li>
-      <li>music.mp3</li>
-      <li>secret.docx</li>
+      <li onclick="openInnerFile('Notes')">notes.txt</li>
+      <li onclick="openInnerFile('Music')">music.mp3</li>
+      <li onclick="openInnerFile('Secret')">secret.docx</li>
     </ul>
   </div>
 </div>
 
-<!-- Dino JS Clone -->
-<script src="https://cdn.jsdelivr.net/gh/wayou/t-rex-runner@master/dist/t-rex-runner.min.js"></script>
 <script>
-function openDino() {
-  const popup = document.getElementById('dinoPopup');
-  popup.style.display = 'block';
-
-  if (!document.querySelector('#dinoGame canvas')) {
-    const game = new Runner('#dinoGame');
-    game.init();
-  }
-}
-
-function closeDino() {
-  const popup = document.getElementById('dinoPopup');
-  popup.style.display = 'none';
-  document.getElementById('dinoGame').innerHTML = '';
-}
-
 function openFile() {
   document.getElementById('filePopup').style.display = 'block';
+  document.getElementById('backButton').style.display = 'none';
+  document.getElementById('fileContent').innerHTML = `
+    <p>📂 My Documents</p>
+    <ul>
+      <li onclick="openInnerFile('Notes')">notes.txt</li>
+      <li onclick="openInnerFile('Music')">music.mp3</li>
+      <li onclick="openInnerFile('Secret')">secret.docx</li>
+    </ul>
+  `;
 }
 
 function closeFile() {
   document.getElementById('filePopup').style.display = 'none';
 }
+
+function openInnerFile(name) {
+  document.getElementById('backButton').style.display = 'block';
+  document.getElementById('fileContent').innerHTML = `
+    <h3>${name}</h3>
+    <p>This is placeholder content for ${name}.</p>
+  `;
+}
+
+function goBack() {
+  openFile();
+}
 </script>
+
 </body>
 </html>
