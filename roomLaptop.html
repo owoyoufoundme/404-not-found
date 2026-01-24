@@ -89,9 +89,46 @@
   .dock-icon:hover {
     background: #666;
   }
+
+  #welcomePopup {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.popupBox {
+  background: #0b0b0b;
+  border: 1px solid #00ffcc;
+  padding: 25px 35px;
+  text-align: center;
+  font-family: monospace;
+  color: #00ffcc;
+}
+
+.popupBox button {
+  margin-top: 15px;
+  background: black;
+  color: #00ffcc;
+  border: 1px solid #00ffcc;
+  padding: 6px 14px;
+  cursor: pointer;
+}
+
 </style>
 </head>
 <body>
+  
+  
+<div id="welcomePopup">
+  <div class="popupBox">
+    <p>WELCOME, USER.</p>
+    <button onclick="closeWelcome()">CONTINUE</button>
+  </div>
+</div>
 
 <div class="laptop">
   <div class="screen">
