@@ -94,6 +94,7 @@
   </div>
 
   <div id="overlay"></div>
+  <audio id="popupSound" src="https://www.myinstants.com/media/sounds/cartoon-fail.mp3" preload="auto"></audio>
 
   <div id="popup">
    
@@ -150,11 +151,21 @@ async function checkWord() {
 function showPopup() {
   document.getElementById("overlay").style.display = "block";
   document.getElementById("popup").style.display = "block";
+
+  // Play sound
+  const audio = document.getElementById("popupSound");
+  audio.currentTime = 0; // start from beginning
+  audio.play();
 }
+
 
 function closePopup() {
   document.getElementById("overlay").style.display = "none";
   document.getElementById("popup").style.display = "none";
+
+  const audio = document.getElementById("popupSound");
+  audio.pause();
+  audio.currentTime = 0;
 }
 </script>
 
