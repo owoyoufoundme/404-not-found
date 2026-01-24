@@ -52,6 +52,13 @@
     }
 
     /* popup */
+    #overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+    }
+
     #popup {
       display: none;
       position: fixed;
@@ -62,9 +69,8 @@
       border: 2px solid red;
       padding: 20px;
       text-align: center;
-      width: 300px;
+      width: 280px;
       color: white;
-      z-index: 1000;
     }
 
     #popup img {
@@ -73,12 +79,10 @@
     }
 
     #popup button {
-      margin-top: 10px;
-      padding: 5px 10px;
-      cursor: pointer;
       border: 1px solid red;
       background: black;
       color: red;
+      cursor: pointer;
     }
   </style>
 </head>
@@ -96,8 +100,9 @@
   <div id="overlay"></div>
 
   <div id="popup">
-    <img src="https://lede-admin.dailydot.com/wp-content/uploads/sites/69/2024/12/cat-laughing-4.jpg?w=710">
-    <p>INCORRECT<br>skill issue</p>
+   
+    <img src="https://lede-admin.dailydot.com/wp-content/uploads/sites/69/2024/12/cat-laughing-4.jpg?w=710" alt="LMFAOOOO">
+    <p>INCORRECT.<br>skill issue.</p>
     <button onclick="closePopup()">X</button>
   </div>
 
