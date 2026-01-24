@@ -54,59 +54,71 @@
     margin-top: 6px;
   }
 
-  /* Popup style */
-  .popup {
+  /* File Popup */
+  #filePopup {
     display: none;
     position: fixed;
-    top: 10%;
+    top: 15%;
     left: 50%;
     transform: translateX(-50%);
-    width: 600px;
-    height: 400px;
-    background: #111;
-    border: 2px solid #00ffcc;
+    width: 500px;
+    height: 350px;
+    background: #f0f8ff; /* soft pastel blue */
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
     z-index: 1000;
-    padding: 10px;
+    padding: 20px;
     box-sizing: border-box;
-    border-radius: 10px; /* cute rounded corners */
+    font-family: monospace;
   }
-
-  .popup button {
+  
+  #filePopup button {
     position: absolute;
-    top: 5px;
-    right: 5px;
-    background: black;
-    color: red;
-    border: 1px solid red;
-    cursor: pointer;
-    padding: 2px 6px;
-    border-radius: 4px;
-  }
-
-  /* File popup content */
-  #fileContent {
+    top: 10px;
+    right: 10px;
+    background: #ffb6c1; /* soft pink button */
     color: white;
-    font-size: 14px;
-    padding: 10px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 30px;
+    text-align: center;
   }
-
+  
+  #fileContent {
+    color: #333;
+    font-size: 14px;
+    margin-top: 40px;
+  }
+  
+  #fileContent p {
+    font-weight: bold;
+    color: #444;
+    margin-bottom: 10px;
+  }
+  
   #fileContent ul {
     list-style: none;
     padding: 0;
   }
-
+  
   #fileContent li {
-    margin: 5px 0;
+    margin: 6px 0;
     cursor: pointer;
-    padding: 4px;
-    border-radius: 4px;
-    transition: 0.2s;
+    padding: 5px 10px;
+    border-radius: 10px;
+    transition: all 0.2s;
+  }
+  
+  #fileContent li:hover {
+    background: #add8e6; /* light blue hover */
+    color: #000;
   }
 
-  #fileContent li:hover {
-    color: #00ffcc;
-    background: #222;
-  }
 
   /* Back arrow */
   #backButton {
