@@ -146,10 +146,14 @@ async function checkWord() {
   if (ACCESS[hashed]) {
     window.location.href = ACCESS[hashed];
   } else {
-    document.getElementById("overlay").style.display = "block";
-    document.getElementById("popup").style.display = "block";
+    showPopup();
     document.getElementById("word").value = "";
   }
+}
+
+function showPopup() {
+  document.getElementById("overlay").style.display = "block";
+  document.getElementById("popup").style.display = "block";
 }
 
 function closePopup() {
