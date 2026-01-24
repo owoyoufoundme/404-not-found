@@ -42,7 +42,7 @@
       cursor: pointer;
     }
 
-    /* overlay */
+    /* overlay for all popups */
     #overlay {
       display: none;
       position: fixed;
@@ -50,6 +50,38 @@
       background: rgba(0,0,0,0.7);
       z-index: 999;
     }
+
+    /* main wrong popup */
+    #popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #111;
+      border: 2px solid red;
+      padding: 20px;
+      text-align: center;
+      width: 400px;
+      color: white;
+      z-index: 1000;
+    }
+
+    #popup img {
+      width: 100%;
+      max-width: 350px;
+      height: auto;
+      margin-bottom: 10px;
+    }
+
+    #popup button {
+      border: 1px solid red;
+      background: black;
+      color: red;
+      cursor: pointer;
+    }
+
+    /* 67 easter egg popup */
     #popup67 {
       display: none;
       position: fixed;
@@ -64,19 +96,19 @@
       color: white;
       z-index: 1001;
     }
-    
+
     #popup67 img {
       width: 100%;
       max-width: 300px;
       animation: tilt 1s infinite alternate;
     }
-    
+
     @keyframes tilt {
       0% { transform: rotate(-15deg); }
       50% { transform: rotate(15deg); }
       100% { transform: rotate(-15deg); }
     }
-    
+
     #popup67 button {
       border: 1px solid gold;
       background: black;
@@ -85,46 +117,29 @@
       margin-top: 10px;
     }
 
-  
-    #popup {
-      display: none;
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: #111;
-      border: 2px solid red;
-      padding: 20px;
-      text-align: center;
-      width: 400px; /* increase width so the image fits */
-      color: white;
-      z-index: 1000;
-    }
-
-
-    #popup img {
-      width: 100%; /* take full width of popup */
-      max-width: 350px; /* optional: don’t get too huge on big screens */
-      height: auto; /* maintain aspect ratio */
-      margin-bottom: 10px;
-    }
-
-    #popup button {
-      border: 1px solid red;
-      background: black;
-      color: red;
-      cursor: pointer;
-    }
   </style>
 </head>
 
 <body>
+
+  <!-- overlay -->
+  <div id="overlay" onclick="closeAllPopups()"></div>
+
+  <!-- 67 easter egg popup -->
   <div id="popup67">
-    <img src="htthttps://thewarriormessenger.com/wp-content/uploads/2025/12/6-1200x1200.png" alt="67 hands">
+    <img src="https://i.imgur.com/67hands.png" alt="67 hands">
     <p>Nice! You found the 67 code 😏</p>
     <button onclick="closePopup67()">X</button>
   </div>
-  
+
+  <!-- main cat popup -->
+  <div id="popup">
+    <img src="https://lede-admin.dailydot.com/wp-content/uploads/sites/69/2024/12/cat-laughing-4.jpg?w=710" alt="LMFAOOOO">
+    <p>WRONG.<br>skill issue.</p>
+    <button onclick="closePopup()">X</button>
+  </div>
+
+  <!-- login box -->
   <div class="box">
     <p>AUTHORIZATION REQUIRED</p>
     <p>Enter access phrase:</p>
@@ -133,43 +148,10 @@
     <button onclick="checkWord()">ENTER</button>
   </div>
 
-  <div id="overlay"></div>
-  
+  <!-- sound -->
   <audio id="popupSound" src="cat-laugh.mp3" preload="auto"></audio>
 
-  <div id="popup">
-   
-    <img src="https://lede-admin.dailydot.com/wp-content/uploads/sites/69/2024/12/cat-laughing-4.jpg?w=710" alt="LMFAOOOO">
-    <p>WRONG.<br>skill issue.</p>
-    <button onclick="closePopup()">X</button>
-  </div>
-
 <script>
-/* 🔐 ENCRYPTED ACCESS TABLE (no plaintext spoilers) */
-const ACCESS = {
-  // season 1
-  "8b9c0f4c52b6c1b57f93fa42fba2f1b0a62fbb4c5c3f3c4fd5c0c0d0d0a0b9e":
-    "season1.html",
-
-  // season 2
-  "1bfa1c6baf8c23c0e4a13f4d9b6a2f0c6f4c3f9e12b4c8d9c2e0a3f8d4c1e2":
-    "https://reddit.com/r/YourFakeSub/comments/season2",
-
-  // season 3
-  "aa8c91d7c56f8b1b0d7e7f5e7a5b6c3d2f4b1a0e3c9d8f4c2a1b0d9e8f7a6":
-    "https://reddit.com/r/YourFakeSub/comments/season3",
-
-  // season 4
-  "7e1c8a5d3f9b4c2a6d0e8b1f7c5a9e4d2b3f6c1a0e9d8b7c4f5a6d7e8":
-    "https://reddit.com/r/YourFakeSub/comments/season4",
-
-  // ACCESS GRANTED → laptop page
-  "8a2c5d1d6f4e3c9b0a7f1d8e2b3c4f5a6d7e8f9c0b1a2d3c4e5f6a7b8c9d0e1f":
-    "roomLaptop.html"
-
-};
-
-/* 🔐 SHA-256 hash */
 async function hash(text) {
   const data = new TextEncoder().encode(text);
   const buffer = await crypto.subtle.digest("SHA-256", data);
@@ -178,18 +160,33 @@ async function hash(text) {
     .join("");
 }
 
+/* optional: season hashes for fun, can keep if you want */
+const ACCESS = {
+  "8b9c0f4c52b6c1b57f93fa42fba2f1b0a62fbb4c5c3f3c4fd5c0c0d0d0a0b9e": "season1.html",
+  "1bfa1c6baf8c23c0e4a13f4d9b6a2f0c6f4c3f9e12b4c8d9c2e0a3f8d4c1e2": "https://reddit.com/r/YourFakeSub/comments/season2",
+  "aa8c91d7c56f8b1b0d7e7f5e7a5b6c3d2f4b1a0e3c9d8f4c2a1b0d9e8f7a6": "https://reddit.com/r/YourFakeSub/comments/season3",
+  "7e1c8a5d3f9b4c2a6d0e8b1f7c5a9e4d2b3f6c1a0e9d8b7c4f5a6d7e8": "https://reddit.com/r/YourFakeSub/comments/season4"
+};
+
 async function checkWord() {
   const input = document.getElementById("word").value.trim().toLowerCase();
-  const hashed = await hash(input);
 
-  if (input === "67") {
-      showPopup67();
-      document.getElementById("word").value = "";
-      return;
+  // 67 easter egg
+  if(input === "67") {
+    showPopup67();
+    document.getElementById("word").value = "";
+    return;
   }
 
+  // access granted → laptop page
+  if(input === "access granted") {
+    window.location.href = "roomLaptop.html";
+    return;
+  }
 
-  if (ACCESS[hashed]) {
+  // check season hashes if needed
+  const hashed = await hash(input);
+  if(ACCESS[hashed]) {
     window.location.href = ACCESS[hashed];
   } else {
     showPopup();
@@ -201,12 +198,10 @@ function showPopup() {
   document.getElementById("overlay").style.display = "block";
   document.getElementById("popup").style.display = "block";
 
-  // Play sound
   const audio = document.getElementById("popupSound");
-  audio.currentTime = 0; // start from beginning
+  audio.currentTime = 0;
   audio.play();
 }
-
 
 function closePopup() {
   document.getElementById("overlay").style.display = "none";
@@ -218,13 +213,20 @@ function closePopup() {
 }
 
 function showPopup67() {
+  document.getElementById("overlay").style.display = "block";
   document.getElementById("popup67").style.display = "block";
 }
 
 function closePopup67() {
+  document.getElementById("overlay").style.display = "none";
   document.getElementById("popup67").style.display = "none";
 }
 
+// click on overlay closes all popups
+function closeAllPopups() {
+  closePopup();
+  closePopup67();
+}
 </script>
 
 </body>
