@@ -261,19 +261,18 @@ function showElainePopup() {
   }
 
   const question = elaineQuestions[elaineStep];
-  
+
   const popup = document.createElement("div");
-  const width = 300, height = 150;
+  const width = 300, height = 200;
   const x = Math.random() * (window.innerWidth - width);
   const y = Math.random() * (window.innerHeight - height - 60);
 
+  // Popup container styling
   popup.style.position = "fixed";
   popup.style.left = x + "px";
   popup.style.top = y + "px";
   popup.style.width = width + "px";
   popup.style.height = height + "px";
-  popup.style.background = "url('https://i.pinimg.com/1200x/04/1b/7b/041b7b5ed8f4ef31b6f4550de9ea81ee.jpg') no-repeat center/cover"; // fits popup
-  popup.style.backgroundSize = "cover"; // ensures image covers popup fully
   popup.style.padding = "15px";
   popup.style.zIndex = 6000 + elaineStep;
   popup.style.display = "flex";
@@ -284,24 +283,44 @@ function showElainePopup() {
   popup.style.fontFamily = 'Vivaldi, "Lucida Handwriting"';
   popup.style.boxShadow = "0 5px 15px rgba(0,0,0,0.3)";
   popup.style.textAlign = "center";
-  popup.style.color = "#333";
+  popup.style.color = "black"; // make text readable
+  popup.style.borderRadius = "16px";
+  popup.style.overflow = "hidden";
 
+  // Background image
+  const bgImg = document.createElement("img");
+  bgImg.src = "https://i.pinimg.com/1200x/04/1b/7b/041b7b5ed8f4ef31b6f4550de9ea81ee.jpg"; // replace with your image
+  bgImg.style.position = "absolute";
+  bgImg.style.top = "0";
+  bgImg.style.left = "0";
+  bgImg.style.width = "100%";
+  bgImg.style.height = "100%";
+  bgImg.style.objectFit = "cover";
+  bgImg.style.zIndex = "1"; // behind content
+  popup.appendChild(bgImg);
+
+  // Question text
   const p = document.createElement("p");
   p.innerText = question;
-  p.style.fontSize = "20px";
-  p.style.fontWeight= "bold";
+  p.style.fontSize = "18px";
+  p.style.fontWeight = "bold";
   p.style.marginBottom = "10px";
+  p.style.zIndex = "2"; // above image
   popup.appendChild(p);
 
+  // Buttons container
   const btnContainer = document.createElement("div");
   btnContainer.style.display = "flex";
   btnContainer.style.gap = "15px";
+  btnContainer.style.zIndex = "2"; // above image
 
   const yesBtn = document.createElement("button");
   yesBtn.innerText = "Yuh-uh";
   yesBtn.style.fontFamily = "'Patrick Hand', cursive";
   yesBtn.style.background = "#c8f7dc";
   yesBtn.style.color = "#240668";
+  yesBtn.style.border = "1px solid #4cd137";
+  yesBtn.style.borderRadius = "12px";
   yesBtn.style.padding = "6px 12px";
   yesBtn.style.cursor = "pointer";
   yesBtn.onclick = () => {
@@ -315,6 +334,8 @@ function showElainePopup() {
   noBtn.style.fontFamily = "'Patrick Hand', cursive";
   noBtn.style.background = "#f7c8c8";
   noBtn.style.color = "#240668";
+  noBtn.style.border = "1px solid #e84118";
+  noBtn.style.borderRadius = "12px";
   noBtn.style.padding = "6px 12px";
   noBtn.style.cursor = "pointer";
   noBtn.onclick = () => {
@@ -328,6 +349,7 @@ function showElainePopup() {
 
   document.body.appendChild(popup);
 }
+
 
 function showElaineNoPopup(reasonText) {
   const popup = document.createElement("div");
