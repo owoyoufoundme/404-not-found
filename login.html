@@ -87,6 +87,44 @@
       max-width: 90%;
       max-height: 90%;
     }
+
+
+    .elaine-no-popup {
+    position: fixed;
+    width: 340px;
+    padding: 22px;
+    background: #ffe6ea;
+    border: 3px solid #ff4d6d;
+    border-radius: 18px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+    font-family: monospace;
+    text-align: center;
+    z-index: 9999;
+    color: #7a0018;
+  }
+  
+  .elaine-no-popup h3 {
+    margin: 0 0 12px;
+    font-size: 22px;
+  }
+  
+  .elaine-no-popup p {
+    font-size: 17px;
+    line-height: 1.4;
+    margin-bottom: 18px;
+  }
+  
+  .elaine-no-popup button {
+    padding: 8px 18px;
+    border-radius: 14px;
+    border: 2px solid #ff4d6d;
+    background: #fff;
+    color: #ff4d6d;
+    font-family: monospace;
+    cursor: pointer;
+    font-size: 15px;
+  }
+
   </style>
 </head>
 
@@ -177,8 +215,8 @@ function showElaineGoodGirl() {
   popup.style.boxShadow = "0 8px 20px rgba(0,0,0,0.35)";
 
   popup.innerHTML = `
-    <p style="font-size:18px; margin-bottom:12px;">Good girl~
-I’m proud of you. 💖</p>
+    <p style="font-size:18px; margin-bottom:12px;">Good girl~ 
+    I’m proud of you. 💖</p>
     <button style="
       background:#c8f7dc;
       border:1px solid #4cd137;
@@ -262,9 +300,11 @@ function showElainePopup() {
   noBtn.style.padding = "6px 12px";
   noBtn.style.cursor = "pointer";
   noBtn.onclick = () => {
-  document.body.removeChild(popup);
-  elaineActive = false; // stop Elaine completely
-  showElaineErrorPopup();
+    document.body.removeChild(popup);
+    showElaineNoPopup(
+      "Go do it first."
+    );
+  };
 };
 
   btnContainer.appendChild(yesBtn);
@@ -274,53 +314,33 @@ function showElainePopup() {
   document.body.appendChild(popup);
 }
 
-function showElaineErrorPopup() {
+function showElaineNoPopup(reasonText) {
   const popup = document.createElement("div");
-  const width = 320, height = 160;
-  const x = Math.random() * (window.innerWidth - width);
-  const y = Math.random() * (window.innerHeight - height - 60);
+  popup.className = "elaine-no-popup";
 
-  popup.style.position = "fixed";
+  // random position
+  const x = Math.random() * (window.innerWidth - 360);
+  const y = Math.random() * (window.innerHeight - 240);
+
   popup.style.left = x + "px";
   popup.style.top = y + "px";
-  popup.style.width = width + "px";
-  popup.style.height = height + "px";
-  popup.style.background = "#2b0000"; // dark red
-  popup.style.border = "3px solid #ff4d4d";
-  popup.style.borderRadius = "14px";
-  popup.style.padding = "15px";
-  popup.style.zIndex = 7000;
-  popup.style.display = "flex";
-  popup.style.flexDirection = "column";
-  popup.style.justifyContent = "space-between";
-  popup.style.alignItems = "center";
-  popup.style.fontFamily = "monospace";
-  popup.style.color = "#ffb3b3";
-  popup.style.boxShadow = "0 0 20px rgba(255,0,0,0.6)";
-  popup.style.textAlign = "center";
 
-  const msg = document.createElement("p");
-  msg.innerText = "❌ WHY NOT?\n\nGo do it. Now.";
-  msg.style.whiteSpace = "pre-line";
-  msg.style.fontSize = "16px";
+  popup.innerHTML = `
+    <h3>Hey.</h3>
+    <p>${reasonText}<br><br>
+    Go take care of it now.<br>
+    I’ll be here when you’re done.</p>
+    <button>I’ll be back</button>
+  `;
 
-  const btn = document.createElement("button");
-  btn.innerText = "OK 😔";
-  btn.style.background = "#ff4d4d";
-  btn.style.border = "none";
-  btn.style.borderRadius = "10px";
-  btn.style.padding = "6px 14px";
-  btn.style.cursor = "pointer";
-  btn.style.fontFamily = "monospace";
-
-  btn.onclick = () => {
-    document.body.removeChild(popup);
+  popup.querySelector("button").onclick = () => {
+    popup.remove();
+    elaineActive = false; // 🔒 stops Elaine until retyped
   };
 
-  popup.appendChild(msg);
-  popup.appendChild(btn);
   document.body.appendChild(popup);
 }
+
 
 // --- CHECK WORD FUNCTION ---
 async function checkWord() {
