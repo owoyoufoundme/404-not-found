@@ -337,14 +337,17 @@ function shutdown() {
 
     // fade in the hidden words after 1s
     setTimeout(() => {
-    const hidden = document.getElementById('hiddenWords');
-    hidden.style.opacity = 1; // show first
-  
-    // Randomly blink the text
-    setInterval(() => {
-      hidden.style.opacity = Math.random() > 0.5 ? 1 : 0;
-    }, 500); // every half second
-  }, 1000);
+      const hidden = document.getElementById('hiddenWords');
+      hidden.style.opacity = 1; // show first
+
+      // Randomly blink the text
+      setInterval(() => {
+        hidden.style.opacity = Math.random() > 0.5 ? 1 : 0;
+      }, 500); // every half second
+    }, 1000);
+
+  }, 3000);
+}
 
 
 
