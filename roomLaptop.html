@@ -229,7 +229,7 @@ function openFile() {
     <p>📂 My Documents</p>
     <ul>
       <li onclick="openInnerFile('Notes')">notes.txt</li>
-      <li onclick="showMusicPlayer()">music.mp3</li>
+      <li onclick="openMusic()">music.mp3</li>
       <li onclick="openSecret()">secret.docx</li>
     </ul>
   `;
@@ -275,10 +275,19 @@ function openSecret() {
   }, 2000);
 }
 
-function showMusicPlayer() {
-  document.getElementById('musicPlayer').style.display = 'block';
-}
+function openMusic() {
+  document.getElementById('backButton').style.display = 'block';
 
+  document.getElementById('fileContent').innerHTML = `
+    <h3>🎵 music.mp3</h3>
+    <p>Now playing:</p>
+
+    <audio controls style="width:100%; margin-top:15px;">
+      <source src="morse.wav" type="audio/wav">
+      Your browser does not support audio playback.
+    </audio>
+  `;
+}
 </script>
 
 </body>
