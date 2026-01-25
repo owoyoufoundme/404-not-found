@@ -243,7 +243,7 @@ function openInnerFile(name) {
   document.getElementById('backButton').style.display = 'block';
   document.getElementById('fileContent').innerHTML = `
     <h3>${name}</h3>
-    <p>This is placeholder content for ${name}.</p>
+    <p>Players found. Let the show begin!</p>
   `;
 }
 
@@ -280,8 +280,7 @@ function openMusic() {
 
   document.getElementById('fileContent').innerHTML = `
     <h3>🎵 music.mp3</h3>
-    <p>Now playing:</p>
-
+   
     <audio controls style="width:100%; margin-top:15px;">
       <source src="morse.wav" type="audio/wav">
       Your browser does not support audio playback.
