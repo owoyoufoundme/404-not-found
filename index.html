@@ -365,69 +365,71 @@ function showElainePopup() {
 
 
 function showElaineNoPopup(reasonText) {
+  // Create popup container
   const popup = document.createElement("div");
-  popup.className = "elaine-no-popup";
-
-  // random position
-  const x = Math.random() * (window.innerWidth - 360);
-  const y = Math.random() * (window.innerHeight - 240);
-
-  popup.style.left = x + "px";
-  popup.style.top = y + "px";
-  popup.style.width = "340px";
-  popup.style.height = "220px";
-  popup.style.overflow = "hidden";
-  popup.style.borderRadius = "17px";
   popup.style.position = "fixed";
+  popup.style.top = "50%";
+  popup.style.left = "50%";
+  popup.style.transform = "translate(-50%, -50%)";
+  popup.style.zIndex = "10000";
   popup.style.display = "flex";
   popup.style.flexDirection = "column";
-  popup.style.justifyContent = "center";
   popup.style.alignItems = "center";
-  popup.style.textAlign = "center";
-  popup.style.zIndex = "9999";
-  popup.style.fontFamily = 'Vivaldi, "Lucida Handwriting"';
-  popup.style.color = "black"; // text color
+  popup.style.background = "black";   // fallback behind image
+  popup.style.borderRadius = "17px";
+  popup.style.padding = "10px";
 
-  // Background image
-  const bgImg = document.createElement("img");
-  bgImg.src = "https://i.pinimg.com/1200x/04/1b/7b/041b7b5ed8f4ef31b6f4550de9ea81ee.jpg"; // replace with your own
-  bgImg.style.position = "absolute";
-  bgImg.style.top = "0";
-  bgImg.style.left = "0";
-  bgImg.style.width = "100%";
-  bgImg.style.height = "100%";
-  bgImg.style.objectFit = "cover";
-  bgImg.style.zIndex = "1";
-  popup.appendChild(bgImg);
+  // Full image
+  const img = document.createElement("img");
+  img.src = "https://i.pinimg.com/1200x/04/1b/7b/041b7b5ed8f4ef31b6f4550de9ea81ee.jpg"; // background image
+  img.style.width = "600px";      // big frame
+  img.style.height = "auto";
+  img.style.display = "block";
+  img.style.borderRadius = "12px";
+  popup.appendChild(img);
 
-  // Content container (above the image)
-  const content = document.createElement("div");
-  content.style.position = "relative";
-  content.style.zIndex = "2";
-  content.innerHTML = `
-    <h3>Warning.</h3>
-    <p>${reasonText}<br><br>
-    Go take care of it now.<br>
-    I’ll be here when you’re done.</p>
-    <button>I’ll be back</button>
-  `;
-  
-  const btn = content.querySelector("button");
-  btn.style.padding = "8px 18px";
+  // Text container overlay
+  const textContainer = document.createElement("div");
+  textContainer.style.position = "absolute";
+  textContainer.style.top = "50%";
+  textContainer.style.left = "50%";
+  textContainer.style.transform = "translate(-50%, -50%)";
+  textContainer.style.color = "black";  // black text
+  textContainer.style.fontFamily = 'Vivaldi, "Lucida Handwriting"';
+  textContainer.style.textAlign = "center";
+
+  // Title
+  const h3 = document.createElement("h3");
+  h3.innerText = "Warning.";
+  h3.style.margin = "0 0 5px 0";
+  h3.style.fontSize = "50px";
+  textContainer.appendChild(h3);
+
+  // Paragraph
+  const p = document.createElement("p");
+  p.innerHTML = `${reasonText}<br><br>Go take care of it now.<br>I’ll be here when you’re done.`;
+  p.style.margin = "0 0 10px 0";
+  p.style.fontSize = "25px";
+  textContainer.appendChild(p);
+
+  // Button
+  const btn = document.createElement("button");
+  btn.innerText = "I’ll be back";
+  btn.style.fontFamily = "'Patrick Hand', cursive";
   btn.style.background = "#fff";
-  btn.style.color = "#ff4d6d";
-  btn.style.fontFamily = "monospace";
+  btn.style.color = "#240668";
+  btn.style.borderRadius = "14px";
+  btn.style.padding = "8px 18px";
   btn.style.cursor = "pointer";
-  btn.style.fontSize = "15px";
+  btn.onclick = () => popup.remove();
+  textContainer.appendChild(btn);
 
-  btn.onclick = () => {
-    popup.remove();
-    elaineActive = false; // stops Elaine until retyped
-  };
+  popup.appendChild(textContainer);
 
-  popup.appendChild(content);
+  // Add popup to body
   document.body.appendChild(popup);
 }
+
 
 
 // --- CHECK WORD FUNCTION ---
