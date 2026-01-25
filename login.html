@@ -281,7 +281,7 @@ function showElainePopup() {
   noBtn.style.cursor = "pointer";
   noBtn.onclick = () => {
     document.body.removeChild(popup);
-    showElaineNoPopup("Go do it first.");
+    showElaineNoPopup("tsk tsk tsk.");
   };
 
   btnContainer.appendChild(yesBtn);
@@ -303,7 +303,7 @@ function showElaineNoPopup(reasonText) {
   popup.style.top = y + "px";
 
   popup.innerHTML = `
-    <h3>Hey.</h3>
+    <h3>Warning.</h3>
     <p>${reasonText}<br><br>
     Go take care of it now.<br>
     I’ll be here when you’re done.</p>
