@@ -196,6 +196,20 @@ body {
   <div id="fileContent"></div>
 </div>
 
+<!-- Music Popup -->
+<div id="musicPopup" class="popup cute">
+  <button onclick="closeMusic()">X</button>
+  <div style="margin-top:60px;">
+    <h3>🎵 music.mp3</h3>
+    <p>Now playing: Totally_Not_Suspicious.mp3</p>
+    <button onclick="toggleMusic()" id="musicBtn">▶ Play</button>
+  </div>
+</div>
+
+<audio id="musicAudio">
+  <source src="morse.awv" type="audio/mpeg">
+</audio>
+
 <!-- LOADING -->
 <div id="loadingPopup" class="popup">
   <div class="loading-box">
@@ -220,7 +234,7 @@ function openFile() {
     <p>📂 My Documents</p>
     <ul>
       <li onclick="openInnerFile('Notes')">notes.txt</li>
-      <li onclick="openInnerFile('Music')">music.mp3</li>
+      <li onclick="openMusic()">music.mp3</li>
       <li onclick="openSecret()">secret.docx</li>
     </ul>
   `;
@@ -265,6 +279,34 @@ function openSecret() {
 
   }, 2000);
 }
+
+function openMusic() {
+  document.getElementById('filePopup').style.display = 'none';
+  document.getElementById('musicPopup').style.display = 'block';
+}
+
+function closeMusic() {
+  const audio = document.getElementById('musicAudio');
+  audio.pause();
+  audio.currentTime = 0;
+  document.getElementById('musicPopup').style.display = 'none';
+  document.getElementById('musicBtn').textContent = '▶ Play';
+}
+
+function toggleMusic() {
+  const audio = document.getElementById('musicAudio');
+  const btn = document.getElementById('musicBtn');
+
+  if (audio.paused) {
+    audio.volume = 1;
+    audio.play();
+    btn.textContent = '⏸ Pause';
+  } else {
+    audio.pause();
+    btn.textContent = '▶ Play';
+  }
+}
+
 </script>
 
 </body>
