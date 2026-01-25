@@ -201,27 +201,54 @@ function startElaine() {
 function showGoodGirl() {
   const popup = document.createElement("div");
   popup.className = "elaine-no-popup";
-  
-  // Background image that covers the popup
-  popup.style.background = "url('https://i.pinimg.com/1200x/c0/d0/6a/c0d06ab5351e87f7d6974ae09f00cbca.jpg') no-repeat center/cover";
-  popup.style.color = "black"; // Good girl text in black
+
+  // Styling for the popup
+  popup.style.background = "#ffe6ea"; // light background
+  popup.style.color = "black"; // text color black
   popup.style.fontFamily = 'Vivaldi, "Lucida Handwriting"';
+  popup.style.display = "flex";
+  popup.style.flexDirection = "column";
+  popup.style.alignItems = "center";
+  popup.style.padding = "15px";
+  popup.style.border = "3px solid #ff4d6d";
+  popup.style.borderRadius = "18px";
+  popup.style.boxShadow = "0 10px 25px rgba(77,95,255,0.3)";
+  popup.style.width = "360px";
 
-  popup.innerHTML = `
-    <h3>Good girl.</h3>
-    <p>I’m proud of you.<br>
-    Thank you for taking care of yourself.</p>
-    <button>Okay</button>
-  `;
+  // Image
+  const img = document.createElement("img");
+  img.src = "https://i.pinimg.com/1200x/c0/d0/6a/c0d06ab5351e87f7d6974ae09f00cbca.jpg";
+  img.style.width = "100%";   // fit popup width
+  img.style.height = "auto";  // keep aspect ratio
+  img.style.borderRadius = "12px";
+  img.style.marginBottom = "15px";
+  popup.appendChild(img);
 
-  const btn = popup.querySelector("button");
+  // Text content
+  const h3 = document.createElement("h3");
+  h3.innerText = "Good girl.";
+  h3.style.margin = "0 0 10px";
+  popup.appendChild(h3);
+
+  const p = document.createElement("p");
+  p.innerHTML = "I’m proud of you.<br>Thank you for taking care of yourself.";
+  p.style.textAlign = "center";
+  p.style.marginBottom = "15px";
+  popup.appendChild(p);
+
+  // Button
+  const btn = document.createElement("button");
+  btn.innerText = "Okay";
   btn.style.fontFamily = "'Patrick Hand', cursive";
   btn.style.background = "#fff";
   btn.style.color = "#240668";
+  btn.style.border = "2px solid #ff4d6d";
+  btn.style.borderRadius = "14px";
   btn.style.padding = "8px 18px";
   btn.style.cursor = "pointer";
+  btn.onclick = () => popup.remove();
+  popup.appendChild(btn);
 
-  popup.querySelector("button").onclick = () => popup.remove();
   document.body.appendChild(popup);
 }
 
