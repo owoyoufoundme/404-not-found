@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <title>Authorization Required</title>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&family=Patrick+Hand&display=swap" rel="stylesheet">
+
 
   <style>
     body {
@@ -90,6 +92,7 @@
 
 
     .elaine-no-popup {
+    font-family: 'Quicksand', sans-serif;
     position: fixed;
     width: 340px;
     padding: 22px;
@@ -97,7 +100,6 @@
     border: 3px solid #ff4d6d;
     border-radius: 18px;
     box-shadow: 0 10px 25px rgba(0,0,0,0.4);
-    font-family: monospace;
     text-align: center;
     z-index: 9999;
     color: #7a0018;
@@ -106,6 +108,8 @@
   .elaine-no-popup h3 {
     margin: 0 0 12px;
     font-size: 22px;
+
+    font-family: 'Patrick Hand', cursive;
   }
   
   .elaine-no-popup p {
@@ -124,6 +128,7 @@
     cursor: pointer;
     font-size: 15px;
   }
+
 
   </style>
 </head>
@@ -214,6 +219,8 @@ function showGoodGirl() {
   document.body.appendChild(popup);
 }
 function showElainePopup() {
+
+
   if (!elaineActive) return;
   if (elaineStep >= elaineQuestions.length) {
     elaineActive = false;
@@ -229,6 +236,8 @@ function showElainePopup() {
   const y = Math.random() * (window.innerHeight - height - 60);
 
   // Cute styling
+  p.style.fontFamily = "'Quicksand', sans-serif";
+  p.style.fontSize = "17px";
   popup.style.position = "fixed";
   popup.style.left = x + "px";
   popup.style.top = y + "px";
@@ -260,6 +269,9 @@ function showElainePopup() {
   btnContainer.style.gap = "15px";
 
   const yesBtn = document.createElement("button");
+  yesBtn.style.fontFamily = "'Patrick Hand', cursive";
+
+
   yesBtn.innerText = "😊 YES";
   yesBtn.style.background = "#c8f7dc";
   yesBtn.style.border = "1px solid #4cd137";
@@ -273,6 +285,7 @@ function showElainePopup() {
   };
 
   const noBtn = document.createElement("button");
+  noBtn.style.fontFamily = "'Patrick Hand', cursive";
   noBtn.innerText = "😢 NO";
   noBtn.style.background = "#f7c8c8";
   noBtn.style.border = "1px solid #e84118";
