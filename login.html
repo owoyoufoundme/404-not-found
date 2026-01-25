@@ -219,13 +219,12 @@ function showGoodGirl() {
   popup.querySelector("button").onclick = () => popup.remove();
   document.body.appendChild(popup);
 }
+  
 function showElainePopup() {
-
-
   if (!elaineActive) return;
   if (elaineStep >= elaineQuestions.length) {
     elaineActive = false;
-    showGoodGirl(); // 🎉 reward popup
+    showGoodGirl(); // reward popup
     return;
   }
 
@@ -237,8 +236,6 @@ function showElainePopup() {
   const y = Math.random() * (window.innerHeight - height - 60);
 
   // Cute styling
-  p.style.fontFamily = "'Quicksand', sans-serif";
-  p.style.fontSize = "17px";
   popup.style.position = "fixed";
   popup.style.left = x + "px";
   popup.style.top = y + "px";
@@ -254,14 +251,15 @@ function showElainePopup() {
   popup.style.justifyContent = "space-between";
   popup.style.alignItems = "center";
   popup.style.userSelect = "none";
-  popup.style.fontFamily = "monospace";
+  popup.style.fontFamily = "'Quicksand', sans-serif"; // ✅ set here
   popup.style.boxShadow = "0 5px 15px rgba(0,0,0,0.3)";
   popup.style.textAlign = "center";
   popup.style.color = "#333";
 
+  // Question text
   const p = document.createElement("p");
   p.innerText = question;
-  p.style.fontSize = "16px";
+  p.style.fontSize = "17px";
   p.style.marginBottom = "10px";
   popup.appendChild(p);
 
@@ -270,10 +268,8 @@ function showElainePopup() {
   btnContainer.style.gap = "15px";
 
   const yesBtn = document.createElement("button");
-  yesBtn.style.fontFamily = "'Patrick Hand', cursive";
-
-
   yesBtn.innerText = "😊 YES";
+  yesBtn.style.fontFamily = "'Patrick Hand', cursive"; // playful font
   yesBtn.style.background = "#c8f7dc";
   yesBtn.style.border = "1px solid #4cd137";
   yesBtn.style.borderRadius = "12px";
@@ -286,8 +282,8 @@ function showElainePopup() {
   };
 
   const noBtn = document.createElement("button");
-  noBtn.style.fontFamily = "'Patrick Hand', cursive";
   noBtn.innerText = "😢 NO";
+  noBtn.style.fontFamily = "'Patrick Hand', cursive";
   noBtn.style.background = "#f7c8c8";
   noBtn.style.border = "1px solid #e84118";
   noBtn.style.borderRadius = "12px";
@@ -304,6 +300,7 @@ function showElainePopup() {
 
   document.body.appendChild(popup);
 }
+
 
 function showElaineNoPopup(reasonText) {
   const popup = document.createElement("div");
