@@ -196,43 +196,23 @@ function startElaine() {
   showElainePopup();
 }
 
-function showElaineGoodGirl() {
+function showGoodGirl() {
   const popup = document.createElement("div");
-
-  popup.style.position = "fixed";
-  popup.style.left = "50%";
-  popup.style.top = "50%";
-  popup.style.transform = "translate(-50%, -50%)";
-  popup.style.width = "260px";
-  popup.style.background = "#ffe6f2";
-  popup.style.border = "2px solid #ff8da3";
-  popup.style.borderRadius = "18px";
-  popup.style.padding = "20px";
-  popup.style.zIndex = 7000;
-  popup.style.textAlign = "center";
-  popup.style.fontFamily = "monospace";
-  popup.style.color = "#333";
-  popup.style.boxShadow = "0 8px 20px rgba(0,0,0,0.35)";
+  popup.className = "elaine-no-popup";
+  popup.style.background = "#eafff1";
+  popup.style.borderColor = "#4cd137";
+  popup.style.color = "#145a32";
 
   popup.innerHTML = `
-    <p style="font-size:18px; margin-bottom:12px;">Good girl~ 
-    I’m proud of you. 💖</p>
-    <button style="
-      background:#c8f7dc;
-      border:1px solid #4cd137;
-      border-radius:12px;
-      padding:6px 14px;
-      cursor:pointer;
-    ">OK</button>
+    <h3>Good girl.</h3>
+    <p>I’m proud of you.<br>
+    Thank you for taking care of yourself.</p>
+    <button>Okay</button>
   `;
 
-  popup.querySelector("button").onclick = () => {
-    document.body.removeChild(popup);
-  };
-
+  popup.querySelector("button").onclick = () => popup.remove();
   document.body.appendChild(popup);
 }
-
 function showElainePopup() {
   if (!elaineActive) return;
   if (elaineStep >= elaineQuestions.length) {
