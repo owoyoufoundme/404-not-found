@@ -249,6 +249,7 @@ function showElainePopup() {
   popup.style.position = "fixed";
   popup.style.left = x + "px";
   popup.style.top = y + "px";
+  popup.style.paddingTop = "40px";
   popup.style.width = width + "px";
   popup.style.height = height + "px";
   popup.style.background = "#ffebf0";
@@ -281,7 +282,7 @@ function showElainePopup() {
   const p = document.createElement("p");
   p.innerText = question;
   p.style.fontSize = "20px";
-  p.style.fontWeight= bold;
+  p.style.fontWeight= "bold";
   p.style.marginBottom = "10px";
   popup.appendChild(p);
 
