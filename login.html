@@ -149,76 +149,95 @@ async function checkWord() {
   
   // --- Elaine popup logic ---
   let elaineStep = 0;
-  let elaineActive = false; // tracks if Elaine sequence is allowed
+  let elaineActive = false;
   
   const elaineQuestions = [
-    "Did you hydrate?",
-    "Did you take a break?",
-    "Are you eating well?",
-    "Did you stretch?",
-    "Are you smiling right now?"
+    "💧 Did you hydrate?",
+    "☕ Did you take a break?",
+    "🍎 Are you eating well?",
+    "🧘‍♂️ Did you stretch?",
+    "😄 Are you smiling right now?"
   ];
   
   function startElaine() {
+    // Reset sequence each time
     elaineStep = 0;
-    elaineActive = true; // start sequence
+    elaineActive = true;
     showElainePopup();
   }
   
   function showElainePopup() {
-    if (!elaineActive) return;          // stop if sequence is inactive
+    if (!elaineActive) return;
     if (elaineStep >= elaineQuestions.length) {
-      elaineActive = false;             // deactivate after last question
+      elaineActive = false;
       return;
     }
   
     const question = elaineQuestions[elaineStep];
   
-    // Create popup
     const popup = document.createElement("div");
     const width = 300, height = 150;
     const x = Math.random() * (window.innerWidth - width);
-    const y = Math.random() * (window.innerHeight - height - 60); // taskbar buffer
+    const y = Math.random() * (window.innerHeight - height - 60);
   
+    // Cute styling
     popup.style.position = "fixed";
     popup.style.left = x + "px";
     popup.style.top = y + "px";
     popup.style.width = width + "px";
     popup.style.height = height + "px";
-    popup.style.background = "#fff8dc";
-    popup.style.border = "2px solid #000";
-    popup.style.borderRadius = "12px";
+    popup.style.background = "#ffebf0"; // soft pink
+    popup.style.border = "2px solid #ff8da3"; // cute border
+    popup.style.borderRadius = "16px";
     popup.style.padding = "15px";
     popup.style.zIndex = 6000 + elaineStep;
     popup.style.display = "flex";
     popup.style.flexDirection = "column";
     popup.style.justifyContent = "space-between";
+    popup.style.alignItems = "center";
     popup.style.userSelect = "none";
     popup.style.fontFamily = "monospace";
+    popup.style.boxShadow = "0 5px 15px rgba(0,0,0,0.3)";
+    popup.style.textAlign = "center";
+    popup.style.color = "#333";
   
     // Question text
     const p = document.createElement("p");
     p.innerText = question;
+    p.style.fontSize = "16px";
+    p.style.marginBottom = "10px";
     popup.appendChild(p);
   
-    // Buttons
+    // Buttons container
     const btnContainer = document.createElement("div");
     btnContainer.style.display = "flex";
-    btnContainer.style.justifyContent = "space-between";
+    btnContainer.style.gap = "15px";
   
+    // YES button
     const yesBtn = document.createElement("button");
-    yesBtn.innerText = "YES";
+    yesBtn.innerText = "😊 YES";
+    yesBtn.style.background = "#c8f7dc";
+    yesBtn.style.border = "1px solid #4cd137";
+    yesBtn.style.borderRadius = "12px";
+    yesBtn.style.padding = "6px 12px";
+    yesBtn.style.cursor = "pointer";
     yesBtn.onclick = () => {
       document.body.removeChild(popup);
       elaineStep++;
       showElainePopup();
     };
   
+    // NO button
     const noBtn = document.createElement("button");
-    noBtn.innerText = "NO";
+    noBtn.innerText = "😢 NO";
+    noBtn.style.background = "#f7c8c8";
+    noBtn.style.border = "1px solid #e84118";
+    noBtn.style.borderRadius = "12px";
+    noBtn.style.padding = "6px 12px";
+    noBtn.style.cursor = "pointer";
     noBtn.onclick = () => {
       document.body.removeChild(popup);
-      alert("Then go do it!"); // stop sequence
+      alert("Then go do it! 💪"); // stop sequence
       elaineActive = false;
     };
   
@@ -227,6 +246,47 @@ async function checkWord() {
     popup.appendChild(btnContainer);
   
     document.body.appendChild(popup);
+  }
+  
+  // --- Check word function ---
+  async function checkWord() {
+    const input = document.getElementById("word").value.trim().toLowerCase();
+  
+    if(input === "elaine") {
+      startElaine(); // restart every time
+      document.getElementById("word").value = "";
+      return;
+    }
+  
+    if (input === "fish") {
+      const popup = document.getElementById("fishPopup");
+      const video = document.getElementById("fishVideo");
+  
+      popup.style.display = "flex";
+      video.currentTime = 0;
+      video.volume = 1;
+      video.play();
+      document.body.style.overflow = "hidden";
+  
+      video.onended = () => {
+        popup.style.display = "none";
+        document.body.style.overflow = "";
+      };
+      return;
+    }
+  
+    if(input === "access granted") {
+      window.location.href = "roomLaptop.html";
+      return;
+    }
+  
+    const hashed = await hash(input);
+    if(ACCESS[hashed]) {
+      window.location.href = ACCESS[hashed];
+    } else {
+      showPopup();
+      document.getElementById("word").value = "";
+    }
   }
 
   
