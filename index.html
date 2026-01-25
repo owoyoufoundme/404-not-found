@@ -201,34 +201,50 @@ function startElaine() {
 function showGoodGirl() {
   // Create popup container
   const popup = document.createElement("div");
+  popup.className = "elaine-no-popup";
+
+  // Set background image and styling
+  popup.style.background = "url('https://i.pinimg.com/1200x/c0/d0/6a/c0d06ab5351e87f7d6974ae09f00cbca.jpg') no-repeat center/cover";
+  popup.style.color = "#145a32";
+  popup.style.fontFamily = 'Vivaldi, "Lucida Handwriting"';
+  popup.style.textAlign = "center";
+  popup.style.padding = "20px";
+  popup.style.borderRadius = "17px";
+  popup.style.border = "none";
+  popup.style.width = "360px";
+  popup.style.maxHeight = "80vh";
+  popup.style.display = "flex";
+  popup.style.flexDirection = "column";
+  popup.style.justifyContent = "center";
+  popup.style.alignItems = "center";
   popup.style.position = "fixed";
   popup.style.top = "50%";
   popup.style.left = "50%";
   popup.style.transform = "translate(-50%, -50%)";
-  popup.style.zIndex = "10000";
-  popup.style.display = "flex";
-  popup.style.justifyContent = "center";
-  popup.style.alignItems = "center";
-  popup.style.background = "none";      // no background
-  popup.style.padding = "0";            // no padding
-  popup.style.border = "none";          // no border
+  popup.style.boxShadow = "0 5px 20px rgba(0,0,0,0.5)";
+  popup.style.overflow = "hidden";
 
-  // Create the image
-  const img = document.createElement("img");
-  img.src = "https://i.pinimg.com/1200x/c0/d0/6a/c0d06ab5351e87f7d6974ae09f00cbca.jpg";
-  img.style.maxWidth = "80vw";          // fits most of screen width
-  img.style.maxHeight = "80vh";         // fits most of screen height
-  img.style.height = "auto";            // maintain aspect ratio
-  img.style.borderRadius = "17px";      // rounded corners
-  img.style.boxShadow = "0 5px 20px rgba(0,0,0,0.5)"; // optional shadow
+  // Add HTML content
+  popup.innerHTML = `
+    <h3 style="margin:0 0 10px; font-size:28px;">Good girl.</h3>
+    <p style="margin:0 0 15px; font-size:18px;">I’m proud of you.<br>Thank you for taking care of yourself.</p>
+    <button>Okay</button>
+  `;
 
-  // Close popup when image is clicked
-  img.onclick = () => popup.remove();
+  // Style the button
+  const btn = popup.querySelector("button");
+  btn.style.fontFamily = "'Patrick Hand', cursive";
+  btn.style.background = "#fff";
+  btn.style.color = "#240668";
+  btn.style.border = "none";
+  btn.style.borderRadius = "14px";
+  btn.style.padding = "8px 18px";
+  btn.style.cursor = "pointer";
 
-  // Add image to popup container
-  popup.appendChild(img);
+  // Close popup on button click
+  btn.onclick = () => popup.remove();
 
-  // Add popup to body
+  // Add popup to document
   document.body.appendChild(popup);
 }
 
