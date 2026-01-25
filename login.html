@@ -217,7 +217,7 @@ function showElainePopup() {
   if (!elaineActive) return;
   if (elaineStep >= elaineQuestions.length) {
     elaineActive = false;
-    showElaineGoodGirl(); // 🎉 reward popup
+    showGoodGirl(); // 🎉 reward popup
     return;
   }
 
@@ -281,11 +281,8 @@ function showElainePopup() {
   noBtn.style.cursor = "pointer";
   noBtn.onclick = () => {
     document.body.removeChild(popup);
-    showElaineNoPopup(
-      "Go do it first."
-    );
+    showElaineNoPopup("Go do it first.");
   };
-};
 
   btnContainer.appendChild(yesBtn);
   btnContainer.appendChild(noBtn);
