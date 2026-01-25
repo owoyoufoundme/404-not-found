@@ -238,6 +238,7 @@ function showElainePopup() {
   }
 
   const question = elaineQuestions[elaineStep];
+  
 
   const popup = document.createElement("div");
   const width = 300, height = 150;
@@ -264,6 +265,17 @@ function showElainePopup() {
   popup.style.boxShadow = "0 5px 15px rgba(0,0,0,0.3)";
   popup.style.textAlign = "center";
   popup.style.color = "#333";
+  
+  // Inside showElainePopup(), after creating `popup`
+  const icon = document.createElement("img");
+  icon.src = "smiley-face.png"; // replace with your image URL
+  icon.style.width = "30px";    // size of the icon
+  icon.style.height = "30px";
+  icon.style.position = "absolute"; // position relative to the popup
+  icon.style.top = "10px";      // distance from top
+  icon.style.left = "10px";     // distance from left
+  icon.style.borderRadius = "50%"; // optional: make it circular
+  popup.appendChild(icon);
 
   // Question text
   const p = document.createElement("p");
