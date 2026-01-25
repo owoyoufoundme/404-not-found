@@ -53,6 +53,52 @@
     font-size: 16px;
     margin-top: 6px;
   }
+  /* Cute loading popup */
+  .popup.cute {
+    background: #fff0f5;
+    border-radius: 20px;
+    width: 400px;
+    height: 220px;
+    text-align: center;
+  }
+  
+  .loading-box {
+    margin-top: 60px;
+    font-size: 20px;
+    color: #555;
+  }
+  
+  .dots span {
+    font-size: 30px;
+    animation: blink 1.4s infinite both;
+  }
+  
+  .dots span:nth-child(2) { animation-delay: .2s; }
+  .dots span:nth-child(3) { animation-delay: .4s; }
+  
+  @keyframes blink {
+    0% { opacity: .2; }
+    20% { opacity: 1; }
+    100% { opacity: .2; }
+  }
+  
+  /* Jumpscare */
+  .popup.jumpscare {
+    background: black;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    transform: none;
+    padding: 0;
+  }
+  
+  .popup.jumpscare img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
 
   /* File Popup – Bigger & Cute */
   #filePopup {
@@ -160,10 +206,29 @@
     <ul>
       <li onclick="openInnerFile('Notes')">notes.txt</li>
       <li onclick="openInnerFile('Music')">music.mp3</li>
-      <li onclick="openInnerFile('Secret')">secret.docx</li>
+      <li onclick="openSecret()">secret.docx</li>
     </ul>
   </div>
 </div>
+
+<!-- Loading Popup -->
+<div id="loadingPopup" class="popup cute">
+  <div class="loading-box">
+    <p>Opening file</p>
+    <div class="dots">
+      <span>.</span><span>.</span><span>.</span>
+    </div>
+  </div>
+</div>
+
+<!-- Jumpscare Popup -->
+<div id="jumpscarePopup" class="popup jumpscare">
+  <img src="YOUR_JUMPSCARE_IMAGE_URL">
+  <audio id="scareSound">
+    <source src="YOUR_SCARY_SOUND_URL" type="audio/mpeg">
+  </audio>
+</div>
+
 
 <script>
 function openFile() {
@@ -193,6 +258,31 @@ function openInnerFile(name) {
 
 function goBack() {
   openFile();
+}
+
+function openSecret() {
+  closeFile(); // close files popup first
+
+  const loading = document.getElementById('loadingPopup');
+  const scare = document.getElementById('jumpscarePopup');
+  const sound = document.getElementById('scareSound');
+
+  loading.style.display = 'block';
+
+  // After 2 seconds → jumpscare
+  setTimeout(() => {
+    loading.style.display = 'none';
+    scare.style.display = 'block';
+    sound.currentTime = 0;
+    sound.play();
+
+    // After 1 second → gone
+    setTimeout(() => {
+      scare.style.display = 'none';
+      sound.pause();
+    }, 1000);
+
+  }, 2000);
 }
 </script>
 
