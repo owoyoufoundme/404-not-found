@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Elaine's Laptop</title>
+<title>XXXXXX's Laptop</title>
 
 <style>
 /* ===== BASE ===== */
@@ -173,6 +173,12 @@ body {
   object-fit: cover;
 }
 
+#hiddenWords {
+  opacity: 0; /* start invisible */
+  transition: opacity 0.3s;
+  color: #00ffcc; /* neon secret vibe */
+}
+
 #shutdownScreen {
   display: none; /* hidden by default */
   position: fixed;
@@ -331,10 +337,15 @@ function shutdown() {
 
     // fade in the hidden words after 1s
     setTimeout(() => {
-      document.getElementById('hiddenWords').style.opacity = 1;
-    }, 1000);
-  }, 3000);
-}
+    const hidden = document.getElementById('hiddenWords');
+    hidden.style.opacity = 1; // show first
+  
+    // Randomly blink the text
+    setInterval(() => {
+      hidden.style.opacity = Math.random() > 0.5 ? 1 : 0;
+    }, 500); // every half second
+  }, 1000);
+
 
 
 function openMusic() {
