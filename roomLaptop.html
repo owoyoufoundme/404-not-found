@@ -172,6 +172,27 @@ body {
   height: 100%;
   object-fit: cover;
 }
+
+#shutdownScreen {
+  display: none; /* hidden by default */
+  position: fixed;
+  inset: 0;
+  background: black;
+  z-index: 5000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: black; /* text is invisible initially */
+  font-family: monospace;
+  font-size: 28px;
+  user-select: none;
+}
+
+#hiddenWords {
+  opacity: 0;
+  transition: opacity 1s;
+}
+
 </style>
 </head>
 
@@ -179,7 +200,7 @@ body {
 
 <!-- TASKBAR -->
 <div id="taskbar">
-  <img src="https://img.icons8.com/fluency/48/shutdown.png" onclick="alert('Shutting down...')">
+  <img src="https://img.icons8.com/fluency/48/shutdown.png" onclick="shutdown()">
   <img src="calculator.png" onclick="alert('1 + 1 = fish')">
 </div>
 
@@ -221,6 +242,11 @@ body {
   </audio>
 </div>
 
+<!-- SHUTDOWN SCREEN -->
+<div id="shutdownScreen">
+  <div id="hiddenWords">you found me 🖤</div>
+</div>
+  
 <script>
 function openFile() {
   document.getElementById('filePopup').style.display = 'block';
@@ -274,6 +300,42 @@ function openSecret() {
 
   }, 2000);
 }
+
+function shutdown() {
+  // Create a loading effect first
+  const loadingPopup = document.createElement('div');
+  loadingPopup.style.position = 'fixed';
+  loadingPopup.style.inset = '0';
+  loadingPopup.style.background = '#222';
+  loadingPopup.style.display = 'flex';
+  loadingPopup.style.justifyContent = 'center';
+  loadingPopup.style.alignItems = 'center';
+  loadingPopup.style.color = '#00ffcc';
+  loadingPopup.style.fontFamily = 'monospace';
+  loadingPopup.style.fontSize = '24px';
+  loadingPopup.style.zIndex = '4000';
+  loadingPopup.innerHTML = 'Shutting down<span class="dots"><span>.</span><span>.</span><span>.</span></span>';
+  document.body.appendChild(loadingPopup);
+
+  // Animate the dots
+  const dots = loadingPopup.querySelectorAll('.dots span');
+  dots.forEach((dot, i) => {
+    dot.style.animation = `blink 1.4s ${i*0.2}s infinite both`;
+  });
+
+  // After 3 seconds, remove loading and show black screen
+  setTimeout(() => {
+    document.body.removeChild(loadingPopup);
+    const shutdownScreen = document.getElementById('shutdownScreen');
+    shutdownScreen.style.display = 'flex';
+
+    // fade in the hidden words after 1s
+    setTimeout(() => {
+      document.getElementById('hiddenWords').style.opacity = 1;
+    }, 1000);
+  }, 3000);
+}
+
 
 function openMusic() {
   document.getElementById('backButton').style.display = 'block';
