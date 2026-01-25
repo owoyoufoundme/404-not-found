@@ -149,6 +149,8 @@ if(input === "elaine") {
 
 // --- Elaine popup logic ---
 let elaineStep = 0;
+let elaineActive = false; // tracks if Elaine sequence is allowed
+
 const elaineQuestions = [
   "Did you hydrate?",
   "Did you take a break?",
@@ -159,11 +161,16 @@ const elaineQuestions = [
 
 function startElaine() {
   elaineStep = 0;
+  elaineActive = true; // start sequence
   showElainePopup();
 }
 
 function showElainePopup() {
-  if(elaineStep >= elaineQuestions.length) return; // stop after 5 popups
+  if (!elaineActive) return;          // stop if sequence is inactive
+  if (elaineStep >= elaineQuestions.length) {
+    elaineActive = false;             // deactivate after last question
+    return;
+  }
 
   const question = elaineQuestions[elaineStep];
 
@@ -211,9 +218,8 @@ function showElainePopup() {
   noBtn.innerText = "NO";
   noBtn.onclick = () => {
     document.body.removeChild(popup);
-    alert("Then go do it!"); // simple message for NO
-    elaineStep++;
-    showElainePopup();
+    alert("Then go do it!"); // stop sequence
+    elaineActive = false;
   };
 
   btnContainer.appendChild(yesBtn);
@@ -222,6 +228,8 @@ function showElainePopup() {
 
   document.body.appendChild(popup);
 }
+
+  
   if (input === "fish") {
     const popup = document.getElementById("fishPopup");
     const video = document.getElementById("fishVideo");
