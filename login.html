@@ -141,93 +141,93 @@ const ACCESS = {
 
 async function checkWord() {
   const input = document.getElementById("word").value.trim().toLowerCase();
-if(input === "elaine") {
-  startElaine(); // trigger the Elaine popup sequence
-  document.getElementById("word").value = ""; // clear input
-  return; // stop further checks
-}
-
-// --- Elaine popup logic ---
-let elaineStep = 0;
-let elaineActive = false; // tracks if Elaine sequence is allowed
-
-const elaineQuestions = [
-  "Did you hydrate?",
-  "Did you take a break?",
-  "Are you eating well?",
-  "Did you stretch?",
-  "Are you smiling right now?"
-];
-
-function startElaine() {
-  elaineStep = 0;
-  elaineActive = true; // start sequence
-  showElainePopup();
-}
-
-function showElainePopup() {
-  if (!elaineActive) return;          // stop if sequence is inactive
-  if (elaineStep >= elaineQuestions.length) {
-    elaineActive = false;             // deactivate after last question
-    return;
+  if(input === "elaine") {
+    startElaine(); // trigger the Elaine popup sequence
+    document.getElementById("word").value = ""; // clear input
+    return; // stop further checks
   }
-
-  const question = elaineQuestions[elaineStep];
-
-  // Create popup
-  const popup = document.createElement("div");
-  const width = 300, height = 150;
-  const x = Math.random() * (window.innerWidth - width);
-  const y = Math.random() * (window.innerHeight - height - 60); // taskbar buffer
-
-  popup.style.position = "fixed";
-  popup.style.left = x + "px";
-  popup.style.top = y + "px";
-  popup.style.width = width + "px";
-  popup.style.height = height + "px";
-  popup.style.background = "#fff8dc";
-  popup.style.border = "2px solid #000";
-  popup.style.borderRadius = "12px";
-  popup.style.padding = "15px";
-  popup.style.zIndex = 6000 + elaineStep;
-  popup.style.display = "flex";
-  popup.style.flexDirection = "column";
-  popup.style.justifyContent = "space-between";
-  popup.style.userSelect = "none";
-  popup.style.fontFamily = "monospace";
-
-  // Question text
-  const p = document.createElement("p");
-  p.innerText = question;
-  popup.appendChild(p);
-
-  // Buttons
-  const btnContainer = document.createElement("div");
-  btnContainer.style.display = "flex";
-  btnContainer.style.justifyContent = "space-between";
-
-  const yesBtn = document.createElement("button");
-  yesBtn.innerText = "YES";
-  yesBtn.onclick = () => {
-    document.body.removeChild(popup);
-    elaineStep++;
+  
+  // --- Elaine popup logic ---
+  let elaineStep = 0;
+  let elaineActive = false; // tracks if Elaine sequence is allowed
+  
+  const elaineQuestions = [
+    "Did you hydrate?",
+    "Did you take a break?",
+    "Are you eating well?",
+    "Did you stretch?",
+    "Are you smiling right now?"
+  ];
+  
+  function startElaine() {
+    elaineStep = 0;
+    elaineActive = true; // start sequence
     showElainePopup();
-  };
-
-  const noBtn = document.createElement("button");
-  noBtn.innerText = "NO";
-  noBtn.onclick = () => {
-    document.body.removeChild(popup);
-    alert("Then go do it!"); // stop sequence
-    elaineActive = false;
-  };
-
-  btnContainer.appendChild(yesBtn);
-  btnContainer.appendChild(noBtn);
-  popup.appendChild(btnContainer);
-
-  document.body.appendChild(popup);
-}
+  }
+  
+  function showElainePopup() {
+    if (!elaineActive) return;          // stop if sequence is inactive
+    if (elaineStep >= elaineQuestions.length) {
+      elaineActive = false;             // deactivate after last question
+      return;
+    }
+  
+    const question = elaineQuestions[elaineStep];
+  
+    // Create popup
+    const popup = document.createElement("div");
+    const width = 300, height = 150;
+    const x = Math.random() * (window.innerWidth - width);
+    const y = Math.random() * (window.innerHeight - height - 60); // taskbar buffer
+  
+    popup.style.position = "fixed";
+    popup.style.left = x + "px";
+    popup.style.top = y + "px";
+    popup.style.width = width + "px";
+    popup.style.height = height + "px";
+    popup.style.background = "#fff8dc";
+    popup.style.border = "2px solid #000";
+    popup.style.borderRadius = "12px";
+    popup.style.padding = "15px";
+    popup.style.zIndex = 6000 + elaineStep;
+    popup.style.display = "flex";
+    popup.style.flexDirection = "column";
+    popup.style.justifyContent = "space-between";
+    popup.style.userSelect = "none";
+    popup.style.fontFamily = "monospace";
+  
+    // Question text
+    const p = document.createElement("p");
+    p.innerText = question;
+    popup.appendChild(p);
+  
+    // Buttons
+    const btnContainer = document.createElement("div");
+    btnContainer.style.display = "flex";
+    btnContainer.style.justifyContent = "space-between";
+  
+    const yesBtn = document.createElement("button");
+    yesBtn.innerText = "YES";
+    yesBtn.onclick = () => {
+      document.body.removeChild(popup);
+      elaineStep++;
+      showElainePopup();
+    };
+  
+    const noBtn = document.createElement("button");
+    noBtn.innerText = "NO";
+    noBtn.onclick = () => {
+      document.body.removeChild(popup);
+      alert("Then go do it!"); // stop sequence
+      elaineActive = false;
+    };
+  
+    btnContainer.appendChild(yesBtn);
+    btnContainer.appendChild(noBtn);
+    popup.appendChild(btnContainer);
+  
+    document.body.appendChild(popup);
+  }
 
   
   if (input === "fish") {
