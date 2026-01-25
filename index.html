@@ -204,7 +204,7 @@ function startElaine() {
 function showGoodGirl() {
   const popup = document.createElement("div");
   popup.className = "elaine-no-popup";
-  popup.style.background = "#eafff1";
+  popup.style.background = "url('your-image.png') no-repeat center/cover";
   popup.style.borderColor = "#4cd137";
   popup.style.color = "#145a32";
   popup.style.fontFamily = 'Vivaldi, "Lucida Handwriting"';
@@ -252,7 +252,7 @@ function showElainePopup() {
   popup.style.paddingTop = "40px";
   popup.style.width = width + "px";
   popup.style.height = height + "px";
-  popup.style.background = "#ffebf0";
+  popup.style.background = "url('https://i.pinimg.com/1200x/19/c9/85/19c985fb20b94d8e8b43b44f47e17264.jpg') no-repeat center/cover";
   popup.style.border = "2px solid #ff8da3";
   popup.style.borderRadius = "16px";
   popup.style.padding = "15px";
@@ -267,17 +267,6 @@ function showElainePopup() {
   popup.style.textAlign = "center";
   popup.style.color = "#333";
   
-  // Inside showElainePopup(), after creating `popup`
-  const icon = document.createElement("img");
-  icon.src = "www.png"; // replace with your image URL
-  icon.style.width = "30px";    // size of the icon
-  icon.style.height = "30px";
-  icon.style.position = "absolute"; // position relative to the popup
-  icon.style.top = "10px";      // distance from top
-  icon.style.left = "10px";     // distance from left
-  icon.style.borderRadius = "50%"; // optional: make it circular
-  popup.appendChild(icon);
-
   // Question text
   const p = document.createElement("p");
   p.innerText = question;
