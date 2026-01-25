@@ -324,7 +324,7 @@ async function checkWord() {
   const input = document.getElementById("word").value.trim().toLowerCase();
 
   if (input === "elaine") {
-    startElaine();
+    if (!elaineActive) startElaine();
     document.getElementById("word").value = "";
     return;
   }
