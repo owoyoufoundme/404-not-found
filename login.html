@@ -80,13 +80,25 @@
       color: red;
       cursor: pointer;
     }
-    
-   
+    /* Optional: full screen video styling */
+    #fishPopup video {
+      object-fit: contain;
+      max-width: 90%;
+      max-height: 90%;
+    }
+       
   </style>
 </head>
 
 <body>
 
+  <!-- Fish Video Popup -->
+  <div id="fishPopup" style="display:none; position:fixed; inset:0; background:black; z-index:10000; display:flex; justify-content:center; align-items:center;">
+    <video id="fishVideo" width="80%" height="80%" autoplay>
+      <source src="fish.mp4" type="video/mp4">
+      Your browser does not support video.
+    </video>
+  </div>
   <!-- overlay -->
   <div id="overlay" onclick="closeAllPopups()"></div>
 
@@ -130,6 +142,26 @@ const ACCESS = {
 async function checkWord() {
   const input = document.getElementById("word").value.trim().toLowerCase();
 
+  if (input === "fish") {
+    const popup = document.getElementById("fishPopup");
+    const video = document.getElementById("fishVideo");
+
+    popup.style.display = "flex";
+    video.currentTime = 0;
+    video.volume = 1; // max volume
+    video.play();
+
+    // Lock scroll / interaction
+    document.body.style.overflow = "hidden";
+
+    // Only hide popup when video ends
+    video.onended = () => {
+      popup.style.display = "none";
+      document.body.style.overflow = ""; // restore scroll
+    };
+
+    return; // exit function so no other checks happen
+  }
 
 
   // access granted → laptop page
