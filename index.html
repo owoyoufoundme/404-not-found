@@ -319,8 +319,6 @@ function showElainePopup() {
   yesBtn.style.fontFamily = "'Patrick Hand', cursive";
   yesBtn.style.background = "#c8f7dc";
   yesBtn.style.color = "#240668";
-  yesBtn.style.border = "1px solid #4cd137";
-  yesBtn.style.borderRadius = "12px";
   yesBtn.style.padding = "6px 12px";
   yesBtn.style.cursor = "pointer";
   yesBtn.onclick = () => {
@@ -334,8 +332,6 @@ function showElainePopup() {
   noBtn.style.fontFamily = "'Patrick Hand', cursive";
   noBtn.style.background = "#f7c8c8";
   noBtn.style.color = "#240668";
-  noBtn.style.border = "1px solid #e84118";
-  noBtn.style.borderRadius = "12px";
   noBtn.style.padding = "6px 12px";
   noBtn.style.cursor = "pointer";
   noBtn.onclick = () => {
@@ -361,23 +357,57 @@ function showElaineNoPopup(reasonText) {
 
   popup.style.left = x + "px";
   popup.style.top = y + "px";
+  popup.style.width = "340px";
+  popup.style.height = "220px";
+  popup.style.overflow = "hidden";
+  popup.style.position = "fixed";
+  popup.style.display = "flex";
+  popup.style.flexDirection = "column";
+  popup.style.justifyContent = "space-between";
+  popup.style.alignItems = "center";
+  popup.style.textAlign = "center";
+  popup.style.zIndex = "9999";
+  popup.style.fontFamily = 'Vivaldi, "Lucida Handwriting"';
+  popup.style.color = "black"; // text color
 
-  popup.style.background = "url('https://i.pinimg.com/1200x/04/1b/7b/041b7b5ed8f4ef31b6f4550de9ea81ee.jpg') no-repeat center/cover";
+  // Background image
+  const bgImg = document.createElement("img");
+  bgImg.src = "https://i.pinimg.com/1200x/04/1b/7b/041b7b5ed8f4ef31b6f4550de9ea81ee.jpg"; // replace with your own
+  bgImg.style.position = "absolute";
+  bgImg.style.top = "0";
+  bgImg.style.left = "0";
+  bgImg.style.width = "100%";
+  bgImg.style.height = "100%";
+  bgImg.style.objectFit = "cover";
+  bgImg.style.zIndex = "1";
+  popup.appendChild(bgImg);
 
-
-  popup.innerHTML = `
+  // Content container (above the image)
+  const content = document.createElement("div");
+  content.style.position = "relative";
+  content.style.zIndex = "2";
+  content.innerHTML = `
     <h3>Warning.</h3>
     <p>${reasonText}<br><br>
     Go take care of it now.<br>
     I’ll be here when you’re done.</p>
     <button>I’ll be back</button>
   `;
+  
+  const btn = content.querySelector("button");
+  btn.style.padding = "8px 18px";
+  btn.style.background = "#fff";
+  btn.style.color = "#ff4d6d";
+  btn.style.fontFamily = "monospace";
+  btn.style.cursor = "pointer";
+  btn.style.fontSize = "15px";
 
-  popup.querySelector("button").onclick = () => {
+  btn.onclick = () => {
     popup.remove();
-    elaineActive = false; // 🔒 stops Elaine until retyped
+    elaineActive = false; // stops Elaine until retyped
   };
 
+  popup.appendChild(content);
   document.body.appendChild(popup);
 }
 
