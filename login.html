@@ -224,15 +224,63 @@ function showElainePopup() {
   noBtn.style.padding = "6px 12px";
   noBtn.style.cursor = "pointer";
   noBtn.onclick = () => {
-    document.body.removeChild(popup);
-    alert("Then go do it! 💪");
-    elaineActive = false;
-  };
+  document.body.removeChild(popup);
+  elaineActive = false; // stop Elaine completely
+  showElaineErrorPopup();
+};
 
   btnContainer.appendChild(yesBtn);
   btnContainer.appendChild(noBtn);
   popup.appendChild(btnContainer);
 
+  document.body.appendChild(popup);
+}
+
+function showElaineErrorPopup() {
+  const popup = document.createElement("div");
+  const width = 320, height = 160;
+  const x = Math.random() * (window.innerWidth - width);
+  const y = Math.random() * (window.innerHeight - height - 60);
+
+  popup.style.position = "fixed";
+  popup.style.left = x + "px";
+  popup.style.top = y + "px";
+  popup.style.width = width + "px";
+  popup.style.height = height + "px";
+  popup.style.background = "#2b0000"; // dark red
+  popup.style.border = "3px solid #ff4d4d";
+  popup.style.borderRadius = "14px";
+  popup.style.padding = "15px";
+  popup.style.zIndex = 7000;
+  popup.style.display = "flex";
+  popup.style.flexDirection = "column";
+  popup.style.justifyContent = "space-between";
+  popup.style.alignItems = "center";
+  popup.style.fontFamily = "monospace";
+  popup.style.color = "#ffb3b3";
+  popup.style.boxShadow = "0 0 20px rgba(255,0,0,0.6)";
+  popup.style.textAlign = "center";
+
+  const msg = document.createElement("p");
+  msg.innerText = "❌ WHY NOT?\n\nGo do it. Now.";
+  msg.style.whiteSpace = "pre-line";
+  msg.style.fontSize = "16px";
+
+  const btn = document.createElement("button");
+  btn.innerText = "OK 😔";
+  btn.style.background = "#ff4d4d";
+  btn.style.border = "none";
+  btn.style.borderRadius = "10px";
+  btn.style.padding = "6px 14px";
+  btn.style.cursor = "pointer";
+  btn.style.fontFamily = "monospace";
+
+  btn.onclick = () => {
+    document.body.removeChild(popup);
+  };
+
+  popup.appendChild(msg);
+  popup.appendChild(btn);
   document.body.appendChild(popup);
 }
 
