@@ -225,7 +225,7 @@ function showGoodGirl() {
   // Text container overlay
   const textContainer = document.createElement("div");
   textContainer.style.position = "absolute";
-  textContainer.style.top = "80%"; // place near bottom
+  textContainer.style.top = "50%"; // place near bottom
   textContainer.style.left = "50%";
   textContainer.style.transform = "translate(-50%, -50%)";
   textContainer.style.color = "black";  // black text
@@ -236,22 +236,22 @@ function showGoodGirl() {
   const h3 = document.createElement("h3");
   h3.innerText = "Good girl.";
   h3.style.margin = "0 0 5px 0";
+  h3.style.fontSize= "50px"
   textContainer.appendChild(h3);
 
   // Paragraph
   const p = document.createElement("p");
   p.innerHTML = "I’m proud of you.<br>Thank you for taking care of yourself.";
   p.style.margin = "0 0 10px 0";
-  p.style.fontSize = "18px";
+  p.style.fontSize = "25px";
   textContainer.appendChild(p);
 
   // Button
   const btn = document.createElement("button");
-  btn.innerText = "Okay";
+  btn.innerText = "Okay ma";
   btn.style.fontFamily = "'Patrick Hand', cursive";
   btn.style.background = "#fff";
   btn.style.color = "#240668";
-  btn.style.border = "2px solid #ff4d6d";
   btn.style.borderRadius = "14px";
   btn.style.padding = "8px 18px";
   btn.style.cursor = "pointer";
