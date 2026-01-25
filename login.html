@@ -145,11 +145,11 @@ let elaineStep = 0;
 let elaineActive = false;
 
 const elaineQuestions = [
-  "💧 Did you hydrate?",
-  "☕ Did you take a break?",
-  "🍎 Are you eating well?",
-  "🧘‍♂️ Did you stretch?",
-  "😄 Are you smiling right now?"
+  "💧 Did you remember to drink some water today?",
+  "🍽️ Have you eaten something that gave you energy?",
+  "😴 Did you rest, or are you running on pure determination?",
+  "🧘 Did you stretch even just a little bit?",
+  "💖 Are you taking care of yourself right now?"
 ];
 
 function startElaine() {
@@ -158,10 +158,48 @@ function startElaine() {
   showElainePopup();
 }
 
+function showElaineGoodGirl() {
+  const popup = document.createElement("div");
+
+  popup.style.position = "fixed";
+  popup.style.left = "50%";
+  popup.style.top = "50%";
+  popup.style.transform = "translate(-50%, -50%)";
+  popup.style.width = "260px";
+  popup.style.background = "#ffe6f2";
+  popup.style.border = "2px solid #ff8da3";
+  popup.style.borderRadius = "18px";
+  popup.style.padding = "20px";
+  popup.style.zIndex = 7000;
+  popup.style.textAlign = "center";
+  popup.style.fontFamily = "monospace";
+  popup.style.color = "#333";
+  popup.style.boxShadow = "0 8px 20px rgba(0,0,0,0.35)";
+
+  popup.innerHTML = `
+    <p style="font-size:18px; margin-bottom:12px;">Good girl~
+I’m proud of you. 💖</p>
+    <button style="
+      background:#c8f7dc;
+      border:1px solid #4cd137;
+      border-radius:12px;
+      padding:6px 14px;
+      cursor:pointer;
+    ">OK</button>
+  `;
+
+  popup.querySelector("button").onclick = () => {
+    document.body.removeChild(popup);
+  };
+
+  document.body.appendChild(popup);
+}
+
 function showElainePopup() {
   if (!elaineActive) return;
   if (elaineStep >= elaineQuestions.length) {
     elaineActive = false;
+    showElaineGoodGirl(); // 🎉 reward popup
     return;
   }
 
