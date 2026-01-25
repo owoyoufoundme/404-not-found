@@ -80,13 +80,13 @@
       color: red;
       cursor: pointer;
     }
-    /* Optional: full screen video styling */
+
+    /* Fish video styling */
     #fishPopup video {
       object-fit: contain;
       max-width: 90%;
       max-height: 90%;
     }
-       
   </style>
 </head>
 
@@ -99,10 +99,10 @@
       Your browser does not support video.
     </video>
   </div>
+
   <!-- overlay -->
   <div id="overlay" onclick="closeAllPopups()"></div>
 
-  
   <!-- main cat popup -->
   <div id="popup">
     <img src="https://lede-admin.dailydot.com/wp-content/uploads/sites/69/2024/12/cat-laughing-4.jpg?w=710" alt="LMFAOOOO">
@@ -123,6 +123,7 @@
   <audio id="popupSound" src="cat-laugh.mp3" preload="auto"></audio>
 
 <script>
+// --- HASH FUNCTION ---
 async function hash(text) {
   const data = new TextEncoder().encode(text);
   const buffer = await crypto.subtle.digest("SHA-256", data);
@@ -131,7 +132,7 @@ async function hash(text) {
     .join("");
 }
 
-/* optional: season hashes for fun, can keep if you want */
+// --- SEASON LINKS ---
 const ACCESS = {
   "8b9c0f4c52b6c1b57f93fa42fba2f1b0a62fbb4c5c3f3c4fd5c0c0d0d0a0b9e": "season1.html",
   "1bfa1c6baf8c23c0e4a13f4d9b6a2f0c6f4c3f9e12b4c8d9c2e0a3f8d4c1e2": "https://reddit.com/r/YourFakeSub/comments/season2",
@@ -139,186 +140,134 @@ const ACCESS = {
   "7e1c8a5d3f9b4c2a6d0e8b1f7c5a9e4d2b3f6c1a0e9d8b7c4f5a6d7e8": "https://reddit.com/r/YourFakeSub/comments/season4"
 };
 
-async function checkWord() {
-  const input = document.getElementById("word").value.trim().toLowerCase();
-  if(input === "elaine") {
-    startElaine(); // trigger the Elaine popup sequence
-    document.getElementById("word").value = ""; // clear input
-    return; // stop further checks
-  }
-  
-  // --- Elaine popup logic ---
-  let elaineStep = 0;
-  let elaineActive = false;
-  
-  const elaineQuestions = [
-    "💧 Did you hydrate?",
-    "☕ Did you take a break?",
-    "🍎 Are you eating well?",
-    "🧘‍♂️ Did you stretch?",
-    "😄 Are you smiling right now?"
-  ];
-  
-  function startElaine() {
-    // Reset sequence each time
-    elaineStep = 0;
-    elaineActive = true;
-    showElainePopup();
-  }
-  
-  function showElainePopup() {
-    if (!elaineActive) return;
-    if (elaineStep >= elaineQuestions.length) {
-      elaineActive = false;
-      return;
-    }
-  
-    const question = elaineQuestions[elaineStep];
-  
-    const popup = document.createElement("div");
-    const width = 300, height = 150;
-    const x = Math.random() * (window.innerWidth - width);
-    const y = Math.random() * (window.innerHeight - height - 60);
-  
-    // Cute styling
-    popup.style.position = "fixed";
-    popup.style.left = x + "px";
-    popup.style.top = y + "px";
-    popup.style.width = width + "px";
-    popup.style.height = height + "px";
-    popup.style.background = "#ffebf0"; // soft pink
-    popup.style.border = "2px solid #ff8da3"; // cute border
-    popup.style.borderRadius = "16px";
-    popup.style.padding = "15px";
-    popup.style.zIndex = 6000 + elaineStep;
-    popup.style.display = "flex";
-    popup.style.flexDirection = "column";
-    popup.style.justifyContent = "space-between";
-    popup.style.alignItems = "center";
-    popup.style.userSelect = "none";
-    popup.style.fontFamily = "monospace";
-    popup.style.boxShadow = "0 5px 15px rgba(0,0,0,0.3)";
-    popup.style.textAlign = "center";
-    popup.style.color = "#333";
-  
-    // Question text
-    const p = document.createElement("p");
-    p.innerText = question;
-    p.style.fontSize = "16px";
-    p.style.marginBottom = "10px";
-    popup.appendChild(p);
-  
-    // Buttons container
-    const btnContainer = document.createElement("div");
-    btnContainer.style.display = "flex";
-    btnContainer.style.gap = "15px";
-  
-    // YES button
-    const yesBtn = document.createElement("button");
-    yesBtn.innerText = "😊 YES";
-    yesBtn.style.background = "#c8f7dc";
-    yesBtn.style.border = "1px solid #4cd137";
-    yesBtn.style.borderRadius = "12px";
-    yesBtn.style.padding = "6px 12px";
-    yesBtn.style.cursor = "pointer";
-    yesBtn.onclick = () => {
-      document.body.removeChild(popup);
-      elaineStep++;
-      showElainePopup();
-    };
-  
-    // NO button
-    const noBtn = document.createElement("button");
-    noBtn.innerText = "😢 NO";
-    noBtn.style.background = "#f7c8c8";
-    noBtn.style.border = "1px solid #e84118";
-    noBtn.style.borderRadius = "12px";
-    noBtn.style.padding = "6px 12px";
-    noBtn.style.cursor = "pointer";
-    noBtn.onclick = () => {
-      document.body.removeChild(popup);
-      alert("Then go do it! 💪"); // stop sequence
-      elaineActive = false;
-    };
-  
-    btnContainer.appendChild(yesBtn);
-    btnContainer.appendChild(noBtn);
-    popup.appendChild(btnContainer);
-  
-    document.body.appendChild(popup);
-  }
-  
-  // --- Check word function ---
-  async function checkWord() {
-    const input = document.getElementById("word").value.trim().toLowerCase();
-  
-    if(input === "elaine") {
-      startElaine(); // restart every time
-      document.getElementById("word").value = "";
-      return;
-    }
-  
-    if (input === "fish") {
-      const popup = document.getElementById("fishPopup");
-      const video = document.getElementById("fishVideo");
-  
-      popup.style.display = "flex";
-      video.currentTime = 0;
-      video.volume = 1;
-      video.play();
-      document.body.style.overflow = "hidden";
-  
-      video.onended = () => {
-        popup.style.display = "none";
-        document.body.style.overflow = "";
-      };
-      return;
-    }
-  
-    if(input === "access granted") {
-      window.location.href = "roomLaptop.html";
-      return;
-    }
-  
-    const hashed = await hash(input);
-    if(ACCESS[hashed]) {
-      window.location.href = ACCESS[hashed];
-    } else {
-      showPopup();
-      document.getElementById("word").value = "";
-    }
+// --- ELAINE LOGIC ---
+let elaineStep = 0;
+let elaineActive = false;
+
+const elaineQuestions = [
+  "💧 Did you hydrate?",
+  "☕ Did you take a break?",
+  "🍎 Are you eating well?",
+  "🧘‍♂️ Did you stretch?",
+  "😄 Are you smiling right now?"
+];
+
+function startElaine() {
+  elaineStep = 0;
+  elaineActive = true;
+  showElainePopup();
+}
+
+function showElainePopup() {
+  if (!elaineActive) return;
+  if (elaineStep >= elaineQuestions.length) {
+    elaineActive = false;
+    return;
   }
 
-  
+  const question = elaineQuestions[elaineStep];
+
+  const popup = document.createElement("div");
+  const width = 300, height = 150;
+  const x = Math.random() * (window.innerWidth - width);
+  const y = Math.random() * (window.innerHeight - height - 60);
+
+  // Cute styling
+  popup.style.position = "fixed";
+  popup.style.left = x + "px";
+  popup.style.top = y + "px";
+  popup.style.width = width + "px";
+  popup.style.height = height + "px";
+  popup.style.background = "#ffebf0";
+  popup.style.border = "2px solid #ff8da3";
+  popup.style.borderRadius = "16px";
+  popup.style.padding = "15px";
+  popup.style.zIndex = 6000 + elaineStep;
+  popup.style.display = "flex";
+  popup.style.flexDirection = "column";
+  popup.style.justifyContent = "space-between";
+  popup.style.alignItems = "center";
+  popup.style.userSelect = "none";
+  popup.style.fontFamily = "monospace";
+  popup.style.boxShadow = "0 5px 15px rgba(0,0,0,0.3)";
+  popup.style.textAlign = "center";
+  popup.style.color = "#333";
+
+  const p = document.createElement("p");
+  p.innerText = question;
+  p.style.fontSize = "16px";
+  p.style.marginBottom = "10px";
+  popup.appendChild(p);
+
+  const btnContainer = document.createElement("div");
+  btnContainer.style.display = "flex";
+  btnContainer.style.gap = "15px";
+
+  const yesBtn = document.createElement("button");
+  yesBtn.innerText = "😊 YES";
+  yesBtn.style.background = "#c8f7dc";
+  yesBtn.style.border = "1px solid #4cd137";
+  yesBtn.style.borderRadius = "12px";
+  yesBtn.style.padding = "6px 12px";
+  yesBtn.style.cursor = "pointer";
+  yesBtn.onclick = () => {
+    document.body.removeChild(popup);
+    elaineStep++;
+    showElainePopup();
+  };
+
+  const noBtn = document.createElement("button");
+  noBtn.innerText = "😢 NO";
+  noBtn.style.background = "#f7c8c8";
+  noBtn.style.border = "1px solid #e84118";
+  noBtn.style.borderRadius = "12px";
+  noBtn.style.padding = "6px 12px";
+  noBtn.style.cursor = "pointer";
+  noBtn.onclick = () => {
+    document.body.removeChild(popup);
+    alert("Then go do it! 💪");
+    elaineActive = false;
+  };
+
+  btnContainer.appendChild(yesBtn);
+  btnContainer.appendChild(noBtn);
+  popup.appendChild(btnContainer);
+
+  document.body.appendChild(popup);
+}
+
+// --- CHECK WORD FUNCTION ---
+async function checkWord() {
+  const input = document.getElementById("word").value.trim().toLowerCase();
+
+  if (input === "elaine") {
+    startElaine();
+    document.getElementById("word").value = "";
+    return;
+  }
+
   if (input === "fish") {
     const popup = document.getElementById("fishPopup");
     const video = document.getElementById("fishVideo");
 
     popup.style.display = "flex";
     video.currentTime = 0;
-    video.volume = 1; // max volume
+    video.volume = 1;
     video.play();
-
-    // Lock scroll / interaction
     document.body.style.overflow = "hidden";
 
-    // Only hide popup when video ends
     video.onended = () => {
       popup.style.display = "none";
-      document.body.style.overflow = ""; // restore scroll
+      document.body.style.overflow = "";
     };
-
-    return; // exit function so no other checks happen
+    return;
   }
 
-
-  // access granted → laptop page
   if(input === "access granted") {
     window.location.href = "roomLaptop.html";
     return;
   }
 
-  // check season hashes if needed
   const hashed = await hash(input);
   if(ACCESS[hashed]) {
     window.location.href = ACCESS[hashed];
@@ -328,6 +277,7 @@ async function checkWord() {
   }
 }
 
+// --- EXISTING POPUP FUNCTIONS ---
 function showPopup() {
   document.getElementById("overlay").style.display = "block";
   document.getElementById("popup").style.display = "block";
@@ -346,8 +296,6 @@ function closePopup() {
   audio.currentTime = 0;
 }
 
-
-// click on overlay closes all popups
 function closeAllPopups() {
   closePopup();
 }
