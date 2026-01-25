@@ -3,232 +3,214 @@
 <head>
 <meta charset="UTF-8">
 <title>Elaine's Laptop</title>
+
 <style>
-  body {
-    margin: 0;
-    font-family: monospace;
-    background: url('https://i.pinimg.com/736x/d5/ce/50/d5ce50e74126274d642a425dd9bcd1c8.jpg') center/cover no-repeat;
-    height: 100vh;
-    overflow: hidden;
-  }
+/* ===== BASE ===== */
+body {
+  margin: 0;
+  font-family: monospace;
+  background: url('https://i.pinimg.com/736x/d5/ce/50/d5ce50e74126274d642a425dd9bcd1c8.jpg') center/cover no-repeat;
+  height: 100vh;
+  overflow: hidden;
+}
 
-  /* Taskbar */
-  #taskbar {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    height: 50px;
-    background: #222;
-    display: flex;
-    align-items: center;
-    padding: 0 10px;
-    box-sizing: border-box;
-  }
+/* ===== TASKBAR ===== */
+#taskbar {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 60px;
+  background: #222;
+  display: flex;
+  align-items: center;
+  padding: 0 15px;
+  box-sizing: border-box;
+}
 
-  #taskbar img {
-    height: 40px;      /* bigger icons */
-    margin-right: 25px; /* spacing */
-    cursor: pointer;
-  }
+#taskbar img {
+  height: 42px;
+  margin-right: 30px;
+  cursor: pointer;
+}
 
-  /* Desktop app icons */
-  .app-icon {
-    width: 120px;
-    text-align: center;
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: absolute;
-  }
+/* ===== DESKTOP ICON ===== */
+.app-icon {
+  position: absolute;
+  width: 130px;
+  text-align: center;
+  cursor: pointer;
+}
 
-  .app-icon img {
-    width: 100px;
-    height: 100px;
-  }
+.app-icon img {
+  width: 110px;
+  height: 110px;
+}
 
-  .app-icon span {
-    display: block;
-    color: black;
-    font-size: 16px;
-    margin-top: 6px;
-  }
-  /* Cute loading popup */
-  .popup.cute {
-    background: #fff0f5;
-    border-radius: 20px;
-    width: 400px;
-    height: 220px;
-    text-align: center;
-  }
-  
-  .loading-box {
-    margin-top: 60px;
-    font-size: 20px;
-    color: #555;
-  }
-  
-  .dots span {
-    font-size: 30px;
-    animation: blink 1.4s infinite both;
-  }
-  
-  .dots span:nth-child(2) { animation-delay: .2s; }
-  .dots span:nth-child(3) { animation-delay: .4s; }
-  
-  @keyframes blink {
-    0% { opacity: .2; }
-    20% { opacity: 1; }
-    100% { opacity: .2; }
-  }
-  
-  /* Jumpscare */
-  .popup.jumpscare {
-    background: black;
-    width: 100vw;
-    height: 100vh;
-    top: 0;
-    left: 0;
-    transform: none;
-    padding: 0;
-  }
-  
-  .popup.jumpscare img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
+.app-icon span {
+  display: block;
+  color: black;
+  font-size: 16px;
+  margin-top: 6px;
+}
 
+/* ===== POPUP BASE ===== */
+.popup {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2000;
+}
 
-  /* File Popup – Bigger & Cute */
-  #filePopup {
-    display: none;
-    position: fixed;
-    top: 10%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 700px;      /* bigger width */
-    height: 500px;     /* bigger height */
-    background: #f0f8ff; /* soft pastel blue */
-    border-radius: 20px;
-    box-shadow: 0 15px 30px rgba(0,0,0,0.35);
-    z-index: 1000;
-    padding: 25px;
-    box-sizing: border-box;
-    font-family: monospace;
-  }
-  
-  #filePopup button {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    background: #ffb6c1; /* soft pink */
-    color: white;
-    border: none;
-    border-radius: 50%;
-    cursor: pointer;
-    width: 35px;      /* bigger button */
-    height: 35px;     /* bigger button */
-    font-weight: bold;
-    font-size: 18px;
-    line-height: 35px;
-    text-align: center;
-  }
-  
-  #fileContent {
-    color: #333;
-    font-size: 16px;      /* bigger text */
-    margin-top: 50px;
-  }
-  
-  #fileContent p {
-    font-weight: bold;
-    color: #444;
-    margin-bottom: 15px;
-  }
-  
-  #fileContent ul {
-    list-style: none;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;          /* more spacing between files */
-  }
-  
-  #fileContent li {
-    cursor: pointer;
-    padding: 10px 15px;  /* bigger clickable area */
-    border-radius: 12px;
-    background: #e0f7fa;  /* light pastel */
-    transition: all 0.2s;
-  }
-  
-  #fileContent li:hover {
-    background: #add8e6;  /* light blue hover */
-    color: #000;
-  }
+/* ===== FILE POPUP ===== */
+#filePopup {
+  width: 720px;
+  height: 520px;
+  background: #f0f8ff;
+  border-radius: 22px;
+  box-shadow: 0 15px 30px rgba(0,0,0,0.35);
+  padding: 25px;
+  box-sizing: border-box;
+}
 
-  /* Back arrow */
-  #backButton {
-    display: none;
-    position: absolute;
-    top: 5px;
-    left: 5px;
-    background: black;
-    color: #00ffcc;
-    border: 1px solid #00ffcc;
-    padding: 2px 6px;
-    cursor: pointer;
-    border-radius: 4px;
-  }
+#filePopup button.close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: #ffb6c1;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 38px;
+  height: 38px;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+#backButton {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  background: #add8e6;
+  border: none;
+  border-radius: 50%;
+  width: 38px;
+  height: 38px;
+  font-size: 18px;
+  cursor: pointer;
+  display: none;
+}
+
+#fileContent {
+  margin-top: 60px;
+  color: #333;
+  font-size: 16px;
+}
+
+#fileContent ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+#fileContent li {
+  padding: 12px 16px;
+  background: #e0f7fa;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+#fileContent li:hover {
+  background: #bdefff;
+}
+
+/* ===== LOADING POPUP ===== */
+#loadingPopup {
+  width: 420px;
+  height: 240px;
+  background: #fff0f5;
+  border-radius: 22px;
+  text-align: center;
+}
+
+.loading-box {
+  margin-top: 70px;
+  font-size: 20px;
+  color: #555;
+}
+
+.dots span {
+  font-size: 32px;
+  animation: blink 1.4s infinite both;
+}
+
+.dots span:nth-child(2) { animation-delay: .2s; }
+.dots span:nth-child(3) { animation-delay: .4s; }
+
+@keyframes blink {
+  0% { opacity: .2; }
+  20% { opacity: 1; }
+  100% { opacity: .2; }
+}
+
+/* ===== JUMPSCARE ===== */
+#jumpscarePopup {
+  top: 0;
+  left: 0;
+  transform: none;
+  width: 100vw;
+  height: 100vh;
+  background: black;
+}
+
+#jumpscarePopup img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 </style>
 </head>
+
 <body>
 
-<!-- Taskbar -->
+<!-- TASKBAR -->
 <div id="taskbar">
-  <img src="https://img.icons8.com/fluency/48/shutdown.png" alt="Shut Down" title="Shut Down" onclick="alert('Shutting down...')">
-  <img src="calculator.png" alt="Calculator" title="Calculator" onclick="alert('1 + 1 = Hello World')">
+  <img src="https://img.icons8.com/fluency/48/shutdown.png" onclick="alert('Shutting down...')">
+  <img src="calculator.png" onclick="alert('1 + 1 = fish')">
 </div>
 
-<!-- Desktop app icons -->
-<div class="app-icon" style="top:50px; left:20px;" onclick="openFile()">
-  <img src="file.png" alt="File">
-  <span>Conviniently placed file</span>
+<!-- DESKTOP ICON -->
+<div class="app-icon" style="top:40px; left:20px;" onclick="openFile()">
+  <img src="file.png">
+  <span>Definitely Normal Files</span>
 </div>
 
-<!-- File Popup -->
+<!-- FILE POPUP -->
 <div id="filePopup" class="popup">
+  <button class="close" onclick="closeFile()">✕</button>
   <button id="backButton" onclick="goBack()">⬅</button>
-  <button onclick="closeFile()">X</button>
-  <div id="fileContent">
-    <p>📂 My Documents</p>
-    <ul>
-      <li onclick="openInnerFile('Notes')">notes.txt</li>
-      <li onclick="openInnerFile('Music')">music.mp3</li>
-      <li onclick="openSecret()">secret.docx</li>
-    </ul>
-  </div>
+  <div id="fileContent"></div>
 </div>
 
-<!-- Loading Popup -->
-<div id="loadingPopup" class="popup cute">
+<!-- LOADING -->
+<div id="loadingPopup" class="popup">
   <div class="loading-box">
     <p>Opening file</p>
-    <div class="dots">
-      <span>.</span><span>.</span><span>.</span>
-    </div>
+    <div class="dots"><span>.</span><span>.</span><span>.</span></div>
   </div>
 </div>
 
-<!-- Jumpscare Popup -->
-<div id="jumpscarePopup" class="popup jumpscare">
+<!-- JUMPSCARE -->
+<div id="jumpscarePopup" class="popup">
   <img src="YOUR_JUMPSCARE_IMAGE_URL">
   <audio id="scareSound">
     <source src="YOUR_SCARY_SOUND_URL" type="audio/mpeg">
   </audio>
 </div>
-
 
 <script>
 function openFile() {
@@ -239,7 +221,7 @@ function openFile() {
     <ul>
       <li onclick="openInnerFile('Notes')">notes.txt</li>
       <li onclick="openInnerFile('Music')">music.mp3</li>
-      <li onclick="openInnerFile('Secret')">secret.docx</li>
+      <li onclick="openSecret()">secret.docx</li>
     </ul>
   `;
 }
@@ -261,7 +243,7 @@ function goBack() {
 }
 
 function openSecret() {
-  closeFile(); // close files popup first
+  closeFile();
 
   const loading = document.getElementById('loadingPopup');
   const scare = document.getElementById('jumpscarePopup');
@@ -269,14 +251,13 @@ function openSecret() {
 
   loading.style.display = 'block';
 
-  // After 2 seconds → jumpscare
   setTimeout(() => {
     loading.style.display = 'none';
     scare.style.display = 'block';
     sound.currentTime = 0;
-    sound.play();
+    sound.volume = 1;
+    sound.play().catch(()=>{});
 
-    // After 1 second → gone
     setTimeout(() => {
       scare.style.display = 'none';
       sound.pause();
