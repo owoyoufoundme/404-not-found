@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>DM Dashboard</title>
+<style>
+  body { font-family: "Patrick Hand", cursive; padding: 20px; background: #fff0f5; }
+  table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+  th, td { border: 1px solid #ff9ecb; padding: 8px; text-align: left; }
+  th { background: #ffb6d5; }
+  input { padding: 8px; border-radius: 8px; border: 2px solid #ff9ecb; }
+  button { padding: 6px 12px; border-radius: 8px; background: #ff9ecb; border: none; cursor: pointer; }
+</style>
+</head>
+<body>
+
+<h1>DM Dashboard</h1>
+
+<p>Enter password to view players:</p>
+<input id="dmPass" type="password" placeholder="DM password">
+<button onclick="checkPassword()">Enter</button>
+
+<div id="dashboard" class="hidden">
+  <h2>Player Inventory</h2>
+  <table id="inventoryTable">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Coins</th>
+        <th>Items Pulled</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- filled by JS -->
+    </tbody>
+  </table>
+</div>
+
+<script>
+const PASSWORD = "mySecretDMKey"; // put your password here
+
+function checkPassword() {
+  const input = document.getElementById("dmPass").value;
+  if(input === PASSWORD){
+    document.getElementById("dashboard").classList.remove("hidden");
+    loadPlayers();
+  } else {
+    alert("Incorrect password!");
+  }
+}
+
+function loadPlayers() {
+  const saved = localStorage.getItem("gachaPlayer");
+  const tbody = document.querySelector("#inventoryTable tbody");
+  tbody.innerHTML = "";
+
+  if(saved){
+    const player = JSON.parse(saved);
+    const items = player.history.map(i => i.name).join(", ");
+    const tr = document.createElement("tr");
+    tr.innerHTML = `<td>${player.name}</td><td>${player.coins}</td><td>${items}</td>`;
+    tbody.appendChild(tr);
+  } else {
+    tbody.innerHTML = "<tr><td colspan='3'>No player data found.</td></tr>";
+  }
+}
+</script>
+
+</body>
+</html>
