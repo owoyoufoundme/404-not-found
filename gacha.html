@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Gacha Room</title>
+
+<style>
+  body {
+    margin: 0;
+    font-family: "Patrick Hand", cursive;
+    background: linear-gradient(#ffe6f0, #fff);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* top bar */
+  #topBar {
+    position: fixed;
+    top: 10px;
+    right: 15px;
+    font-size: 20px;
+  }
+
+  /* card */
+  .card {
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    width: 420px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  }
+
+  h1 {
+    margin-top: 0;
+  }
+
+  button {
+    font-family: inherit;
+    padding: 10px 20px;
+    border-radius: 12px;
+    border: none;
+    background: #ff9ecb;
+    cursor: pointer;
+    font-size: 16px;
+  }
+
+  button:hover {
+    background: #ff7fb5;
+  }
+
+  input {
+    font-family: inherit;
+    padding: 8px;
+    width: 80%;
+    margin-top: 10px;
+    border-radius: 10px;
+    border: 2px solid #ff9ecb;
+    font-size: 16px;
+  }
+
+  #result {
+    margin-top: 15px;
+    font-size: 18px;
+  }
+
+  #history {
+    margin-top: 20px;
+    text-align: left;
+    font-size: 14px;
+    max-height: 120px;
+    overflow-y: auto;
+    background: #fff5fa;
+    padding: 10px;
+    border-radius: 12px;
+  }
+
+  .hidden {
+    display: none;
+  }
+</style>
+</head>
+
+<body>
+
+<div id="topBar">🪙 <span id="coins">0</span></div>
+
+<div class="card">
+
+  <!-- NAME SETUP -->
+  <div id="nameSetup">
+    <h1>Welcome ♡</h1>
+    <p>Enter your name:</p>
+    <input id="playerNameInput" placeholder="your name">
+    <br><br>
+    <button onclick="registerName()">Enter</button>
+  </div>
+
+  <!-- GACHA -->
+  <div id="gachaUI" class="hidden">
+    <h1 id="welcomeText"></h1>
+
+    <button onclick="rollGacha()">🎰 Roll (10 coins)</button>
+
+    <div id="result"></div>
+
+    <h3>📜 Gacha History</h3>
+    <div id="history"></div>
+
+    <br>
+    <input id="codeInput" placeholder="enter code">
+    <br><br>
+    <button onclick="redeemCode()">Redeem Code</button>
+  </div>
+
+</div>
+
+<script>
+// ---------- HASH ----------
+async function hash(text) {
+  const data = new TextEncoder().encode(text);
+  const buffer = await crypto.subtle.digest("SHA-256", data);
+  return Array.from(new Uint8Array(buffer))
+    .map(b => b.toString(16).padStart(2, "0"))
+    .join("");
+}
+
+// ---------- CONFIG ----------
+const GACHA_COST = 10;
+
+// DM CONTROLS THESE
+const CODE_REWARDS = {
+  // hash("freecoins"): 30
+  // you will add hashes here later
+};
+
+// ---------- STATE ----------
+let player = {
+  name: "",
+  coins: 0,
+  history: []
+};
+
+// ---------- INIT ----------
+loadPlayer();
+
+function loadPlayer() {
+  const saved = localStorage.getItem("gachaPlayer");
+  if (saved) {
+    player = JSON.parse(saved);
+    showGacha();
+  }
+}
+
+function savePlayer() {
+  localStorage.setItem("gachaPlayer", JSON.stringify(player));
+}
+
+// ---------- NAME ----------
+function registerName() {
+  const name = document.getElementById("playerNameInput").value.trim();
+  if (!name) return;
+
+  player.name = name;
+  player.coins = 0;
+  player.history = [];
+
+  savePlayer();
+  showGacha();
+}
+
+function showGacha() {
+  document.getElementById("nameSetup").classList.add("hidden");
+  document.getElementById("gachaUI").classList.remove("hidden");
+  document.getElementById("welcomeText").innerText = `Hi ${player.name} ♡`;
+  updateUI();
+}
+
+// ---------- UI ----------
+function updateUI() {
+  document.getElementById("coins").innerText = player.coins;
+  document.getElementById("history").innerHTML =
+    player.history.map(h => `• ${h}`).join("<br>");
+}
+
+// ---------- GACHA ----------
+function rollGacha() {
+  if (player.coins < GACHA_COST) {
+    document.getElementById("result").innerText = "Not enough coins!";
+    return;
+  }
+
+  player.coins -= GACHA_COST;
+
+  const pool = [
+    "⭐ Common Charm",
+    "🌸 Cute Sticker",
+    "💖 Rare Memory",
+    "✨ Very Rare Surprise",
+    "👁️ …something watched you"
+  ];
+
+  const pull = pool[Math.floor(Math.random() * pool.length)];
+
+  player.history.unshift(pull);
+  document.getElementById("result").innerText = `You got: ${pull}`;
+
+  savePlayer();
+  updateUI();
+}
+
+// ---------- CODES ----------
+async function redeemCode() {
+  const input = document.getElementById("codeInput").value.trim().toLowerCase();
+  if (!input) return;
+
+  const hashed = await hash(input);
+
+  if (CODE_REWARDS[hashed]) {
+    player.coins += CODE_REWARDS[hashed];
+    document.getElementById("result").innerText = `+${CODE_REWARDS[hashed]} coins ♡`;
+    savePlayer();
+    updateUI();
+  } else {
+    document.getElementById("result").innerText = "Invalid code.";
+  }
+
+  document.getElementById("codeInput").value = "";
+}
+</script>
+
+</body>
+</html>
