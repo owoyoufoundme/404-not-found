@@ -144,18 +144,35 @@ let player = {
 };
 
 // ---------- INIT ----------
-loadPlayer();
+// ---------- INIT ----------
+let player = {
+  name: "",
+  coins: 0,
+  history: []
+};
 
+// Global list of all players
 function loadPlayer() {
-  const saved = localStorage.getItem("gachaPlayer");
+  const allPlayers = JSON.parse(localStorage.getItem("gachaPlayers") || "[]");
+  const saved = allPlayers.find(p => p.name);
   if (saved) {
-    player = JSON.parse(saved);
+    player = saved;
     showGacha();
   }
 }
 
 function savePlayer() {
-  localStorage.setItem("gachaPlayer", JSON.stringify(player));
+  let allPlayers = JSON.parse(localStorage.getItem("gachaPlayers") || "[]");
+  
+  // check if player already exists in list
+  const index = allPlayers.findIndex(p => p.name === player.name);
+  if(index > -1){
+    allPlayers[index] = player; // update existing
+  } else {
+    allPlayers.push(player); // add new
+  }
+  
+  localStorage.setItem("gachaPlayers", JSON.stringify(allPlayers));
 }
 
 // ---------- NAME ----------
