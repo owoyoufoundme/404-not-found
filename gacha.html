@@ -3,89 +3,107 @@
 <head>
 <meta charset="UTF-8">
 <title>Gacha Room</title>
-
 <style>
-  body {
-    margin: 0;
-    font-family: "Patrick Hand", cursive;
-    background: linear-gradient(#ffe6f0, #fff);
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+body {
+  margin: 0;
+  font-family: "Patrick Hand", cursive;
+  background: linear-gradient(#ffe6f0, #fff);
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-  /* top bar */
-  #topBar {
-    position: fixed;
-    top: 10px;
-    right: 15px;
-    font-size: 20px;
-  }
+#topBar {
+  position: fixed;
+  top: 10px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 20px;
+  font-size: 18px;
+}
 
-  /* card */
-  .card {
-    background: white;
-    border-radius: 20px;
-    padding: 30px;
-    width: 420px;
-    text-align: center;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-  }
+.card {
+  background: white;
+  border-radius: 20px;
+  padding: 30px;
+  width: 420px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
 
-  h1 {
-    margin-top: 0;
-  }
+h1 { margin-top: 0; }
+button {
+  font-family: inherit;
+  padding: 10px 20px;
+  border-radius: 12px;
+  border: none;
+  background: #ff9ecb;
+  cursor: pointer;
+  font-size: 16px;
+}
+button:hover { background: #ff7fb5; }
+input {
+  font-family: inherit;
+  padding: 8px;
+  width: 80%;
+  margin-top: 10px;
+  border-radius: 10px;
+  border: 2px solid #ff9ecb;
+  font-size: 16px;
+}
+#result { margin-top: 15px; font-size: 18px; }
+#history {
+  margin-top: 20px;
+  text-align: left;
+  font-size: 14px;
+  max-height: 120px;
+  overflow-y: auto;
+  background: #fff5fa;
+  padding: 10px;
+  border-radius: 12px;
+}
+.hidden { display: none; }
 
-  button {
-    font-family: inherit;
-    padding: 10px 20px;
-    border-radius: 12px;
-    border: none;
-    background: #ff9ecb;
-    cursor: pointer;
-    font-size: 16px;
-  }
+/* Loading animation */
+#loading {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 28px;
+  background: rgba(255,255,255,0.9);
+  padding: 20px 30px;
+  border-radius: 20px;
+  display: none;
+  text-align: center;
+}
 
-  button:hover {
-    background: #ff7fb5;
-  }
-
-  input {
-    font-family: inherit;
-    padding: 8px;
-    width: 80%;
-    margin-top: 10px;
-    border-radius: 10px;
-    border: 2px solid #ff9ecb;
-    font-size: 16px;
-  }
-
-  #result {
-    margin-top: 15px;
-    font-size: 18px;
-  }
-
-  #history {
-    margin-top: 20px;
-    text-align: left;
-    font-size: 14px;
-    max-height: 120px;
-    overflow-y: auto;
-    background: #fff5fa;
-    padding: 10px;
-    border-radius: 12px;
-  }
-
-  .hidden {
-    display: none;
-  }
+/* Reward popup */
+#rewardPopup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 30px;
+  border-radius: 20px;
+  display: none;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  z-index: 10000;
+}
+#rewardPopup h2 { margin: 0 0 10px 0; }
+#rewardPopup img { max-width: 200px; border-radius: 12px; }
 </style>
 </head>
-
 <body>
 
-<div id="topBar">🪙 <span id="coins">0</span></div>
+<div id="topBar">
+  <div id="playerNameDisplay">Player: </div>
+  <div id="coinsDisplay">🪙 0</div>
+</div>
 
 <div class="card">
 
@@ -98,57 +116,49 @@
     <button onclick="registerName()">Enter</button>
   </div>
 
-  <!-- GACHA -->
+  <!-- GACHA UI -->
   <div id="gachaUI" class="hidden">
     <h1 id="welcomeText"></h1>
-
     <button onclick="rollGacha()">🎰 Roll (10 coins)</button>
-
     <div id="result"></div>
-
     <h3>📜 Gacha History</h3>
     <div id="history"></div>
-
-    <br>
-    <input id="codeInput" placeholder="enter code">
-    <br><br>
-    <button onclick="redeemCode()">Redeem Code</button>
   </div>
 
 </div>
 
+<!-- Loading Animation -->
+<div id="loading">Rolling...</div>
+
+<!-- Reward Popup -->
+<div id="rewardPopup">
+  <h2 id="rewardTitle"></h2>
+  <img id="rewardImage" src="">
+  <br><br>
+  <button onclick="closeReward()">Close</button>
+</div>
+
+<!-- Cutscene Video -->
+<video id="cutsceneVideo" class="hidden" width="80%" height="50%" style="position:fixed; top:50%; left:50%; transform:translate(-50%, -50%);" autoplay></video>
+
+<audio id="rewardSound"></audio>
+
 <script>
-// ---------- HASH ----------
-async function hash(text) {
-  const data = new TextEncoder().encode(text);
-  const buffer = await crypto.subtle.digest("SHA-256", data);
-  return Array.from(new Uint8Array(buffer))
-    .map(b => b.toString(16).padStart(2, "0"))
-    .join("");
-}
-
-// ---------- CONFIG ----------
-const GACHA_COST = 10;
-
-// DM CONTROLS THESE
-const CODE_REWARDS = {};
-
 // ---------- STATE ----------
-let player = {
-  name: "",
-  coins: 0,
-  history: []
-};
+const GACHA_COST = 10;
+let player = { name:"", coins:0, history:[] };
+const gachaPool = [
+  { id:"meme_001", type:"meme", name:"The Stare", rarity:"common", url:"", video:"commonVideo.mp4", sound:"common.mp3" },
+  { id:"meme_002", type:"meme", name:"Cursed Smile", rarity:"rare", url:"", video:"rareVideo.mp4", sound:"rare.mp3" },
+  { id:"legend_001", type:"legendary", name:"Golden Ticket", rarity:"legendary", url:"", video:"legendVideo.mp4", sound:"legend.mp3" }
+];
 
 // ---------- INIT ----------
 loadPlayer();
 
 function loadPlayer() {
-  // Load all players
-  const allPlayers = JSON.parse(localStorage.getItem("gachaPlayers") || "[]");
-  
-  // Check if there is already a saved name in localStorage (one-time name)
   const savedName = localStorage.getItem("currentPlayerName");
+  const allPlayers = JSON.parse(localStorage.getItem("gachaPlayers") || "[]");
   if (savedName) {
     const savedPlayer = allPlayers.find(p => p.name === savedName);
     if (savedPlayer) {
@@ -157,113 +167,90 @@ function loadPlayer() {
       return;
     }
   }
-  // if no saved name, show name setup
   document.getElementById("nameSetup").classList.remove("hidden");
 }
 
 function savePlayer() {
   let allPlayers = JSON.parse(localStorage.getItem("gachaPlayers") || "[]");
-  const index = allPlayers.findIndex(p => p.name === player.name);
-  if(index > -1){
-    allPlayers[index] = player;
-  } else {
-    allPlayers.push(player);
-  }
+  const idx = allPlayers.findIndex(p => p.name===player.name);
+  if(idx>-1) allPlayers[idx]=player;
+  else allPlayers.push(player);
   localStorage.setItem("gachaPlayers", JSON.stringify(allPlayers));
-  
-  // remember the current player name (so we don't ask again)
   localStorage.setItem("currentPlayerName", player.name);
+  updateUI();
 }
 
 // ---------- NAME ----------
 function registerName() {
   const name = document.getElementById("playerNameInput").value.trim();
   if (!name) return;
-
   player.name = name;
-  player.coins = 0;
+  player.coins = 50; // start coins
   player.history = [];
-
   savePlayer();
   showGacha();
 }
 
+// ---------- UI ----------
 function showGacha() {
   document.getElementById("nameSetup").classList.add("hidden");
   document.getElementById("gachaUI").classList.remove("hidden");
   document.getElementById("welcomeText").innerText = `Hi ${player.name} ♡`;
+  document.getElementById("playerNameDisplay").innerText = player.name;
   updateUI();
 }
 
-// ---------- UI ----------
 function updateUI() {
-  document.getElementById("coins").innerText = player.coins;
-  document.getElementById("history").innerHTML =
-    player.history.map(h => `• ${h.name} (${h.type})`).join("<br>");
+  document.getElementById("coinsDisplay").innerText = `🪙 ${player.coins}`;
+  document.getElementById("history").innerHTML = player.history.map(h=>`• ${h.name} (${h.rarity})`).join("<br>");
 }
-
-// ---------- GACHA POOL ----------
-const gachaPool = [
-  // Memes
-  { id:"meme_001", type:"meme", name:"The Stare", url:"", description:"It knows what you did." },
-  { id:"meme_002", type:"meme", name:"Cursed Smile", url:"", description:"Why is it smiling like that." },
-  { id:"meme_003", type:"meme", name:"Low Quality Cat", url:"", description:"Taken on a toaster." },
-  // Messages
-  { id:"msg_001", type:"message", name:"Motivation Note", url:"", description:"You can do it!" },
-  { id:"msg_002", type:"message", name:"Funny Quote", url:"", description:"Laughter is medicine." },
-  // Potions
-  { id:"potion_health", type:"potion", name:"Health Potion", url:"", effect:"heal" },
-  { id:"potion_speed", type:"potion", name:"Speed Potion", url:"", effect:"speed_boost" },
-  { id:"potion_night", type:"potion", name:"Night Vision Potion", url:"", effect:"night_mode" },
-  // Utility
-  { id:"util_key", type:"utility", name:"Magic Key", url:"", description:"Opens hidden things." },
-  { id:"util_map", type:"utility", name:"Treasure Map", url:"", description:"Leads to surprises." },
-  // Jokes
-  { id:"joke_001", type:"joke", name:"Dad Joke", url:"", description:"Why did the chicken cross the road?" },
-  { id:"joke_002", type:"joke", name:"Pun Card", url:"", description:"I’m reading a book on anti-gravity." },
-  // Legendary
-  { id:"legend_001", type:"legendary", name:"Mystic Orb", url:"", description:"Shiny and rare." },
-  { id:"legend_002", type:"legendary", name:"Golden Ticket", url:"", description:"What could it unlock?" }
-];
 
 // ---------- GACHA ----------
 function rollGacha() {
-  if (player.coins < GACHA_COST) {
-    document.getElementById("result").innerText = "Not enough coins!";
-    return;
-  }
-
+  if(player.coins<GACHA_COST){ alert("Not enough coins!"); return; }
   player.coins -= GACHA_COST;
-
-  const pull = gachaPool[Math.floor(Math.random() * gachaPool.length)];
-
-  player.history.unshift(pull);
-  document.getElementById("result").innerText = `You got: ${pull.name}`;
-
-  savePlayer();
   updateUI();
+  
+  const loading = document.getElementById("loading");
+  loading.style.display="block";
+
+  const pull = gachaPool[Math.floor(Math.random()*gachaPool.length)];
+
+  // wait 1.5s for "loading" effect
+  setTimeout(()=>playCutscene(pull), 1500);
 }
 
-// ---------- CODES ----------
-async function redeemCode() {
-  const input = document.getElementById("codeInput").value.trim().toLowerCase();
-  if (!input) return;
+function playCutscene(item) {
+  const video = document.getElementById("cutsceneVideo");
+  video.src = item.video; // cutscene video for rarity
+  video.classList.remove("hidden");
+  video.play();
 
-  const hashed = await hash(input);
+  video.onended = ()=>{
+    video.classList.add("hidden");
+    showReward(item);
+  };
+}
 
-  if (CODE_REWARDS[hashed]) {
-    player.coins += CODE_REWARDS[hashed];
-    document.getElementById("result").innerText = `+${CODE_REWARDS[hashed]} coins ♡`;
-    savePlayer();
-    updateUI();
-  } else {
-    document.getElementById("result").innerText = "Invalid code.";
-  }
+function showReward(item) {
+  document.getElementById("loading").style.display="none";
+  const popup = document.getElementById("rewardPopup");
+  document.getElementById("rewardTitle").innerText = item.name;
+  document.getElementById("rewardImage").src = item.url;
+  
+  const sound = document.getElementById("rewardSound");
+  sound.src = item.sound;
+  sound.play();
 
-  document.getElementById("codeInput").value = "";
+  popup.style.display="block";
+
+  player.history.unshift(item);
+  savePlayer();
+}
+
+function closeReward() {
+  document.getElementById("rewardPopup").style.display="none";
 }
 </script>
-
-
 </body>
 </html>
