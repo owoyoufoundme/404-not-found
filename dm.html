@@ -60,11 +60,26 @@ function loadPlayers() {
   }
 
   allPlayers.forEach(player => {
-    const items = player.history.join(", ") || "(empty)";
+    const categories = {};
+  
+    player.history.forEach(item => {
+      if (!categories[item.type]) categories[item.type] = [];
+      categories[item.type].push(item.name);
+    });
+  
+    const memes = (categories.meme || []).join(", ") || "(none)";
+    const potions = (categories.potion || []).join(", ") || "(none)";
+    const others = (categories.other || []).join(", ") || "(none)";
+  
     const tr = document.createElement("tr");
-    tr.innerHTML = `<td>${player.name}</td><td>${player.coins}</td><td>${items}</td>`;
+    tr.innerHTML = `
+      <td>${player.name}</td>
+      <td>${player.coins}</td>
+      <td><b>Memes:</b> ${memes}<br><b>Potions:</b> ${potions}<br><b>Other:</b> ${others}</td>
+    `;
     tbody.appendChild(tr);
   });
+
 }
 
 </script>
