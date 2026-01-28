@@ -50,20 +50,23 @@ function checkPassword() {
 }
 
 function loadPlayers() {
-  const saved = localStorage.getItem("gachaPlayer");
+  const allPlayers = JSON.parse(localStorage.getItem("gachaPlayers") || "[]");
   const tbody = document.querySelector("#inventoryTable tbody");
   tbody.innerHTML = "";
 
-  if(saved){
-    const player = JSON.parse(saved);
-    const items = player.history.map(i => i.name).join(", ");
+  if(allPlayers.length === 0){
+    tbody.innerHTML = "<tr><td colspan='3'>No player data found.</td></tr>";
+    return;
+  }
+
+  allPlayers.forEach(player => {
+    const items = player.history.join(", ") || "(empty)";
     const tr = document.createElement("tr");
     tr.innerHTML = `<td>${player.name}</td><td>${player.coins}</td><td>${items}</td>`;
     tbody.appendChild(tr);
-  } else {
-    tbody.innerHTML = "<tr><td colspan='3'>No player data found.</td></tr>";
-  }
+  });
 }
+
 </script>
 
 </body>
