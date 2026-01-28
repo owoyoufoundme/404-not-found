@@ -441,6 +441,12 @@ async function checkWord() {
     document.getElementById("word").value = "";
     return;
   }
+  if (input === "gacha") {
+    openGachaPopup();
+    document.getElementById("word").value = "";
+    return;
+  }
+
 
   if (input === "fish") {
     const popup = document.getElementById("fishPopup");
