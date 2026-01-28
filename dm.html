@@ -4,85 +4,150 @@
 <meta charset="UTF-8">
 <title>DM Dashboard</title>
 <style>
-  body { font-family: "Patrick Hand", cursive; padding: 20px; background: #fff0f5; }
-  table { border-collapse: collapse; width: 100%; margin-top: 20px; }
-  th, td { border: 1px solid #ff9ecb; padding: 8px; text-align: left; }
-  th { background: #ffb6d5; }
-  input { padding: 8px; border-radius: 8px; border: 2px solid #ff9ecb; }
-  button { padding: 6px 12px; border-radius: 8px; background: #ff9ecb; border: none; cursor: pointer; }
+  body {
+    font-family: "Patrick Hand", cursive;
+    background: #fff0f5;
+    margin: 0;
+    padding: 20px;
+  }
+
+  h1 {
+    text-align: center;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+
+  th, td {
+    border: 1px solid #ff9ecb;
+    padding: 8px;
+    text-align: left;
+  }
+
+  th {
+    background-color: #ff7fb5;
+    color: white;
+  }
+
+  button {
+    font-family: inherit;
+    padding: 5px 10px;
+    border-radius: 8px;
+    border: none;
+    background: #ff9ecb;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background: #ff7fb5;
+  }
+
+  .delete-btn {
+    background: #ff4d6d;
+    color: white;
+  }
+
+  .delete-btn:hover {
+    background: #e6003c;
+  }
 </style>
 </head>
+
 <body>
-
 <h1>DM Dashboard</h1>
+<button onclick="loadDashboard()">Refresh</button>
 
-<p>Enter password to view players:</p>
-<input id="dmPass" type="password" placeholder="DM password">
-<button onclick="checkPassword()">Enter</button>
-
-<div id="dashboard" class="hidden">
-  <h2>Player Inventory</h2>
-  <table id="inventoryTable">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Coins</th>
-        <th>Items Pulled</th>
-      </tr>
-    </thead>
-    <tbody>
-      <!-- filled by JS -->
-    </tbody>
-  </table>
-</div>
+<table>
+  <thead>
+    <tr>
+      <th>Player</th>
+      <th>Coins</th>
+      <th>Inventory</th>
+    </tr>
+  </thead>
+  <tbody id="playersTableBody">
+    <!-- players will be loaded here -->
+  </tbody>
+</table>
 
 <script>
-const PASSWORD = "mySecretDMKey"; // put your password here
-
-function checkPassword() {
-  const input = document.getElementById("dmPass").value;
-  if(input === PASSWORD){
-    document.getElementById("dashboard").classList.remove("hidden");
-    loadPlayers();
-  } else {
-    alert("Incorrect password!");
+// ---------- LOAD ALL PLAYERS ----------
+function getAllPlayers() {
+  const players = [];
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    if (key.startsWith("gachaPlayer_")) { // store players with unique key prefix
+      const player = JSON.parse(localStorage.getItem(key));
+      players.push(player);
+    }
   }
+  return players;
 }
 
-function loadPlayers() {
-  const allPlayers = JSON.parse(localStorage.getItem("gachaPlayers") || "[]");
-  const tbody = document.querySelector("#inventoryTable tbody");
+// ---------- LOAD DASHBOARD ----------
+function loadDashboard() {
+  const tbody = document.getElementById("playersTableBody");
   tbody.innerHTML = "";
 
-  if(allPlayers.length === 0){
-    tbody.innerHTML = "<tr><td colspan='3'>No player data found.</td></tr>";
-    return;
-  }
+  const allPlayers = getAllPlayers();
 
   allPlayers.forEach(player => {
     const categories = {};
-  
+
     player.history.forEach(item => {
       if (!categories[item.type]) categories[item.type] = [];
       categories[item.type].push(item.name);
     });
-  
+
     const memes = (categories.meme || []).join(", ") || "(none)";
     const potions = (categories.potion || []).join(", ") || "(none)";
     const others = (categories.other || []).join(", ") || "(none)";
-  
+
     const tr = document.createElement("tr");
+
     tr.innerHTML = `
       <td>${player.name}</td>
       <td>${player.coins}</td>
-      <td><b>Memes:</b> ${memes}<br><b>Potions:</b> ${potions}<br><b>Other:</b> ${others}</td>
+      <td>
+        <b>Memes:</b> ${memes}<br>
+        <b>Potions:</b> ${potions}<br>
+        <b>Other:</b> ${others}
+      </td>
     `;
+
+    // Delete item buttons
+    const deleteCell = document.createElement("td");
+    deleteCell.style.verticalAlign = "top";
+    player.history.forEach((item, index) => {
+      const btn = document.createElement("button");
+      btn.classList.add("delete-btn");
+      btn.style.margin = "2px";
+      btn.innerText = `Delete ${item.name}`;
+      btn.onclick = () => deleteItem(player.name, index);
+      deleteCell.appendChild(btn);
+    });
+
+    tr.appendChild(deleteCell);
     tbody.appendChild(tr);
   });
-
 }
 
-</script>
+// ---------- DELETE ITEM ----------
+function deleteItem(playerName, itemIndex) {
+  const key = `gachaPlayer_${playerName}`;
+  const player = JSON.parse(localStorage.getItem(key));
+  if (!player) return;
 
+  player.history.splice(itemIndex, 1); // remove item
+  localStorage.setItem(key, JSON.stringify(player));
+  loadDashboard();
+}
+
+// ---------- INITIAL ----------
+loadDashboard();
+</script>
 </body>
 </html>
