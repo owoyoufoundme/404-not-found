@@ -182,8 +182,32 @@ function showGacha() {
 function updateUI() {
   document.getElementById("coins").innerText = player.coins;
   document.getElementById("history").innerHTML =
-    player.history.map(h => `• ${h}`).join("<br>");
+    player.history.map(h => `• ${h.name} (${h.type})`).join("<br>");
 }
+
+// ---------- GACHA POOL ----------
+const gachaPool = [
+  // Memes
+  { id:"meme_001", type:"meme", name:"The Stare", url:"", description:"It knows what you did." },
+  { id:"meme_002", type:"meme", name:"Cursed Smile", url:"", description:"Why is it smiling like that." },
+  { id:"meme_003", type:"meme", name:"Low Quality Cat", url:"", description:"Taken on a toaster." },
+  // Messages
+  { id:"msg_001", type:"message", name:"Motivation Note", url:"", description:"You can do it!" },
+  { id:"msg_002", type:"message", name:"Funny Quote", url:"", description:"Laughter is medicine." },
+  // Potions
+  { id:"potion_health", type:"potion", name:"Health Potion", url:"", effect:"heal" },
+  { id:"potion_speed", type:"potion", name:"Speed Potion", url:"", effect:"speed_boost" },
+  { id:"potion_night", type:"potion", name:"Night Vision Potion", url:"", effect:"night_mode" },
+  // Utility
+  { id:"util_key", type:"utility", name:"Magic Key", url:"", description:"Opens hidden things." },
+  { id:"util_map", type:"utility", name:"Treasure Map", url:"", description:"Leads to surprises." },
+  // Jokes
+  { id:"joke_001", type:"joke", name:"Dad Joke", url:"", description:"Why did the chicken cross the road?" },
+  { id:"joke_002", type:"joke", name:"Pun Card", url:"", description:"I’m reading a book on anti-gravity." },
+  // Legendary
+  { id:"legend_001", type:"legendary", name:"Mystic Orb", url:"", description:"Shiny and rare." },
+  { id:"legend_002", type:"legendary", name:"Golden Ticket", url:"", description:"What could it unlock?" }
+];
 
 // ---------- GACHA ----------
 function rollGacha() {
@@ -194,18 +218,10 @@ function rollGacha() {
 
   player.coins -= GACHA_COST;
 
-  const pool = [
-    "⭐ Common Charm",
-    "🌸 Cute Sticker",
-    "💖 Rare Memory",
-    "✨ Very Rare Surprise",
-    "👁️ …something watched you"
-  ];
-
-  const pull = pool[Math.floor(Math.random() * pool.length)];
+  const pull = gachaPool[Math.floor(Math.random() * gachaPool.length)];
 
   player.history.unshift(pull);
-  document.getElementById("result").innerText = `You got: ${pull}`;
+  document.getElementById("result").innerText = `You got: ${pull.name} (${pull.type})`;
 
   savePlayer();
   updateUI();
