@@ -235,15 +235,14 @@ function rollGacha() {
 
   player.coins -= GACHA_COST;
 
-  const pull = gachaPool[Math.floor(Math.random() * gachaPool.length)];
+  const pull = pool[Math.floor(Math.random() * pool.length)];
 
-  player.history.unshift(pull);
-  document.getElementById("result").innerText = `You got: ${pull.name} (${pull.type})`;
+  player.history.unshift(pull); // store {name, type}
+  document.getElementById("result").innerText = `You got: ${pull.name}`;
 
   savePlayer();
   updateUI();
 }
-
 // ---------- CODES ----------
 async function redeemCode() {
   const input = document.getElementById("codeInput").value.trim().toLowerCase();
