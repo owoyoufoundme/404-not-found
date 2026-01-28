@@ -131,10 +131,7 @@ async function hash(text) {
 const GACHA_COST = 10;
 
 // DM CONTROLS THESE
-const CODE_REWARDS = {
-  // hash("freecoins"): 30
-  // you will add hashes here later
-};
+const CODE_REWARDS = {};
 
 // ---------- STATE ----------
 let player = {
@@ -144,35 +141,38 @@ let player = {
 };
 
 // ---------- INIT ----------
-// ---------- INIT ----------
-let player = {
-  name: "",
-  coins: 0,
-  history: []
-};
+loadPlayer();
 
-// Global list of all players
 function loadPlayer() {
+  // Load all players
   const allPlayers = JSON.parse(localStorage.getItem("gachaPlayers") || "[]");
-  const saved = allPlayers.find(p => p.name);
-  if (saved) {
-    player = saved;
-    showGacha();
+  
+  // Check if there is already a saved name in localStorage (one-time name)
+  const savedName = localStorage.getItem("currentPlayerName");
+  if (savedName) {
+    const savedPlayer = allPlayers.find(p => p.name === savedName);
+    if (savedPlayer) {
+      player = savedPlayer;
+      showGacha();
+      return;
+    }
   }
+  // if no saved name, show name setup
+  document.getElementById("nameSetup").classList.remove("hidden");
 }
 
 function savePlayer() {
   let allPlayers = JSON.parse(localStorage.getItem("gachaPlayers") || "[]");
-  
-  // check if player already exists in list
   const index = allPlayers.findIndex(p => p.name === player.name);
   if(index > -1){
-    allPlayers[index] = player; // update existing
+    allPlayers[index] = player;
   } else {
-    allPlayers.push(player); // add new
+    allPlayers.push(player);
   }
-  
   localStorage.setItem("gachaPlayers", JSON.stringify(allPlayers));
+  
+  // remember the current player name (so we don't ask again)
+  localStorage.setItem("currentPlayerName", player.name);
 }
 
 // ---------- NAME ----------
@@ -235,14 +235,15 @@ function rollGacha() {
 
   player.coins -= GACHA_COST;
 
-  const pull = pool[Math.floor(Math.random() * pool.length)];
+  const pull = gachaPool[Math.floor(Math.random() * gachaPool.length)];
 
-  player.history.unshift(pull); // store {name, type}
+  player.history.unshift(pull);
   document.getElementById("result").innerText = `You got: ${pull.name}`;
 
   savePlayer();
   updateUI();
 }
+
 // ---------- CODES ----------
 async function redeemCode() {
   const input = document.getElementById("codeInput").value.trim().toLowerCase();
@@ -262,6 +263,7 @@ async function redeemCode() {
   document.getElementById("codeInput").value = "";
 }
 </script>
+
 
 </body>
 </html>
