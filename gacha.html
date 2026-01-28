@@ -144,14 +144,28 @@ input {
     <button onclick="registerName()">Enter</button>
   </div>
 
-  <!-- GACHA UI -->
-  <div id="gachaUI" class="hidden">
-    <h1 id="welcomeText"></h1>
-    <button onclick="rollGacha()">🎰 Roll (10 coins)</button>
-    <div id="result"></div>
-    <h3>📜 Gacha History</h3>
-    <div id="history"></div>
-  </div>
+<!-- Gacha UI -->
+<div id="gachaUI" class="hidden">
+  <h1 id="welcomeText"></h1>
+  <button onclick="rollGacha()">🎰 Roll (10 coins)</button>
+  <br>
+  <button id="historyBtn" onclick="toggleHistory()" style="margin-top:10px; text-decoration:underline; background:none; color:#ff9ecb; border:none; cursor:pointer; font-size:14px;">
+    View Gacha History
+  </button>
+</div>
+
+<!-- History Popup -->
+<div id="historyPopup" class="hidden" style="
+  position: fixed; top: 100px; left:50%; transform: translateX(-50%);
+  background: #fff5fa; padding: 20px; border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3); max-height: 200px; overflow-y:auto;
+  z-index: 10000; width: 300px;
+">
+  <h3 style="margin-top:0;">📜 Your Gacha History</h3>
+  <div id="historyList"></div>
+  <button onclick="closeHistory()" style="margin-top:10px; padding:5px 10px; font-size:14px;">Close</button>
+</div>
+
 
 </div>
 
@@ -281,6 +295,18 @@ function rollGacha() {
 
   // wait 1.5s for "loading" effect
   setTimeout(()=>playCutscene(pull), 1500);
+}
+
+// ---------- HISTORY POPUP ----------
+function toggleHistory() {
+  const popup = document.getElementById("historyPopup");
+  const list = document.getElementById("historyList");
+  list.innerHTML = player.history.map(h => `• ${h.name} (${h.rarity})`).join("<br>");
+  popup.classList.toggle("hidden");
+}
+
+function closeHistory() {
+  document.getElementById("historyPopup").classList.add("hidden");
 }
 
 function playCutscene(item) {
