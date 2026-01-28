@@ -105,6 +105,34 @@ input {
   <div id="coinsDisplay">🪙 0</div>
 </div>
 
+<!-- Coins & Code Section -->
+<div id="topBar">
+  <div id="playerNameDisplay">Player: </div>
+  <div>
+    <span id="coinsDisplay">🪙 0</span>
+    <button onclick="showCodeBox()">Enter Code</button>
+  </div>
+</div>
+
+<!-- Code Popup -->
+<div id="codeBox" class="hidden" style="
+  position: fixed; top: 50px; right: 20px; 
+  background: #fff5fa; padding: 15px; border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3); z-index: 9999;">
+  <input id="codeInput" placeholder="Enter code">
+  <button onclick="redeemCode()">Enter</button>
+</div>
+
+<!-- Redeem Result Popup -->
+<div id="codeResultPopup" style="
+  position: fixed; top: 80px; right: 20px; 
+  background: #ffedcc; padding: 12px 20px; border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3); display: none;
+  z-index: 10000;">
+  <span id="codeResultText"></span>
+</div>
+
+
 <div class="card">
 
   <!-- NAME SETUP -->
@@ -190,6 +218,41 @@ function registerName() {
   savePlayer();
   showGacha();
 }
+
+function showCodeBox() {
+  const box = document.getElementById("codeBox");
+  box.classList.toggle("hidden"); // toggle visibility
+}
+
+async function redeemCode() {
+  const input = document.getElementById("codeInput").value.trim().toLowerCase();
+  if(!input) return;
+
+  const hashed = await hash(input);
+
+  if (CODE_REWARDS[hashed]) {
+    player.coins += CODE_REWARDS[hashed];
+    savePlayer();
+    updateUI();
+    showCodeResult("Redeemed Code ♡", true);
+  } else {
+    showCodeResult("Code Not Found ❌", false);
+  }
+
+  document.getElementById("codeInput").value = "";
+  document.getElementById("codeBox").classList.add("hidden");
+}
+
+function showCodeResult(text, success) {
+  const popup = document.getElementById("codeResultPopup");
+  const span = document.getElementById("codeResultText");
+  span.innerText = text;
+  popup.style.background = success ? "#d4f7d4" : "#ffb3b3";
+  popup.style.display = "block";
+
+  setTimeout(()=>popup.style.display="none", 2000); // auto-close after 2 sec
+}
+
 
 // ---------- UI ----------
 function showGacha() {
