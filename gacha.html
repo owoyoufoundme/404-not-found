@@ -185,6 +185,8 @@ input {
   <button onclick="closeReward()">Close</button>
 </div>
 
+  
+
 <!-- Cutscene Video -->
 <video id="cutsceneVideo" class="hidden" width="80%" height="50%" style="position:fixed; top:50%; left:50%; transform:translate(-50%, -50%);" autoplay></video>
 
@@ -223,7 +225,11 @@ const CODE_REWARDS = {
 };
 // ---------- INIT ----------
 loadPlayer();
-
+  
+function openInventory() {
+  window.location.href = "inventory.html";
+}
+  
 function loadPlayer() {
   const savedName = localStorage.getItem("currentPlayerName");
   const allPlayers = JSON.parse(localStorage.getItem("gachaPlayers") || "[]");
