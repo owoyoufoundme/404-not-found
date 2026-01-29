@@ -101,14 +101,8 @@ input {
 <body>
 
 <div id="topBar">
-  <div id="playerNameDisplay">Player: </div>
-  <div id="coinsDisplay">🪙 0</div>
-</div>
-
-<!-- Coins & Code Section -->
-<div id="topBar">
-  <div id="playerNameDisplay">Player: </div>
-  <div>
+  <div id="playerNameDisplay">Player: —</div>
+  <div style="display:flex; align-items:center; gap:10px;">
     <span id="coinsDisplay">🪙 0</span>
     <button onclick="showCodeBox()">Enter Code</button>
   </div>
@@ -188,12 +182,28 @@ input {
 <script>
 // ---------- STATE ----------
 const GACHA_COST = 10;
-let player = { name:"", coins:0, history:[] };
-const gachaPool = [
-  { id:"meme_001", type:"meme", name:"The Stare", rarity:"common", url:"", video:"commonVideo.mp4", sound:"common.mp3" },
-  { id:"meme_002", type:"meme", name:"Cursed Smile", rarity:"rare", url:"", video:"rareVideo.mp4", sound:"rare.mp3" },
-  { id:"legend_001", type:"legendary", name:"Golden Ticket", rarity:"legendary", url:"", video:"legendVideo.mp4", sound:"legend.mp3" }
+let player = {
+  name: "",
+  coins: 0,
+  history: [],
+  stage: "basic",   // basic | memes | lore
+  pulls: 0
+};
+
+const basicPool = [
+  { id:"basic_001", type:"item", name:"Health Potion", rarity:"common", url:"", video:"commonVideo.mp4", sound:"common.mp3" },
+  { id:"basic_002", type:"item", name:"Speed Potion", rarity:"common", url:"", video:"commonVideo.mp4", sound:"common.mp3" }
 ];
+
+const memePool = [
+  { id:"meme_001", type:"meme", name:"The Stare", rarity:"common", url:"", video:"commonVideo.mp4", sound:"common.mp3" },
+  { id:"meme_002", type:"meme", name:"Cursed Smile", rarity:"rare", url:"", video:"rareVideo.mp4", sound:"rare.mp3" }
+];
+
+const lorePool = [
+  { id:"lore_001", type:"lore", name:"Golden Ticket", rarity:"legendary", url:"", video:"legendVideo.mp4", sound:"legend.mp3" }
+];
+
 
 // ---------- INIT ----------
 loadPlayer();
@@ -284,6 +294,19 @@ function updateUI() {
 
 // ---------- GACHA ----------
 function rollGacha() {
+
+  player.pulls++;
+
+  if (player.pulls >= 20 && player.stage === "basic") {
+    player.stage = "memes";
+    alert("Something feels… unhinged.");
+  }
+  
+  if (player.pulls >= 50 && player.stage === "memes") {
+    player.stage = "lore";
+    alert("You probably shouldn’t have found this.");
+  }
+
   if(player.coins<GACHA_COST){ alert("Not enough coins!"); return; }
   player.coins -= GACHA_COST;
   updateUI();
@@ -291,7 +314,10 @@ function rollGacha() {
   const loading = document.getElementById("loading");
   loading.style.display="block";
 
-  const pull = gachaPool[Math.floor(Math.random()*gachaPool.length)];
+  const pool = getActivePool();
+  const pull = pool[Math.floor(Math.random() * pool.length)];
+
+
 
   // wait 1.5s for "loading" effect
   setTimeout(()=>playCutscene(pull), 1500);
@@ -305,6 +331,12 @@ function toggleHistory() {
   popup.classList.toggle("hidden");
 }
 
+function getActivePool() {
+  if (player.stage === "basic") return basicPool;
+  if (player.stage === "memes") return [...basicPool, ...memePool];
+  return [...basicPool, ...memePool, ...lorePool];
+}
+  
 function closeHistory() {
   document.getElementById("historyPopup").classList.add("hidden");
 }
