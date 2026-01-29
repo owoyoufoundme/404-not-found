@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Access</title>
+  <style>
+    body {
+      font-family: monospace;
+      background: black;
+      color: #00ffcc;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .box {
+      background: #111;
+      padding: 30px;
+      border-radius: 12px;
+      text-align: center;
+      width: 300px;
+    }
+    input, button {
+      margin-top: 10px;
+      padding: 8px;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+<div class="box">
+  <h2>ADMIN ACCESS</h2>
+  <input id="adminInput" placeholder="Enter phrase">
+  <button onclick="unlock()">Unlock</button>
+  <p id="msg"></p>
+</div>
+
+<script>
+async function unlock() {
+  const input = document.getElementById("adminInput").value;
+  const hashed = await crypto.subtle.digest(
+    "SHA-256",
+    new TextEncoder().encode(input)
+  );
+  const hashHex = Array.from(new Uint8Array(hashed))
+    .map(b => b.toString(16).padStart(2, "0"))
+    .join("");
+
+  if (hashHex === ADMIN_HASH) {
+    localStorage.setItem("adminUnlocked", "true");
+    window.location.href = "admin-panel.html";
+  } else {
+    document.getElementById("msg").innerText = "Access denied.";
+  }
+}
+</script>
+
+</body>
+</html>
