@@ -104,37 +104,28 @@ input {
   <div id="playerNameDisplay">Player: —</div>
   <div style="display:flex; align-items:center; gap:10px;">
     <span id="coinsDisplay">🪙 0</span>
-    <button onclick="showCodeBox()">Enter Code</button>
   </div>
 </div>
 
-<!-- Code Popup -->
-<div id="codeBox" class="hidden" style="
+
+<!-- Redeem Code Section -->
+<div id="codeBox" style="
   position: fixed;
-  top: 50px;
+  top: 60px;
   right: 20px;
   background: #fff5fa;
   padding: 15px;
   border-radius: 12px;
   box-shadow: 0 5px 15px rgba(0,0,0,0.3);
   z-index: 9999;
-
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 10px;
 ">
+  <label for="codeInput" style="font-size:14px;">Enter Redeem Code ♡</label>
   <input id="codeInput" placeholder="Enter code" style="width: 180px;">
   <button onclick="redeemCode()">Enter</button>
-</div>
-  
-<!-- Redeem Result Popup -->
-<div id="codeResultPopup" style="
-  position: fixed; top: 80px; right: 20px; 
-  background: #ffedcc; padding: 12px 20px; border-radius: 12px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.3); display: none;
-  z-index: 10000;">
-  <span id="codeResultText"></span>
 </div>
 
 
@@ -265,48 +256,31 @@ function registerName() {
   showGacha();
 }
 
-function showCodeBox() {
-  const box = document.getElementById("codeBox");
-  box.classList.toggle("hidden"); // toggle visibility
-}
 
-async function redeemCode() {
+function redeemCode() {
   const input = document.getElementById("codeInput").value.trim().toLowerCase();
   if(!input) return;
 
-  const hashed = await hash(input); // if you’re using hash
-  const codeReward = CODE_REWARDS[hashed];
+  const codeReward = CODE_REWARDS[input]; // use plain code, no hash
 
-  // Check if code exists
   if(!codeReward) {
     showCodeResult("Code Not Found.", false);
   } 
-  // Check if player already used it
-  else if(player.usedCodes.includes(hashed)) {
+  else if(player.usedCodes.includes(input)) {
     showCodeResult("Code Already Used.", false);
   } 
   else {
     player.coins += codeReward;
-    player.usedCodes.push(hashed); // mark as used
+    player.usedCodes.push(input); // mark as used
     savePlayer();
     updateUI();
     showCodeResult("Redeemed Code ♡", true);
   }
 
   document.getElementById("codeInput").value = "";
-  document.getElementById("codeBox").classList.add("hidden");
 }
 
 
-function showCodeResult(text, success) {
-  const popup = document.getElementById("codeResultPopup");
-  const span = document.getElementById("codeResultText");
-  span.innerText = text;
-  popup.style.background = success ? "#d4f7d4" : "#ffb3b3";
-  popup.style.display = "block";
-
-  setTimeout(()=>popup.style.display="none", 2000); // auto-close after 2 sec
-}
 
 function playCutscene(item) {
   const video = document.getElementById("cutsceneVideo");
