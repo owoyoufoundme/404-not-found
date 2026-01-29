@@ -14,6 +14,15 @@ button { cursor: pointer; background: #ff9ecb; border: none; padding: 5px 10px; 
 <body>
 <h1>Your Inventory</h1>
 <div id="inventoryContainer"></div>
+<button onclick="goBack()" style="
+  margin-bottom: 20px;
+  padding: 8px 15px;
+  border-radius: 12px;
+  border: none;
+  background: #ff9ecb;
+  cursor: pointer;
+  font-size: 16px;
+">← Back to Gacha</button>
 
 <script>
 let player = JSON.parse(localStorage.getItem("gachaPlayers") || "[]")
@@ -35,24 +44,14 @@ function renderInventory() {
     player.inventory.filter(i => i.type === type).forEach((item, idx) => {
       const itemDiv = document.createElement("div");
       itemDiv.classList.add("item");
-      itemDiv.innerHTML = `
-        <span>${item.name} (${item.rarity})</span>
-        <button onclick="removeItem(${idx}, '${type}')">Remove</button>
-      `;
       catDiv.appendChild(itemDiv);
     });
 
     container.appendChild(catDiv);
   });
 }
-
-function removeItem(index, type) {
-  const itemsOfType = player.inventory.filter(i => i.type === type);
-  const itemToRemove = itemsOfType[index];
-  const removeIndex = player.inventory.indexOf(itemToRemove);
-  if(removeIndex > -1) player.inventory.splice(removeIndex, 1);
-  savePlayer();
-  renderInventory();
+function goBack() {
+  window.location.href = "index.html"; // or whatever your main gacha page is called
 }
 
 function savePlayer() {
