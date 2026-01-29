@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Inventory</title>
+<style>
+body { font-family: 'Patrick Hand', cursive; background: #fff0f5; padding: 20px; }
+h1 { text-align: center; }
+.category { margin-top: 20px; }
+.item { display: flex; align-items: center; justify-content: space-between; padding: 5px 0; }
+button { cursor: pointer; background: #ff9ecb; border: none; padding: 5px 10px; border-radius: 10px; }
+</style>
+</head>
+<body>
+<h1>Your Inventory</h1>
+<div id="inventoryContainer"></div>
+
+<script>
+let player = JSON.parse(localStorage.getItem("gachaPlayers") || "[]")
+  .find(p => p.name === localStorage.getItem("currentPlayerName"));
+
+if(!player) { alert("No player found"); throw ""; }
+if(!player.inventory) player.inventory = [];
+
+function renderInventory() {
+  const container = document.getElementById("inventoryContainer");
+  container.innerHTML = "";
+
+  const types = [...new Set(player.inventory.map(i => i.type))]; // unique types
+  types.forEach(type => {
+    const catDiv = document.createElement("div");
+    catDiv.classList.add("category");
+    catDiv.innerHTML = `<h2>${type.toUpperCase()}</h2>`;
+    
+    player.inventory.filter(i => i.type === type).forEach((item, idx) => {
+      const itemDiv = document.createElement("div");
+      itemDiv.classList.add("item");
+      itemDiv.innerHTML = `
+        <span>${item.name} (${item.rarity})</span>
+        <button onclick="removeItem(${idx}, '${type}')">Remove</button>
+      `;
+      catDiv.appendChild(itemDiv);
+    });
+
+    container.appendChild(catDiv);
+  });
+}
+
+function removeItem(index, type) {
+  const itemsOfType = player.inventory.filter(i => i.type === type);
+  const itemToRemove = itemsOfType[index];
+  const removeIndex = player.inventory.indexOf(itemToRemove);
+  if(removeIndex > -1) player.inventory.splice(removeIndex, 1);
+  savePlayer();
+  renderInventory();
+}
+
+function savePlayer() {
+  let allPlayers = JSON.parse(localStorage.getItem("gachaPlayers") || "[]");
+  const idx = allPlayers.findIndex(p => p.name===player.name);
+  if(idx>-1) allPlayers[idx]=player;
+  else allPlayers.push(player);
+  localStorage.setItem("gachaPlayers", JSON.stringify(allPlayers));
+}
+
+renderInventory();
+</script>
+</body>
+</html>
