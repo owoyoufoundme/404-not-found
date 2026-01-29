@@ -110,13 +110,24 @@ input {
 
 <!-- Code Popup -->
 <div id="codeBox" class="hidden" style="
-  position: fixed; top: 50px; right: 20px; 
-  background: #fff5fa; padding: 15px; border-radius: 12px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.3); z-index: 9999;">
-  <input id="codeInput" placeholder="Enter code">
+  position: fixed;
+  top: 50px;
+  right: 20px;
+  background: #fff5fa;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  z-index: 9999;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+">
+  <input id="codeInput" placeholder="Enter code" style="width: 180px;">
   <button onclick="redeemCode()">Enter</button>
 </div>
-
+  
 <!-- Redeem Result Popup -->
 <div id="codeResultPopup" style="
   position: fixed; top: 80px; right: 20px; 
