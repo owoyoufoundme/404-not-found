@@ -272,11 +272,11 @@ async function redeemCode() {
 
   // Check if code exists
   if(!codeReward) {
-    showCodeResult("Code Not Found ❌", false);
+    showCodeResult("Code Not Found.", false);
   } 
   // Check if player already used it
   else if(player.usedCodes.includes(hashed)) {
-    showCodeResult("Code Already Used ❌", false);
+    showCodeResult("Code Already Used.", false);
   } 
   else {
     player.coins += codeReward;
