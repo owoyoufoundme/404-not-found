@@ -159,18 +159,18 @@ input {
   </button>
 </div>
 
-<!-- History Popup -->
-<div id="historyPopup" class="hidden" style="
-  position: fixed; top: 100px; left:50%; transform: translateX(-50%);
-  background: #fff5fa; padding: 20px; border-radius: 12px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.3); max-height: 200px; overflow-y:auto;
-  z-index: 10000; width: 300px;
-">
-  <h3 style="margin-top:0;">📜 Your Gacha History</h3>
-  <div id="historyList"></div>
-  <button onclick="closeHistory()" style="margin-top:10px; padding:5px 10px; font-size:14px;">Close</button>
-</div>
 
+<button id="inventoryBtn" onclick="openInventory()" style="
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  background: #ff9ecb;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 12px;
+  font-size: 16px;
+  cursor: pointer;
+">Inventory</button>
 
 </div>
 
@@ -302,6 +302,53 @@ function showCodeResult(text, success) {
   setTimeout(()=>popup.style.display="none", 2000); // auto-close after 2 sec
 }
 
+function playCutscene(item) {
+  const video = document.getElementById("cutsceneVideo");
+  const rewardPopup = document.getElementById("rewardPopup");
+
+  video.src = item.video;
+  video.classList.remove("hidden");
+  rewardPopup.style.display = "none"; // hide reward for now
+  document.body.style.background = ""; // reset background in case of fade
+
+  video.play();
+
+  video.onended = () => {
+    // fade to white
+    document.body.style.transition = "background 0.5s";
+    document.body.style.background = "#fff";
+
+    setTimeout(() => {
+      video.classList.add("hidden"); // hide video
+      showReward(item); // show the reward popup
+    }, 500); // wait 0.5s for fade
+  };
+}
+
+function showReward(item) {
+  document.getElementById("loading").style.display = "none";
+  const popup = document.getElementById("rewardPopup");
+  document.getElementById("rewardTitle").innerText = item.name;
+  document.getElementById("rewardImage").src = item.url;
+
+  const sound = document.getElementById("rewardSound");
+  sound.src = item.sound;
+  sound.play();
+
+  popup.style.display = "block";
+
+  // Add item to player inventory
+  if(!player.inventory) player.inventory = [];
+  player.inventory.unshift(item);
+
+  player.history.unshift(item); // still track pull history
+  savePlayer();
+}
+
+// Close reward by clicking anywhere on popup
+document.getElementById("rewardPopup").onclick = () => {
+  closeReward();
+};
 
 // ---------- UI ----------
 function showGacha() {
