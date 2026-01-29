@@ -263,22 +263,33 @@ function showCodeBox() {
   box.classList.toggle("hidden"); // toggle visibility
 }
 
-function redeemCode() {
+async function redeemCode() {
   const input = document.getElementById("codeInput").value.trim().toLowerCase();
-  if (!input) return;
+  if(!input) return;
 
-  if (CODE_REWARDS[input]) {
-    player.coins += CODE_REWARDS[input];
+  const hashed = await hash(input); // if you’re using hash
+  const codeReward = CODE_REWARDS[hashed];
+
+  // Check if code exists
+  if(!codeReward) {
+    showCodeResult("Code Not Found ❌", false);
+  } 
+  // Check if player already used it
+  else if(player.usedCodes.includes(hashed)) {
+    showCodeResult("Code Already Used ❌", false);
+  } 
+  else {
+    player.coins += codeReward;
+    player.usedCodes.push(hashed); // mark as used
     savePlayer();
     updateUI();
     showCodeResult("Redeemed Code ♡", true);
-  } else {
-    showCodeResult("Code Not Found ❌", false);
   }
 
   document.getElementById("codeInput").value = "";
   document.getElementById("codeBox").classList.add("hidden");
 }
+
 
 function showCodeResult(text, success) {
   const popup = document.getElementById("codeResultPopup");
