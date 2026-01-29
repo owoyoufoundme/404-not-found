@@ -215,7 +215,11 @@ const lorePool = [
   { id:"lore_001", type:"lore", name:"Golden Ticket", rarity:"legendary", url:"", video:"legendVideo.mp4", sound:"legend.mp3" }
 ];
 
-
+const CODE_REWARDS = {
+  "freecoins": 30,
+  "test123": 50,
+  "adminpls": 999
+};
 // ---------- INIT ----------
 loadPlayer();
 
@@ -259,14 +263,12 @@ function showCodeBox() {
   box.classList.toggle("hidden"); // toggle visibility
 }
 
-async function redeemCode() {
+function redeemCode() {
   const input = document.getElementById("codeInput").value.trim().toLowerCase();
-  if(!input) return;
+  if (!input) return;
 
-  const hashed = await hash(input);
-
-  if (CODE_REWARDS[hashed]) {
-    player.coins += CODE_REWARDS[hashed];
+  if (CODE_REWARDS[input]) {
+    player.coins += CODE_REWARDS[input];
     savePlayer();
     updateUI();
     showCodeResult("Redeemed Code ♡", true);
@@ -383,6 +385,8 @@ function showReward(item) {
 function closeReward() {
   document.getElementById("rewardPopup").style.display="none";
 }
+
+
 </script>
 </body>
 </html>
