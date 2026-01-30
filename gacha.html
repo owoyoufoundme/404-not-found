@@ -97,6 +97,26 @@ button:hover { background: #ff7fb5; }
 </div>
 
 <script>
+
+// Gacha pool with rarities
+const pool = [
+  { name: "Health Potion", url: "health.png", rarity: "common", weight: 60 },
+  { name: "Speed Potion", url: "speed.png", rarity: "common", weight: 60 },
+  { name: "Golden Ticket", url: "golden.png", rarity: "rare", weight: 25 },
+  { name: "Magic Elixir", url: "elixir.png", rarity: "legendary", weight: 10 },
+  { name: "Corrupted Core", url: "corrupted.png", rarity: "secret", weight: 5 }
+];
+  
+function getWeightedRandom(pool) {
+  const totalWeight = pool.reduce((sum, item) => sum + item.weight, 0);
+  let rand = Math.random() * totalWeight;
+
+  for (let item of pool) {
+    if (rand < item.weight) return item;
+    rand -= item.weight;
+  }
+}
+
 const GACHA_COST = 10;
 let player = { name: "", coins: 0, history: [], usedCodes: [] };
 
@@ -153,20 +173,14 @@ function updateUI() {
 
 // --- GACHA ROLL ---
 const pool = ["Health Potion", "Speed Potion", "Golden Ticket"];
+
 function rollGacha() {
-  if(player.coins < GACHA_COST) return alert("Not enough coins!");
-  player.coins -= GACHA_COST;
-  const reward = pool[Math.floor(Math.random()*pool.length)];
-  player.history.unshift(reward);
-  savePlayer();
-  alert(`You pulled: ${reward}`);
-}
-function rollGacha() {
-  if(player.coins < GACHA_COST) return alert("Not enough coins!");
+  if (player.coins < GACHA_COST) return alert("Not enough coins!");
   player.coins -= GACHA_COST;
   updateUI();
 
-  const reward = pool[Math.floor(Math.random()*pool.length)];
+  // Get reward based on weighted rarity
+  const reward = getWeightedRandom(pool);
 
   // Show cutscene
   const cutscene = document.getElementById("cutscene");
@@ -183,32 +197,30 @@ function rollGacha() {
 
     setTimeout(() => {
       cutscene.classList.add("hidden");
-      showReward(reward);
-    }, 500); // wait 0.5s for fade
+      showReward(reward); // show item after fade
+    }, 500);
   };
 }
+
 
 function showReward(reward) {
   const popup = document.getElementById("rewardPopup");
   const title = document.getElementById("rewardTitle");
   const img = document.getElementById("rewardImage");
 
-  title.innerText = reward.name;  // assuming reward is an object with {name, url}
-
-  // Use the reward image from the object (matches cutscene size)
+  title.innerText = `${reward.name} (${reward.rarity.toUpperCase()})`;
   img.src = reward.url;
-  img.style.display = "block";
-
   popup.classList.remove("hidden");
 
-  // Add reward to history
+  // Add reward to history (just the name for log)
   if(!player.history) player.history = [];
-  player.history.unshift(reward);
+  player.history.unshift(`${reward.name} [${reward.rarity}]`);
   savePlayer();
 
   // Click anywhere to close
   popup.onclick = () => popup.classList.add("hidden");
 }
+
 
 
 
