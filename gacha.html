@@ -3,12 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <title>Gacha Room</title>
-<link rel="stylesheet" href="style.css">
-</head>
-
-
- <style>
-   body {
+<link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
+<style>
+body {
   margin: 0;
   font-family: "Patrick Hand", cursive;
   background: linear-gradient(#ffe6f0, #fff);
@@ -17,7 +14,6 @@
   align-items: center;
   height: 100vh;
 }
-
 .card {
   width: 400px;
   background: white;
@@ -26,145 +22,111 @@
   text-align: center;
   box-shadow: 0 10px 30px rgba(0,0,0,0.15);
 }
-
-.gacha-image {
-  width: 100%;
-  max-height: 180px;
-  object-fit: cover;
-  border-radius: 12px;
-  margin-bottom: 15px;
-}
-
-.gacha-btn {
-  width: 100%;
+input, button {
+  font-family: inherit;
   padding: 10px;
-  border-radius: 12px;
-  border: none;
-  background: #ff9ecb;
-  cursor: pointer;
+  margin-top: 10px;
+  border-radius: 10px;
 }
-
-.gacha-btn:hover {
-  background: #ff7fb5;
-}
-
-#codeBox {
-  position: fixed;
-  top: 60px;
-  right: 20px;
-  padding: 12px;
-  background: #fff5fa;
-  border-radius: 12px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-}
-
-.code-toast {
-  position: fixed;
-  top: 140px;
-  right: -300px;
-  background: #ffedcc;
-  padding: 10px 20px;
-  border-radius: 12px;
-  transition: all 0.4s ease;
-}
-
-.code-toast.show {
-  right: 20px;
-}
-
- </style>
+input { width: 80%; border: 2px solid #ff9ecb; }
+button { border: none; background: #ff9ecb; cursor: pointer; }
+button:hover { background: #ff7fb5; }
+.gacha-image { width: 100%; max-height: 180px; object-fit: cover; border-radius: 12px; margin-bottom: 15px; }
+.hidden { display: none; }
+#coinsDisplay { font-size: 18px; margin-bottom: 10px; }
+</style>
+</head>
 <body>
 
-<!-- Top Bar -->
-<div id="topBar">
-  <div id="playerNameDisplay">Player: —</div>
-  <div id="coinsDisplay">🪙 0</div>
-</div>
-
-<!-- Card / Main Gacha Area -->
 <div class="card">
-  
-  <!-- Name Setup -->
+
+  <!-- NAME SETUP -->
   <div id="nameSetup">
     <h1>Welcome ♡</h1>
-    <input id="playerNameInput" placeholder="Your Name">
+    <p>Enter your name:</p>
+    <input id="playerNameInput" placeholder="Your name">
+    <br>
     <button onclick="registerName()">Enter</button>
   </div>
 
-  <!-- Gacha UI -->
+  <!-- GACHA UI -->
   <div id="gachaUI" class="hidden">
+    <div id="coinsDisplay">🪙 0</div>
     <img src="www.png" alt="Gacha Banner" class="gacha-image">
-    <button class="gacha-btn" onclick="rollGacha()">Pull Gacha</button>
+    <button onclick="rollGacha()">Pull Gacha</button>
+    <div id="history"></div>
   </div>
 
 </div>
 
-<!-- Redeem Code -->
-<div id="codeBox">
-  <input id="codeInput" placeholder="Enter Redeem Code">
-  <button onclick="redeemCode()">Redeem</button>
-</div>
-
-<!-- Popups -->
-<div id="codeResultPopup" class="code-toast"><span id="codeResultText"></span></div>
-<div id="rewardPopup">
-  <h2 id="rewardTitle"></h2>
-  <img id="rewardImage" src="">
-  <button onclick="closeReward()">Close</button>
-</div>
-
-<!-- Loading -->
-<div id="loading">Rolling...</div>
-
 <script>
-  let player = { name: "", coins: 50, history: [], usedCodes: [] };
-const CODE_REWARDS = { freecoins: 30, test123: 50 };
+const GACHA_COST = 10;
+let player = { name: "", coins: 0, history: [], usedCodes: [] };
 
+// --- LOAD PLAYER ---
+function loadPlayer() {
+  const savedName = localStorage.getItem("currentPlayerName");
+  const allPlayers = JSON.parse(localStorage.getItem("gachaPlayers") || "[]");
+  if(savedName) {
+    const savedPlayer = allPlayers.find(p=>p.name===savedName);
+    if(savedPlayer) {
+      player = savedPlayer;
+      showGacha();
+      return;
+    }
+  }
+  document.getElementById("nameSetup").classList.remove("hidden");
+}
+
+// --- SAVE PLAYER ---
+function savePlayer() {
+  let allPlayers = JSON.parse(localStorage.getItem("gachaPlayers") || "[]");
+  const idx = allPlayers.findIndex(p=>p.name===player.name);
+  if(idx>-1) allPlayers[idx]=player;
+  else allPlayers.push(player);
+  localStorage.setItem("gachaPlayers", JSON.stringify(allPlayers));
+  localStorage.setItem("currentPlayerName", player.name);
+  updateUI();
+}
+
+// --- REGISTER NAME ---
 function registerName() {
   const name = document.getElementById("playerNameInput").value.trim();
-  if(!name) return;
-  player.name = name;
-  document.getElementById("playerNameDisplay").innerText = name;
+  if(!name) return alert("Enter a valid name!");
+  const allPlayers = JSON.parse(localStorage.getItem("gachaPlayers") || "[]");
+  const existing = allPlayers.find(p=>p.name===name);
+  if(existing) player = existing;
+  else player = { name, coins: 50, history: [], usedCodes: [] };
+  savePlayer();
+  showGacha();
+}
+
+// --- SHOW GACHA ---
+function showGacha() {
   document.getElementById("nameSetup").classList.add("hidden");
   document.getElementById("gachaUI").classList.remove("hidden");
   updateUI();
 }
 
+// --- UPDATE UI ---
 function updateUI() {
   document.getElementById("coinsDisplay").innerText = `🪙 ${player.coins}`;
+  document.getElementById("history").innerHTML = player.history.map(h=>`• ${h}`).join("<br>");
 }
 
-function showCodeResult(msg, success=true) {
-  const popup = document.getElementById("codeResultPopup");
-  document.getElementById("codeResultText").innerText = msg;
-  popup.classList.add("show");
-  setTimeout(()=>popup.classList.remove("show"), 2000);
-}
-
-function redeemCode() {
-  const code = document.getElementById("codeInput").value.trim().toLowerCase();
-  if(!code) return;
-  if(player.usedCodes.includes(code)) return showCodeResult("Code already used!", false);
-  const reward = CODE_REWARDS[code];
-  if(!reward) return showCodeResult("Code not found!", false);
-  player.coins += reward;
-  player.usedCodes.push(code);
-  updateUI();
-  showCodeResult("Redeemed Code ♡");
-  document.getElementById("codeInput").value = "";
-}
-
+// --- GACHA ROLL ---
+const pool = ["Health Potion", "Speed Potion", "Golden Ticket"];
 function rollGacha() {
-  if(player.coins < 10) return alert("Not enough coins!");
-  player.coins -= 10;
-  updateUI();
-  alert("You pulled something! (Replace with real logic later)");
+  if(player.coins < GACHA_COST) return alert("Not enough coins!");
+  player.coins -= GACHA_COST;
+  const reward = pool[Math.floor(Math.random()*pool.length)];
+  player.history.unshift(reward);
+  savePlayer();
+  alert(`You pulled: ${reward}`);
 }
 
+loadPlayer();
 </script>
+
 </body>
 </html>
