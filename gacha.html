@@ -97,7 +97,7 @@ button:hover { background: #ff7fb5; }
 </div>
 
 <script>
-
+document.getElementById("rewardPopup").classList.add("hidden");
 
 
 const GACHA_COST = 10;
@@ -174,36 +174,37 @@ function getWeightedRandom(pool) {
     rand -= item.weight;
   }
 }
+  
 function rollGacha() {
   if(player.coins < GACHA_COST) return alert("Not enough coins!");
   player.coins -= GACHA_COST;
- 
   updateUI();
 
   const reward = getWeightedRandom(pool);
 
+  // Hide reward at start
+  const popup = document.getElementById("rewardPopup");
+  popup.classList.add("hidden");
+
   // Show cutscene
   const cutscene = document.getElementById("cutscene");
   const video = document.getElementById("cutsceneVideo");
-
   cutscene.classList.remove("hidden");
   video.currentTime = 0;
   video.play();
 
-  // Hide reward until cutscene finishes
-  const popup = document.getElementById("rewardPopup");
-  popup.classList.add("hidden");
-
   video.onended = () => {
+    // Fade
     cutscene.style.transition = "background 0.5s";
     cutscene.style.background = "white";
 
     setTimeout(() => {
       cutscene.classList.add("hidden");
-      showReward(reward); // show reward after fade
+      showReward(reward); // show reward only now
     }, 500);
   };
 }
+
 
 
 
@@ -212,18 +213,21 @@ function showReward(reward) {
   const title = document.getElementById("rewardTitle");
   const img = document.getElementById("rewardImage");
 
+  img.style.display = "none";  // hide first
   title.innerText = `${reward.name} (${reward.rarity.toUpperCase()})`;
   img.src = reward.url;
 
-  popup.classList.remove("hidden");
+  // Small delay to make it appear after DOM updates
+  setTimeout(() => {
+    img.style.display = "block";
+    popup.classList.remove("hidden");
+  }, 50);
 
-  // Add reward to history
+  // Add to history
   player.history.unshift(`${reward.name} [${reward.rarity}]`);
   savePlayer();
-
-  // Click anywhere to close
-  popup.onclick = () => popup.classList.add("hidden");
 }
+
 
 
 
