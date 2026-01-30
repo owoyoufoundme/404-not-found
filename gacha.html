@@ -14,6 +14,7 @@ body {
   align-items: center;
 }
 
+  
 #topBar {
   position: fixed;
   top: 10px;
@@ -54,6 +55,36 @@ input {
   font-size: 16px;
 }
 #result { margin-top: 15px; font-size: 18px; }
+
+.code-toast {
+  position: fixed;
+  top: 140px;
+  right: -300px; /* start off-screen */
+  background: #ffedcc;
+  padding: 12px 20px;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  z-index: 10000;
+  opacity: 0;
+  transition: 
+    right 0.4s ease,
+    opacity 0.4s ease;
+}
+
+/* visible state */
+.code-toast.show {
+  right: 20px;
+  opacity: 1;
+}
+
+/* success / fail vibes */
+.code-toast.success {
+  background: #d4f7d4;
+}
+
+.code-toast.error {
+  background: #ffb3b3;
+}
 #history {
   margin-top: 20px;
   text-align: left;
@@ -129,17 +160,7 @@ input {
 </div>
 
   <!-- Redeem Code Result Popup -->
-<div id="codeResultPopup" style="
-  position: fixed;
-  top: 140px;
-  right: 20px;
-  background: #ffedcc;
-  padding: 12px 20px;
-  border-radius: 12px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-  display: none;
-  z-index: 10000;
-">
+<div id="codeResultPopup" class="code-toast">
   <span id="codeResultText"></span>
 </div>
 
@@ -286,12 +307,19 @@ function registerName() {
 function showCodeResult(text, success) {
   const popup = document.getElementById("codeResultPopup");
   const span = document.getElementById("codeResultText");
-  span.innerText = text;
-  popup.style.background = success ? "#d4f7d4" : "#ffb3b3";
-  popup.style.display = "block";
 
-  setTimeout(()=>popup.style.display="none", 2000); // auto-close after 2 sec
+  span.innerText = text;
+
+  popup.classList.remove("success", "error");
+  popup.classList.add("show");
+  popup.classList.add(success ? "success" : "error");
+
+  // auto-hide after 2s
+  setTimeout(() => {
+    popup.classList.remove("show");
+  }, 2000);
 }
+
 
 function redeemCode() {
   const input = document.getElementById("codeInput").value.trim().toLowerCase();
