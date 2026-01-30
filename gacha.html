@@ -3,424 +3,134 @@
 <head>
 <meta charset="UTF-8">
 <title>Gacha Room</title>
-<style>
-body {
+<link rel="stylesheet" href="style.css">
+</head>
+
+
+ <style>
+   body {
   margin: 0;
   font-family: "Patrick Hand", cursive;
   background: linear-gradient(#ffe6f0, #fff);
-  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-  
-#topBar {
-  position: fixed;
-  top: 10px;
-  width: 97%;
-  display: flex;
-  justify-content: space-between;
-  padding: 0 20px;
-  font-size: 18px;
+  height: 100vh;
 }
 
 .card {
+  width: 400px;
   background: white;
   border-radius: 20px;
   padding: 30px;
-  width: 420px;
   text-align: center;
   box-shadow: 0 10px 30px rgba(0,0,0,0.15);
 }
 
-.gacha-center {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 15px;
-}
-
 .gacha-image {
   width: 100%;
-  max-width: 320px;
-  height: 180px;
-  object-fit: contain;
-  border-radius: 16px;
-  background: #fff5fa;
+  max-height: 180px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 15px;
 }
 
 .gacha-btn {
   width: 100%;
-}
-
-
-h1 { margin-top: 0; }
-button {
-  font-family: inherit;
-  padding: 10px 20px;
+  padding: 10px;
   border-radius: 12px;
   border: none;
   background: #ff9ecb;
   cursor: pointer;
-  font-size: 16px;
 }
-button:hover { background: #ff7fb5; }
-input {
-  font-family: inherit;
-  padding: 8px;
-  width: 80%;
-  margin-top: 10px;
-  border-radius: 10px;
-  border: 2px solid #ff9ecb;
-  font-size: 16px;
+
+.gacha-btn:hover {
+  background: #ff7fb5;
 }
-#result { margin-top: 15px; font-size: 18px; }
+
+#codeBox {
+  position: fixed;
+  top: 60px;
+  right: 20px;
+  padding: 12px;
+  background: #fff5fa;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
 
 .code-toast {
   position: fixed;
   top: 140px;
-  right: -300px; /* start off-screen */
+  right: -300px;
   background: #ffedcc;
-  padding: 12px 20px;
+  padding: 10px 20px;
   border-radius: 12px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-  z-index: 10000;
-  opacity: 0;
-  transition: 
-    right 0.4s ease,
-    opacity 0.4s ease;
+  transition: all 0.4s ease;
 }
 
-/* visible state */
 .code-toast.show {
   right: 20px;
-  opacity: 1;
 }
 
-/* success / fail vibes */
-.code-toast.success {
-  background: #d4f7d4;
-}
-
-.code-toast.error {
-  background: #ffb3b3;
-}
-#history {
-  margin-top: 20px;
-  text-align: left;
-  font-size: 14px;
-  max-height: 120px;
-  overflow-y: auto;
-  background: #fff5fa;
-  padding: 10px;
-  border-radius: 12px;
-}
-.hidden { display: none; }
-
-/* Loading animation */
-#loading {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 28px;
-  background: rgba(255,255,255,0.9);
-  padding: 20px 30px;
-  border-radius: 20px;
-  display: none;
-  text-align: center;
-}
-
-/* Reward popup */
-#rewardPopup {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: white;
-  padding: 30px;
-  border-radius: 20px;
-  display: none;
-  text-align: center;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-  z-index: 10000;
-}
-#rewardPopup h2 { margin: 0 0 10px 0; }
-#rewardPopup img { max-width: 200px; border-radius: 12px; }
-</style>
-</head>
+ </style>
 <body>
 
+<!-- Top Bar -->
 <div id="topBar">
   <div id="playerNameDisplay">Player: —</div>
-  <div style="display:flex; align-items:center; gap:10px;">
-    <span id="coinsDisplay">🪙 0</span>
-  </div>
+  <div id="coinsDisplay">🪙 0</div>
 </div>
 
-
-<!-- Redeem Code Section -->
-<div id="codeBox" style="
-  position: fixed;
-  top: 60px;
-  right: 20px;
-  background: #fff5fa;
-  padding: 15px;
-  border-radius: 12px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-  z-index: 9999;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-">
-  <label for="codeInput" style="font-size:14px;">Enter Redeem Code ♡</label>
-  <input id="codeInput" placeholder="Enter code" style="width: 180px;">
-  <button onclick="redeemCode()">Enter</button>
-</div>
-
-  <!-- Redeem Code Result Popup -->
-<div id="codeResultPopup" class="code-toast">
-  <span id="codeResultText"></span>
-</div>
-
+<!-- Card / Main Gacha Area -->
 <div class="card">
-<div id="history" class="hidden"></div>
-  <!-- NAME SETUP -->
+  
+  <!-- Name Setup -->
   <div id="nameSetup">
     <h1>Welcome ♡</h1>
-    <p>Enter your name:</p>
-    <input id="playerNameInput" placeholder="your name">
-    <br><br>
+    <input id="playerNameInput" placeholder="Your Name">
     <button onclick="registerName()">Enter</button>
   </div>
 
-<!-- Gacha UI -->
-<div class="gacha-center">
-  <img src="www.png" alt="Gacha Banner" class="gacha-image">
-  <button class="gacha-btn" onclick="rollGacha()">Pull Gacha</button>
-</div>
-
-
-<button id="inventoryBtn" onclick="openInventory()" style="
-  position: fixed;
-  bottom: 20px;
-  left: 20px;
-  background: #ff9ecb;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 12px;
-  font-size: 16px;
-  cursor: pointer;
-">Inventory</button>
+  <!-- Gacha UI -->
+  <div id="gachaUI" class="hidden">
+    <img src="www.png" alt="Gacha Banner" class="gacha-image">
+    <button class="gacha-btn" onclick="rollGacha()">Pull Gacha</button>
+  </div>
 
 </div>
 
-<!-- Loading Animation -->
-<div id="loading">Rolling...</div>
+<!-- Redeem Code -->
+<div id="codeBox">
+  <input id="codeInput" placeholder="Enter Redeem Code">
+  <button onclick="redeemCode()">Redeem</button>
+</div>
 
-<!-- Reward Popup -->
+<!-- Popups -->
+<div id="codeResultPopup" class="code-toast"><span id="codeResultText"></span></div>
 <div id="rewardPopup">
   <h2 id="rewardTitle"></h2>
   <img id="rewardImage" src="">
-  <br><br>
   <button onclick="closeReward()">Close</button>
 </div>
 
-
-<!-- Cutscene Video -->
-<video id="cutsceneVideo" class="hidden" width="80%" height="50%" style="position:fixed; top:50%; left:50%; transform:translate(-50%, -50%);" autoplay></video>
-
-<audio id="rewardSound"></audio>
+<!-- Loading -->
+<div id="loading">Rolling...</div>
 
 <script>
-// ---------- STATE ----------
-const GACHA_COST = 10;
-let player = {
-  name: "",
-  coins: 0,
-  history: [],
-  stage: "basic",   // basic | memes | lore
-  pulls: 0,
-  usedCodes: []
-};
+  let player = { name: "", coins: 50, history: [], usedCodes: [] };
+const CODE_REWARDS = { freecoins: 30, test123: 50 };
 
-const basicPool = [
-  { id:"basic_001", type:"item", name:"Health Potion", rarity:"common", url:"https://i.pinimg.com/736x/29/f1/b8/29f1b860f4901a88ec3de3ff1a29dfce.jpg", video:"commonVideo.mp4", sound:"common.mp3" },
-  { id:"basic_002", type:"item", name:"Speed Potion", rarity:"common", url:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0hTZhR4tmnauAwnEjY2iOXXxUIq5M6dfKcg&s", video:"commonVideo.mp4", sound:"common.mp3" }
-];
-
-const memePool = [
-  { id:"meme_001", type:"meme", name:"The Stare", rarity:"common", url:"", video:"commonVideo.mp4", sound:"common.mp3" },
-  { id:"meme_002", type:"meme", name:"Cursed Smile", rarity:"rare", url:"", video:"rareVideo.mp4", sound:"rare.mp3" }
-];
-
-const lorePool = [
-  { id:"lore_001", type:"lore", name:"Golden Ticket", rarity:"legendary", url:"", video:"legendVideo.mp4", sound:"legend.mp3" }
-];
-
-const CODE_REWARDS = {
-  "freecoins": 30,
-  "test123": 50,
-  "adminpls": 999
-};
-// ---------- INIT ----------
-loadPlayer();
-  
-function openInventory() {
-  window.location.href = "inventory.html";
-}
-  
-function loadPlayer() {
-  const savedName = localStorage.getItem("currentPlayerName");
-  const allPlayers = JSON.parse(localStorage.getItem("gachaPlayers") || "[]");
-  if (savedName) {
-    const savedPlayer = allPlayers.find(p => p.name === savedName);
-    if (savedPlayer) {
-      player = savedPlayer;
-      showGacha();
-      return;
-    }
-  }
-  document.getElementById("nameSetup").classList.remove("hidden");
-}
-
-function savePlayer() {
-  let allPlayers = JSON.parse(localStorage.getItem("gachaPlayers") || "[]");
-  const idx = allPlayers.findIndex(p => p.name===player.name);
-  if(idx>-1) allPlayers[idx]=player;
-  else allPlayers.push(player);
-  localStorage.setItem("gachaPlayers", JSON.stringify(allPlayers));
-  localStorage.setItem("currentPlayerName", player.name);
-  updateUI();
-}
-
-// ---------- NAME ----------
 function registerName() {
   const name = document.getElementById("playerNameInput").value.trim();
-  if (!name) return;
-
-  const allPlayers = JSON.parse(localStorage.getItem("gachaPlayers") || "[]");
-  const existing = allPlayers.find(p => p.name === name);
-
-  if (existing) {
-    player = existing; // load existing player
-  } else {
-    player = {
-      name,
-      coins: 50,
-      history: [],
-      inventory: [],
-      stage: "basic",
-      pulls: 0,
-      usedCodes: []
-    };
-  }
-
-  savePlayer();
-  showGacha();
-}
-
-
-function showCodeResult(text, success) {
-  const popup = document.getElementById("codeResultPopup");
-  const span = document.getElementById("codeResultText");
-
-  span.innerText = text;
-
-  // FULL reset
-  popup.className = "code-toast";
-  popup.style.right = "-300px";
-  popup.style.opacity = "0";
-
-  // force browser reflow
-  popup.offsetHeight;
-
-  // apply state
-  popup.classList.add(success ? "success" : "error");
-  popup.classList.add("show");
-
-  // auto-hide
-  setTimeout(() => {
-    popup.classList.remove("show");
-  }, 2000);
-}
-
-
-
-function redeemCode() {
-  const input = document.getElementById("codeInput").value.trim().toLowerCase();
-  if(!input) return;
-
-  const codeReward = CODE_REWARDS[input]; // use plain code, no hash
-
-  if(!codeReward) {
-    showCodeResult("Code Not Found.", false);
-  } 
-  else if(player.usedCodes.includes(input)) {
-    showCodeResult("Code Already Used.", false);
-  } 
-  else {
-    player.coins += codeReward;
-    player.usedCodes.push(input); // mark as used
-    savePlayer();
-    updateUI();
-    showCodeResult("Redeemed Code ♡", true);
-  }
-
-  document.getElementById("codeInput").value = "";
-}
-
-
-
-function playCutscene(item) {
-  const video = document.getElementById("cutsceneVideo");
-  const rewardPopup = document.getElementById("rewardPopup");
-
-  video.src = item.video;
-  video.classList.remove("hidden");
-  rewardPopup.style.display = "none"; // hide reward for now
-  document.body.style.background = ""; // reset background in case of fade
-
-  video.play();
-
-  video.onended = () => {
-    // fade to white
-    document.body.style.transition = "background 0.5s";
-    document.body.style.background = "#fff";
-
-    setTimeout(() => {
-      video.classList.add("hidden"); // hide video
-      showReward(item); // show the reward popup
-    }, 500); // wait 0.5s for fade
-  };
-}
-
-
-  const sound = document.getElementById("rewardSound");
-  sound.src = item.sound;
-  sound.play();
-
-  popup.style.display = "block";
-
-  // Add item to player inventory
-  if(!player.inventory) player.inventory = [];
-  player.inventory.unshift(item);
-
-  player.history.unshift(item); // still track pull history
-  savePlayer();
-}
-
-// Close reward by clicking anywhere on popup
-document.getElementById("rewardPopup").onclick = () => {
-  closeReward();
-};
-
-// ---------- UI ----------
-function showGacha() {
+  if(!name) return;
+  player.name = name;
+  document.getElementById("playerNameDisplay").innerText = name;
   document.getElementById("nameSetup").classList.add("hidden");
-  document.getElementById("playerNameDisplay").innerText = player.name;
+  document.getElementById("gachaUI").classList.remove("hidden");
   updateUI();
 }
 
@@ -428,77 +138,32 @@ function updateUI() {
   document.getElementById("coinsDisplay").innerText = `🪙 ${player.coins}`;
 }
 
-// ---------- GACHA ----------
-function rollGacha() {
+function showCodeResult(msg, success=true) {
+  const popup = document.getElementById("codeResultPopup");
+  document.getElementById("codeResultText").innerText = msg;
+  popup.classList.add("show");
+  setTimeout(()=>popup.classList.remove("show"), 2000);
+}
 
-  player.pulls++;
-
-  if (player.pulls >= 20 && player.stage === "basic") {
-    player.stage = "memes";
-    alert("Something feels… unhinged.");
-  }
-  
-  if (player.pulls >= 50 && player.stage === "memes") {
-    player.stage = "lore";
-    alert("You probably shouldn’t have found this.");
-  }
-
-  if(player.coins<GACHA_COST){ alert("Not enough coins!"); return; }
-  player.coins -= GACHA_COST;
+function redeemCode() {
+  const code = document.getElementById("codeInput").value.trim().toLowerCase();
+  if(!code) return;
+  if(player.usedCodes.includes(code)) return showCodeResult("Code already used!", false);
+  const reward = CODE_REWARDS[code];
+  if(!reward) return showCodeResult("Code not found!", false);
+  player.coins += reward;
+  player.usedCodes.push(code);
   updateUI();
-  
-  const loading = document.getElementById("loading");
-  loading.style.display="block";
-
-  const pool = getActivePool();
-  const pull = pool[Math.floor(Math.random() * pool.length)];
-
-
-
-  // wait 1.5s for "loading" effect
-  setTimeout(()=>playCutscene(pull), 1500);
+  showCodeResult("Redeemed Code ♡");
+  document.getElementById("codeInput").value = "";
 }
 
-// ---------- HISTORY POPUP ----------
-function toggleHistory() {
-  const popup = document.getElementById("historyPopup");
-  const list = document.getElementById("historyList");
-  list.innerHTML = player.history.map(h => `• ${h.name} (${h.rarity})`).join("<br>");
-  popup.classList.toggle("hidden");
+function rollGacha() {
+  if(player.coins < 10) return alert("Not enough coins!");
+  player.coins -= 10;
+  updateUI();
+  alert("You pulled something! (Replace with real logic later)");
 }
-
-function getActivePool() {
-  if (player.stage === "basic") return basicPool;
-  if (player.stage === "memes") return [...basicPool, ...memePool];
-  return [...basicPool, ...memePool, ...lorePool];
-}
-  
-function closeHistory() {
-  document.getElementById("historyPopup").classList.add("hidden");
-}
-
-
-
-function showReward(item) {
-  document.getElementById("loading").style.display="none";
-  const popup = document.getElementById("rewardPopup");
-  document.getElementById("rewardTitle").innerText = item.name;
-  document.getElementById("rewardImage").src = item.url;
-  
-  const sound = document.getElementById("rewardSound");
-  sound.src = item.sound;
-  sound.play();
-
-  popup.style.display="block";
-
-  player.history.unshift(item);
-  savePlayer();
-}
-
-function closeReward() {
-  document.getElementById("rewardPopup").style.display="none";
-}
-
 
 </script>
 </body>
