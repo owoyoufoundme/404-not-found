@@ -413,8 +413,6 @@ document.getElementById("rewardPopup").onclick = () => {
 // ---------- UI ----------
 function showGacha() {
   document.getElementById("nameSetup").classList.add("hidden");
-  document.getElementById("gachaUI").classList.remove("hidden");
-  document.getElementById("welcomeText").innerText = `Hi ${player.name} ♡`;
   document.getElementById("playerNameDisplay").innerText = player.name;
   updateUI();
 }
@@ -473,17 +471,7 @@ function closeHistory() {
   document.getElementById("historyPopup").classList.add("hidden");
 }
 
-function playCutscene(item) {
-  const video = document.getElementById("cutsceneVideo");
-  video.src = item.video; // cutscene video for rarity
-  video.classList.remove("hidden");
-  video.play();
 
-  video.onended = ()=>{
-    video.classList.add("hidden");
-    showReward(item);
-  };
-}
 
 function showReward(item) {
   document.getElementById("loading").style.display="none";
