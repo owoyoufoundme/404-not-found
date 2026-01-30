@@ -193,21 +193,23 @@ function showReward(reward) {
   const title = document.getElementById("rewardTitle");
   const img = document.getElementById("rewardImage");
 
-  title.innerText = reward;
-  // For demo, we can have placeholder images for each reward
-  if(reward === "Health Potion") img.src = "health.png";
-  else if(reward === "Speed Potion") img.src = "speed.png";
-  else img.src = "golden.png";
+  title.innerText = reward.name;  // assuming reward is an object with {name, url}
+
+  // Use the reward image from the object (matches cutscene size)
+  img.src = reward.url;
+  img.style.display = "block";
 
   popup.classList.remove("hidden");
 
   // Add reward to history
+  if(!player.history) player.history = [];
   player.history.unshift(reward);
   savePlayer();
 
   // Click anywhere to close
   popup.onclick = () => popup.classList.add("hidden");
 }
+
 
 
 loadPlayer();
