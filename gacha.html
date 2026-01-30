@@ -34,6 +34,27 @@ body {
   box-shadow: 0 10px 30px rgba(0,0,0,0.15);
 }
 
+.gacha-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.gacha-image {
+  width: 100%;
+  max-width: 320px;
+  height: 180px;
+  object-fit: contain;
+  border-radius: 16px;
+  background: #fff5fa;
+}
+
+.gacha-btn {
+  width: 100%;
+}
+
+
 h1 { margin-top: 0; }
 button {
   font-family: inherit;
@@ -165,7 +186,7 @@ input {
 </div>
 
 <div class="card">
-
+<div id="history" class="hidden"></div>
   <!-- NAME SETUP -->
   <div id="nameSetup">
     <h1>Welcome ♡</h1>
@@ -376,20 +397,6 @@ function playCutscene(item) {
   };
 }
 
-function showReward(item) {
-  document.getElementById("loading").style.display = "none";
-  const popup = document.getElementById("rewardPopup");
-  document.getElementById("rewardTitle").innerText = item.name;
-
-  const img = document.getElementById("rewardImage");
-  
-  if (item.url) {
-    img.src = item.url;
-    img.style.display = "block";
-  } else {
-    img.style.display = "none";
-  }
-
 
   const sound = document.getElementById("rewardSound");
   sound.src = item.sound;
@@ -419,7 +426,6 @@ function showGacha() {
 
 function updateUI() {
   document.getElementById("coinsDisplay").innerText = `🪙 ${player.coins}`;
-  document.getElementById("history").innerHTML = player.history.map(h=>`• ${h.name} (${h.rarity})`).join("<br>");
 }
 
 // ---------- GACHA ----------
