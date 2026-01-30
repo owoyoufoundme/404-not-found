@@ -157,11 +157,11 @@ function updateUI() {
 // --- GACHA ROLL ---
 // Gacha pool with rarities
 const pool = [
-  { name: "Health Potion", url: "health.png", rarity: "common", weight: 60 },
-  { name: "Speed Potion", url: "speed.png", rarity: "common", weight: 60 },
-  { name: "Golden Ticket", url: "golden.png", rarity: "rare", weight: 25 },
-  { name: "Magic Elixir", url: "elixir.png", rarity: "legendary", weight: 10 },
-  { name: "Corrupted Core", url: "corrupted.png", rarity: "secret", weight: 5 }
+  { name: "Health Potion", url: "file.png", rarity: "common", weight: 60 },
+  //{ name: "Speed Potion", url: "speed.png", rarity: "common", weight: 60 },
+  //{ name: "Golden Ticket", url: "golden.png", rarity: "rare", weight: 25 },
+  //{ name: "Magic Elixir", url: "elixir.png", rarity: "legendary", weight: 10 },
+  //{ name: "Corrupted Core", url: "corrupted.png", rarity: "secret", weight: 5 }
 ];
   
 
@@ -177,6 +177,7 @@ function getWeightedRandom(pool) {
 function rollGacha() {
   if(player.coins < GACHA_COST) return alert("Not enough coins!");
   player.coins -= GACHA_COST;
+ 
   updateUI();
 
   const reward = getWeightedRandom(pool);
