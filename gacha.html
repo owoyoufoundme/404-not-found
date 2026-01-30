@@ -211,20 +211,6 @@ input {
   <button onclick="closeReward()">Close</button>
 </div>
 
-  <!-- Redeem Code Result Popup -->
-<div id="codeResultPopup" style="
-  position: fixed;
-  top: 140px;
-  right: 20px;
-  background: #ffedcc;
-  padding: 12px 20px;
-  border-radius: 12px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-  display: none;
-  z-index: 10000;
-">
-  <span id="codeResultText"></span>
-</div>
 
 <!-- Cutscene Video -->
 <video id="cutsceneVideo" class="hidden" width="80%" height="50%" style="position:fixed; top:50%; left:50%; transform:translate(-50%, -50%);" autoplay></video>
@@ -310,11 +296,17 @@ function showCodeResult(text, success) {
 
   span.innerText = text;
 
-  popup.classList.remove("success", "error");
-  popup.classList.add("show");
-  popup.classList.add(success ? "success" : "error");
+  // reset everything
+  popup.classList.remove("show", "success", "error");
 
-  // auto-hide after 2s
+  // force animation restart
+  void popup.offsetWidth;
+
+  // apply new state
+  popup.classList.add(success ? "success" : "error");
+  popup.classList.add("show");
+
+  // auto-hide
   setTimeout(() => {
     popup.classList.remove("show");
   }, 2000);
