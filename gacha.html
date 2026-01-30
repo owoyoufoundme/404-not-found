@@ -39,7 +39,25 @@ button:hover { background: #ff7fb5; }
 <body>
 
 <div class="card">
-  <!-- CUTSCENE VIDEO -->
+
+
+  <!-- NAME SETUP -->
+  <div id="nameSetup">
+    <h1>Welcome ♡</h1>
+    <p>Enter your name:</p>
+    <input id="playerNameInput" placeholder="Your name">
+    <br>
+    <button onclick="registerName()">Enter</button>
+  </div>
+
+  <!-- GACHA UI -->
+  <div id="gachaUI" class="hidden">
+    <div id="coinsDisplay">🪙 0</div>
+    <img src="www.png" alt="Gacha Banner" class="gacha-image">
+    <button onclick="rollGacha()">Pull Gacha</button>
+    <div id="history"></div>
+  </div>
+    <!-- CUTSCENE VIDEO -->
   <div id="cutscene" class="hidden" style="
     position: fixed; inset:0;
     background:black;
@@ -75,23 +93,6 @@ button:hover { background: #ff7fb5; }
       object-fit:contain;
     ">
     <p style="margin-top:10px; font-size:18px;">Click anywhere to continue</p>
-  </div>
-
-  <!-- NAME SETUP -->
-  <div id="nameSetup">
-    <h1>Welcome ♡</h1>
-    <p>Enter your name:</p>
-    <input id="playerNameInput" placeholder="Your name">
-    <br>
-    <button onclick="registerName()">Enter</button>
-  </div>
-
-  <!-- GACHA UI -->
-  <div id="gachaUI" class="hidden">
-    <div id="coinsDisplay">🪙 0</div>
-    <img src="www.png" alt="Gacha Banner" class="gacha-image">
-    <button onclick="rollGacha()">Pull Gacha</button>
-    <div id="history"></div>
   </div>
 
 </div>
