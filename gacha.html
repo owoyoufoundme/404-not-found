@@ -39,7 +39,37 @@ button:hover { background: #ff7fb5; }
 <body>
 
 <div class="card">
-
+  <!-- CUTSCENE VIDEO -->
+  <div id="cutscene" class="hidden" style="
+    position: fixed; inset:0;
+    background:black;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    z-index:10000;
+  ">
+    <video id="cutsceneVideo" width="80%" height="80%">
+      <source src="cutscene.mp4" type="video/mp4">
+      Your browser does not support video.
+    </video>
+  </div>
+  
+  <!-- REWARD POPUP -->
+  <div id="rewardPopup" class="hidden" style="
+    position: fixed; inset:0;
+    background: rgba(255,255,255,0.95);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction: column;
+    z-index:10001;
+    text-align:center;
+    font-family: 'Patrick Hand', cursive;
+  ">
+    <h2 id="rewardTitle"></h2>
+    <img id="rewardImage" src="" style="max-width:200px; border-radius:12px; margin-top:10px;">
+    <p style="margin-top:10px; font-size:18px;">Click anywhere to continue</p>
+  </div>
   <!-- NAME SETUP -->
   <div id="nameSetup">
     <h1>Welcome ♡</h1>
@@ -124,6 +154,54 @@ function rollGacha() {
   savePlayer();
   alert(`You pulled: ${reward}`);
 }
+function rollGacha() {
+  if(player.coins < GACHA_COST) return alert("Not enough coins!");
+  player.coins -= GACHA_COST;
+  updateUI();
+
+  const reward = pool[Math.floor(Math.random()*pool.length)];
+
+  // Show cutscene
+  const cutscene = document.getElementById("cutscene");
+  const video = document.getElementById("cutsceneVideo");
+
+  cutscene.classList.remove("hidden");
+  video.currentTime = 0;
+  video.play();
+
+  video.onended = () => {
+    // Fade to white
+    cutscene.style.transition = "background 0.5s";
+    cutscene.style.background = "white";
+
+    setTimeout(() => {
+      cutscene.classList.add("hidden");
+      showReward(reward);
+    }, 500); // wait 0.5s for fade
+  };
+}
+
+function showReward(reward) {
+  const popup = document.getElementById("rewardPopup");
+  const title = document.getElementById("rewardTitle");
+  const img = document.getElementById("rewardImage");
+
+  title.innerText = reward;
+  // For demo, we can have placeholder images for each reward
+  if(reward === "Health Potion") img.src = "health.png";
+  else if(reward === "Speed Potion") img.src = "speed.png";
+  else img.src = "golden.png";
+
+  popup.classList.remove("hidden");
+
+  // Add reward to history
+  player.history.unshift(reward);
+  savePlayer();
+
+  // Click anywhere to close
+  popup.onclick = () => popup.classList.add("hidden");
+}
+
 
 loadPlayer();
 </script>
