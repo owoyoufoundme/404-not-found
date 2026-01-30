@@ -55,21 +55,28 @@ button:hover { background: #ff7fb5; }
   </div>
   
   <!-- REWARD POPUP -->
-  <div id="rewardPopup" class="hidden" style="
-    position: fixed; inset:0;
-    background: rgba(255,255,255,0.95);
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    flex-direction: column;
-    z-index:10001;
-    text-align:center;
-    font-family: 'Patrick Hand', cursive;
+  <!-- REWARD POPUP -->
+<div id="rewardPopup" class="hidden" style="
+  position: fixed; inset:0;
+  background: rgba(255,255,255,0.95);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-direction: column;
+  z-index:10001;
+  text-align:center;
+  font-family: 'Patrick Hand', cursive;
+">
+  <h2 id="rewardTitle" style="font-size:36px; margin-bottom:10px;"></h2>
+  <img id="rewardImage" src="" style="
+    max-width:80%;
+    max-height:80%;
+    border-radius:12px;
+    object-fit:contain;
   ">
-    <h2 id="rewardTitle"></h2>
-    <img id="rewardImage" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0hTZhR4tmnauAwnEjY2iOXXxUIq5M6dfKcg&s" style="max-width:200px; border-radius:12px; margin-top:10px;">
-    <p style="margin-top:10px; font-size:18px;">Click anywhere to continue</p>
-  </div>
+  <p style="margin-top:10px; font-size:18px;">Click anywhere to continue</p>
+</div>
+
   <!-- NAME SETUP -->
   <div id="nameSetup">
     <h1>Welcome ♡</h1>
