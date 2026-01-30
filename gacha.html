@@ -230,8 +230,8 @@ let player = {
 };
 
 const basicPool = [
-  { id:"basic_001", type:"item", name:"Health Potion", rarity:"common", url:"", video:"commonVideo.mp4", sound:"common.mp3" },
-  { id:"basic_002", type:"item", name:"Speed Potion", rarity:"common", url:"", video:"commonVideo.mp4", sound:"common.mp3" }
+  { id:"basic_001", type:"item", name:"Health Potion", rarity:"common", url:"https://i.pinimg.com/736x/29/f1/b8/29f1b860f4901a88ec3de3ff1a29dfce.jpg", video:"commonVideo.mp4", sound:"common.mp3" },
+  { id:"basic_002", type:"item", name:"Speed Potion", rarity:"common", url:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0hTZhR4tmnauAwnEjY2iOXXxUIq5M6dfKcg&s", video:"commonVideo.mp4", sound:"common.mp3" }
 ];
 
 const memePool = [
@@ -283,12 +283,28 @@ function savePlayer() {
 function registerName() {
   const name = document.getElementById("playerNameInput").value.trim();
   if (!name) return;
-  player.name = name;
-  player.coins = 50; // start coins
-  player.history = [];
+
+  const allPlayers = JSON.parse(localStorage.getItem("gachaPlayers") || "[]");
+  const existing = allPlayers.find(p => p.name === name);
+
+  if (existing) {
+    player = existing; // load existing player
+  } else {
+    player = {
+      name,
+      coins: 50,
+      history: [],
+      inventory: [],
+      stage: "basic",
+      pulls: 0,
+      usedCodes: []
+    };
+  }
+
   savePlayer();
   showGacha();
 }
+
 
 function showCodeResult(text, success) {
   const popup = document.getElementById("codeResultPopup");
@@ -365,7 +381,16 @@ function showReward(item) {
   document.getElementById("loading").style.display = "none";
   const popup = document.getElementById("rewardPopup");
   document.getElementById("rewardTitle").innerText = item.name;
-  document.getElementById("rewardImage").src = item.url;
+
+  const img = document.getElementById("rewardImage");
+  
+  if (item.url) {
+    img.src = item.url;
+    img.style.display = "block";
+  } else {
+    img.style.display = "none";
+  }
+
 
   const sound = document.getElementById("rewardSound");
   sound.src = item.sound;
